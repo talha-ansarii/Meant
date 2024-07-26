@@ -28,15 +28,7 @@ export default function ProductClosed(props) {
     }
   }, [hoveredCorner]);
 
-  const handlePointerOver = (e) => {
-    e.stopPropagation();
-    setHoveredCorner(e.object);
-  };
-
-  const handlePointerOut = (e) => {
-    e.stopPropagation();
-    setHoveredCorner(null);
-  };  
+   
 
   useGSAP(() => {
     gsap.to(group.current.position, {
