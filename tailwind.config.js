@@ -1,26 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-<<<<<<< HEAD
-  content: [
-    "./pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./app/**/*.{js,ts,jsx,tsx,mdx}",
-  ],
-  theme: {
-    extend: {
-      backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
-      },
-      fontFamily: {
-        poppins: ["Poppins", "sans-serif"],
-      },
-    },
-  },
-  plugins: [],
-};
-=======
+
+
   darkMode: ["class"],
   content: [
     './pages/**/*.{js,jsx}',
@@ -38,6 +19,14 @@ module.exports = {
       },
     },
     extend: {
+      fontFamily: {
+        poppins: ["Poppins", "sans-serif"],
+      },
+      backgroundImage: {
+        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
+        "gradient-conic":
+          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+      },
       keyframes: {
         "accordion-down": {
           from: { height: "0" },
@@ -73,4 +62,4 @@ module.exports = {
   },
   plugins: [require("tailwindcss-animate")],
 }
->>>>>>> talha/main
+

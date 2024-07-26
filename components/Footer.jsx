@@ -1,14 +1,10 @@
-<<<<<<< HEAD
-=======
+
 import Image from 'next/image'
->>>>>>> talha/main
+
 import React from 'react'
 
 const Footer = () => {
   return (
-<<<<<<< HEAD
-    <div>Footer</div>
-=======
     <div className='w-full   bg-black'>
     <div className='w-[80%] m-auto '>
     <div className='w-full bg-white h-[1px]'></div>
@@ -71,7 +67,7 @@ const Footer = () => {
     </div>
     </div>
     </div>
->>>>>>> talha/main
+
   )
 }
 
