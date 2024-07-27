@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { FaPlus, FaMinus } from "react-icons/fa";
 
 const Accordion = ({
@@ -8,6 +8,8 @@ const Accordion = ({
   onToggle,
   noTopBorder,
   isLast,
+  textColor,
+  fontWeight,
 }) => {
   const contentRef = useRef(null);
 
@@ -29,11 +31,11 @@ const Accordion = ({
         className="flex items-center justify-between cursor-pointer py-2"
         onClick={onToggle}
       >
-        <h2 className="text-xl font-bold font-merriweather">{title}</h2>
+        <h2 className={`text-xl ${fontWeight} font-merriweather ${textColor}`}>{title}</h2>
         <span
-          className={`text-white text-xl transition-transform duration-500 ease-in-out ${
+          className={`text-xl transition-transform duration-500 ease-in-out ${
             isOpen ? "rotate-180" : "rotate-0"
-          }`}
+          } ${textColor}`}
         >
           {isOpen ? <FaMinus /> : <FaPlus />}
         </span>

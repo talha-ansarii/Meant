@@ -87,6 +87,10 @@ const SingleProductPage = ({ productId }) => {
     setOpenIndex(openIndex === index ? null : index);
   };
 
+  const handleMouseEnter = (img) => {
+    setSelectedImage(img);
+  };
+
   if (!product) return <p>Product not found</p>;
 
   return (
@@ -106,7 +110,7 @@ const SingleProductPage = ({ productId }) => {
                       ? "border-white"
                       : "border-transparent"
                   } border rounded-lg`}
-                  onClick={() => setSelectedImage(img)}
+                  onMouseEnter={() => handleMouseEnter(img)}
                 >
                   <Image
                     src={img}
@@ -178,6 +182,8 @@ const SingleProductPage = ({ productId }) => {
               isOpen={openIndex === 0}
               onToggle={() => handleToggleAccordion(0)}
               noTopBorder={true}
+              textColor="text-white"
+              fontWeight="font-bold"
             >
               <p className="text-sm font-medium font-poppins text-gray-400">
                 {product.description}
@@ -187,6 +193,8 @@ const SingleProductPage = ({ productId }) => {
               title="Ingredients"
               isOpen={openIndex === 1}
               onToggle={() => handleToggleAccordion(1)}
+              textColor="text-white"
+              fontWeight="font-bold"
             >
               <p className="text-sm font-medium font-poppins text-gray-400">
                 {product.description}
@@ -197,6 +205,8 @@ const SingleProductPage = ({ productId }) => {
               isOpen={openIndex === 2}
               onToggle={() => handleToggleAccordion(2)}
               isLast={true}
+              textColor="text-white"
+              fontWeight="font-bold"
             >
               <p className="text-sm font-medium font-poppins text-gray-400">
                 {product.description}

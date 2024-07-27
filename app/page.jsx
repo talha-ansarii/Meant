@@ -1,18 +1,25 @@
-import React from "react";
-import Banner from "../components/Banner";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
-import ProductList from "@/components/ProductList";
+import Footer from "@/components/Footer";
+import Header from "@/components/Header";
+import Banner from "@/components/homePage/Banner";
+import Day from "@/components/homePage/Day";
+import HeroSection from "@/components/homePage/HeroSection";
+import Icons from "@/components/homePage/Icons";
+import Night from "@/components/homePage/Night";
+import Picture from "@/components/homePage/Picture";
+import Marquee from "@/components/Marquee";
 
 export default function Home() {
   return (
     <div>
       <Header />
       <div className="pt-[100px] pb-4">
+        <HeroSection />
+        <Day />
+        <Night />
+        <Marquee />
+        <Picture />
+        <Icons />
         <Banner />
-        <main>
-          <ProductList />
-        </main>
         <Footer />
       </div>
     </div>
