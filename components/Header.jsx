@@ -16,13 +16,13 @@ const Header = () => {
             className="ml-[80px]"
           />
         </div>
-        <div className="flex gap-[100px] font-playfair-display font-[500] text-[20px] leading-[26.66px] text-white">
+        <div className="flex gap-[100px] font-playfair-display font-medium text-[20px] leading-[26.66px] text-white">
           <Link href={"/"}>Home</Link>
           <Link href={"/ProductList"}>Products</Link>
           <Link href={"/About"}>About Us</Link>
           <Link href={"/Contact"}>Contact Us</Link>
         </div>
-        <div className="flex gap-4 mr-[20px]">
+        <div className="flex gap-4 mr-[20px] cursor-pointer">
           <FaRegHeart className="w-8 h-8 text-[#D76D8E]"/>
           <FaUser className="w-8 h-8 text-white" />
           <FaShoppingCart className="w-8 h-8 text-white" />

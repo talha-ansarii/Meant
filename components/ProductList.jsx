@@ -115,7 +115,7 @@ const ProductList = () => {
             value={sortOption}
             onChange={(e) => handleSortChange(e.target.value)}
             className="bg-black text-white border border-white rounded-md px-4 py-2"
-            style={{ marginRight: "12px" }}
+            style={{ marginRight: "20px" }}
           >
             <option value="Featured">Sort By: Featured</option>
             <option value="Newest">Sort By: Newest</option>
