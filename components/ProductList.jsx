@@ -1,9 +1,11 @@
 "use client";
 
 import React, { useState } from "react";
+import { FaPlus, FaMinus } from "react-icons/fa";
 import initialProducts from "@/constants/products"; // Import products as initialProducts
 import Image from "next/image";
 import Pagination from "@/components/Pagination";
+import Link from "next/link";
 
 const ProductList = () => {
   const [products, setProducts] = useState(initialProducts); // Initialize state with initialProducts
@@ -14,7 +16,11 @@ const ProductList = () => {
   const [sortOption, setSortOption] = useState("Featured");
   const [filterOpen, setFilterOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const productsPerPage = 8;
+  const productsPerPage = 16;
+
+  // State to manage each filter section's open/closed state
+  const [priceRangeOpen, setPriceRangeOpen] = useState(false);
+  const [categoryOpen, setCategoryOpen] = useState(false);
 
   const handleQuantityChange = (id, change) => {
     setQuantities((prev) => ({
@@ -96,7 +102,7 @@ const ProductList = () => {
   };
 
   return (
-    <div className="p-4 relative">
+    <div className="p-4 relative w-[82%] m-auto">
       {/* Product count and sort by filter */}
       <div className="flex justify-between items-center mb-6">
         {/* Product count */}
@@ -109,6 +115,7 @@ const ProductList = () => {
             value={sortOption}
             onChange={(e) => handleSortChange(e.target.value)}
             className="bg-black text-white border border-white rounded-md px-4 py-2"
+            style={{ marginRight: "12px" }}
           >
             <option value="Featured">Sort By: Featured</option>
             <option value="Newest">Sort By: Newest</option>
@@ -127,54 +134,74 @@ const ProductList = () => {
       </div>
 
       {/* Filter Popup */}
-      {filterOpen && (
+      <div
+        className={`fixed inset-0 flex items-start justify-end bg-black bg-opacity-50 z-50 transition-transform duration-700 ${
+          filterOpen ? "translate-x-0" : "translate-x-full"
+        }`}
+        onClick={() => setFilterOpen(false)}
+      >
         <div
-          className="fixed inset-0 flex items-start justify-end bg-black bg-opacity-50 z-50"
-          onClick={() => setFilterOpen(false)}
+          className="bg-white w-80 h-full max-h-screen p-4"
+          onClick={(e) => e.stopPropagation()}
         >
-          <div
-            className="bg-white w-80 h-full max-h-screen p-4 transition-transform transform translate-x-0"
-            onClick={(e) => e.stopPropagation()}
+          <button
+            className="absolute top-4 right-4 text-black"
+            onClick={() => setFilterOpen(false)}
           >
-            <button
-              className="absolute top-4 right-4 text-black"
-              onClick={() => setFilterOpen(false)}
+            <svg
+              className="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
             >
-              <svg
-                className="w-6 h-6"
-                fill="none"
+              <path
+                d="M6 18L18 6M6 6l12 12"
                 stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M6 18L18 6M6 6l12 12"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                />
-              </svg>
-            </button>
-            <h3 className="text-black font-poppins font-semibold text-lg mb-4">
-              Filter
-            </h3>
-            {/* Filter Options */}
-            <div className="space-y-6">
-              <div>
-                <h4 className="font-poppins font-medium text-black">Price Range</h4>
-                {/* Add your price range options here */}
-              </div>
-              <div>
-                <h4 className="font-poppins font-medium text-black">Shade</h4>
-                {/* Add your shade options here */}
-              </div>
-              <div>
-                <h4 className="font-poppins font-medium text-black">Category</h4>
-                {/* Add your category options here */}
-              </div>
+                strokeWidth="2"
+              />
+            </svg>
+          </button>
+          <h3 className="text-black font-playfair-display font-semibold text-lg mb-4">
+            Filter
+          </h3>
+          {/* Filter Options */}
+          <div className="space-y-6">
+            <div
+              className="flex items-center justify-between cursor-pointer mt-8"
+              onClick={() => setPriceRangeOpen(!priceRangeOpen)}
+            >
+              <h4 className="font-merriweather font-medium text-black">
+                Price Range
+              </h4>
+              {priceRangeOpen ? (
+                <FaMinus className="w-4 h-4 text-black" />
+              ) : (
+                <FaPlus className="w-4 h-4 text-black" />
+              )}
             </div>
+            <hr className="border-t border-gray-300" />
+            {priceRangeOpen && <>{/* Add your price range options here */}</>}
+          </div>
+          <div>
+            <div
+              className="flex items-center justify-between cursor-pointer mt-4"
+              onClick={() => setCategoryOpen(!categoryOpen)}
+            >
+              <h4 className="font-merriweather font-medium text-black">
+                Category
+              </h4>
+              {categoryOpen ? (
+                <FaMinus className="w-4 h-4 text-black" />
+              ) : (
+                <FaPlus className="w-4 h-4 text-black" />
+              )}
+            </div>
+            <hr className="border-t border-gray-300 my-4" />
+            {categoryOpen && <>{/* Add your category options here */}</>}
           </div>
         </div>
-      )}
+      </div>
 
       {/* Product grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-6">
@@ -184,17 +211,23 @@ const ProductList = () => {
             className="relative border rounded-lg overflow-hidden shadow-lg bg-white"
           >
             <div className="relative">
-              <Image
-                src={product.image}
-                alt={product.name}
-                width={400}
-                height={350}
-                className="w-full h-auto"
-              />
+              {/* Link to the single product page */}
+              <Link href={`/product/${product.id}`}>
+                  <Image
+                    src={product.image}
+                    alt={product.name}
+                    width={400}
+                    height={350}
+                    className="w-full h-auto"
+                  />
+              </Link>
               {/* Wishlist heart icon */}
               <div
-                className="absolute top-2 right-2 cursor-pointer"
-                onClick={() => handleAddToWishlist(product)}
+                className="absolute top-8 right-2 cursor-pointer"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleAddToWishlist(product);
+                }}
               >
                 <svg
                   className="w-8 h-8"
@@ -244,7 +277,7 @@ const ProductList = () => {
                 <div className="flex items-center border border-black bg-white rounded-md">
                   <button
                     onClick={() => handleQuantityChange(product.id, -1)}
-                    className="w-8 h-8 text-black font-poppins font-medium border-black rounded-l-md flex items-center justify-center"
+                    className="w-6 h-6 text-black font-poppins font-medium border-black rounded-l-md flex items-center justify-center"
                   >
                     -
                   </button>

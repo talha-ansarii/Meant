@@ -8,11 +8,13 @@ export default function Home() {
   return (
     <div>
       <Header />
-      <Banner />
-      <main>
-        <ProductList />
-      </main>
-      <Footer />
+      <div className="pt-[100px] pb-4">
+        <Banner />
+        <main>
+          <ProductList />
+        </main>
+        <Footer />
+      </div>
     </div>
   );
 }
