@@ -1,21 +1,16 @@
-
-import ContactUs from "@/components/ContactUs";
+import AboutUs from "@/components/AboutUs";
 import Header from "@/components/Header";
 
-const ContactUsPage = () => {
+const AboutUsPage = () => {
   return (
-    <div>
+    <div >
     <Header/>
       <div className="w-full h-[86px] bg-black"></div>
       <main>
-
-        <ContactUs />
+        <AboutUs />
       </main>
     </div>
   );
-}
+};
 
-
-
-export default ContactUsPage;
-
+export default AboutUsPage;

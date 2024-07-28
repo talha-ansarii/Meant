@@ -1,17 +1,19 @@
 import Footer from "@/components/Footer";
-import Header from "@/components/Header";
 import Image from "next/image";
 import React from "react";
 
-const page = () => {
+const AboutUs = () => {
   return (
-    <div className="w-full">
-      <Header />
-      <div className="w-[80%] m-auto md:pt-[100px] lg:pt-[100px]">
+
+    <div className="w-full pb-4">
+      <div className="w-[80%] m-auto pt-[100px]">
         <div>
-          <img
-            src="/aboutUs/banner.webp"
-            className="w-full h-[200px] md:h-[300px] lg:h-[537px]   rounded-md"
+          <Image
+            src="/assets/images/aboutusbanner.webp"
+            alt="About Us Banner"
+            width={1920}
+            height={537}
+            className="w-full h-[537px] rounded-md"
           />
         </div>
         <div className="bg-[#1a1a1a] mt-12 rounded-md h-[457px] flex justify-center items-center">
@@ -40,25 +42,36 @@ const page = () => {
               prioritizing social responsibility.
             </div>
           </div>
-          <div className="lg:w-[50%] md:w-[50%] w-[100%] h-[457px] md:h-[600px]  lg:h-[457px] overflow-hidden ">
-            <img
+
+          <div className="w-[50%] h-[457px] overflow-hidden ">
+            <Image
               src="/HomePage/banner/1.jpeg"
-              className=" w-full overflow-hidden  h-full object-cover "
+              alt="Our Mission Banner"
+              width={1920}
+              height={457}
+              className="w-full overflow-hidden object-cover"
             />
           </div>
         </div>
         <div>
-          <img
+          <Image
             src="/aboutUs/banner.webp"
-            className="w-full h-[200px] md:h-[300px] lg:h-[537px] mt-12  rounded-md"
+
+            alt="About Us Banner"
+            width={1920}
+            height={537}
+            className="w-full mt-12 h-[537px] rounded-md"
           />
         </div>
       </div>
-      <div className=" w-[80%] m-auto  mt-12 rounded-md  md:h-[700px]  lg:h-[457px] gap-4 flex lg:flex-row md:flex-row flex-col justify-center items-center">
-        <div className="lg:w-[50%] md:w-[50%] w-[100%]  md:h-[700px]  lg:h-[457px] bg-[#1a1a1a]  rounded-md overflow-hidden ">
-          <img
+      <div className=" w-[80%] m-auto  mt-12 rounded-md h-[457px] gap-4 flex justify-center items-center">
+        <div className="w-[50%] bg-[#1a1a1a] h-[457px] rounded-md overflow-hidden ">
+          <Image
             src="/HomePage/banner/1.jpeg"
-            className=" w-full h-full rounded-md object-cover overflow-hidden "
+            alt="Our Vision Banner"
+            width={1920}
+            height={457}
+            className="w-full overflow-hidden rounded-md object-cover"
           />
         </div>
         <div className="text-white  md:h-[700px]  lg:h-[457px] h-auto bg-[#1a1a1a] rounded-md playfair flex flex-col gap-6 text-center justify-center items-center lg:w-[50%] md:w-[50%] w-[100%] m-auto p-4 ">
@@ -74,33 +87,42 @@ const page = () => {
           </div>
         </div>
       </div>
-      <div className=" w-[80%] m-auto  my-12 rounded-md  md:h-[800px]  lg:h-[800px] gap-4 flex lg:flex-row md:flex-row flex-col justify-center items-center">
-        <div className="text-white  md:h-[800px]  lg:h-[800px] bg-[#1a1a1a] rounded-md playfair flex flex-col gap-6 text-center justify-center items-center lg:w-[50%] md:w-[50%] w-[100%] m-auto p-4 ">
-          <div className="lg:text-[40px]  md:text-[40px] text-[50px]">Our Commitment</div>
-          <div className="lg:text-[18px] md:text-[17px] text-[18px]">
-      - Quality: We meticulously select ingredients that are not only safe and effective but also
-sustainably sourced. Every product is crafted with care, ensuring that it meets our high
-standards of quality and performance.<br/>
-- Transparency: We believe in being open and honest about what goes into our
-products. You deserve to know what you're putting on your skin, and we are committed
-to providing full ingredient transparency.<br/>
-- Inclusivity: Beauty is for everyone. Our products are designed to celebrate and
-enhance the natural beauty of all skin types, tones, and textures.<br/>
-- Empowerment: We are here to empower you to feel confident and beautiful in your
-skin. Our products are created to help you express your unique beauty and embrace
-your true self.
+
+      <div className=" w-[80%] m-auto  my-12 rounded-md h-[457px] gap-4 flex justify-center items-center">
+        <div className="text-white h-[457px] bg-[#1a1a1a] rounded-md playfair flex flex-col gap-6 text-center justify-center items-center w-[50%] m-auto p-4 ">
+          <div className="text-[50px]">Our Commitment</div>
+          <div className="text-[20px] ">
+            - Quality: We meticulously select ingredients that are not only safe
+            and effective but also sustainably sourced. Every product is crafted
+            with care, ensuring that it meets our high standards of quality and
+            performance.
+            <br />
+            - Transparency: We believe in being open and honest about what goes
+            into our products. You deserve to know what you're putting on your
+            skin, and we are committed to providing full ingredient
+            transparency.
+            <br />
+            - Inclusivity: Beauty is for everyone. Our products are designed to
+            celebrate and enhance the natural beauty of all skin types, tones,
+            and textures.
+            <br />- Empowerment: We are here to empower you to feel confident
+            and beautiful in your skin. Our products are created to help you
+            express your unique beauty and embrace your true self.
           </div>
         </div>
-        <div className="lg:w-[50%] md:w-[50%] w-[100%] bg-[#1a1a1a]  md:h-[800px]  lg:h-[800px] rounded-md overflow-hidden ">
-          <img
+        <div className="w-[50%] bg-[#1a1a1a] h-[457px] rounded-md overflow-hidden ">
+          <Image
             src="/HomePage/banner/1.jpeg"
-            className=" w-full overflow-hidden h-full rounded-md object-cover  "
+            alt="Our Commitment Banner"
+            width={1920}
+            height={457}
+            className="w-full overflow-hidden rounded-md object-cover"
           />
         </div>
       </div>
-      <Footer/>
+      <Footer />
     </div>
   );
 };
 
-export default page;
+export default AboutUs;
