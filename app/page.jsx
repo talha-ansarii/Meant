@@ -1,4 +1,3 @@
-
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import Banner from "@/components/homePage/Banner";
@@ -10,22 +9,19 @@ import Picture from "@/components/homePage/Picture";
 import Marquee from "@/components/Marquee";
 
 export default function Home() {
- 
-
   return (
     <div>
-    <Header/>
-    <HeroSection/>
-    <Day/>
-    <Night/>
-    <Marquee/>
-    <Picture/>
-    <Icons/>
-    <Banner/>
-    <Footer/>
-    
-      
+      <Header />
+      <div className="pt-[100px] pb-4">
+        <HeroSection />
+        <Day />
+        <Night />
+        <Marquee />
+        <Picture />
+        <Icons />
+        <Banner />
+        <Footer />
+      </div>
     </div>
-  )
-
+  );
 }
