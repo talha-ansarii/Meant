@@ -10,7 +10,7 @@ const Footer = () => {
         <div className="w-full bg-white h-[1px] mb-4"></div>
 
         <div className="flex flex-col md:flex-row md:space-x-8 pb-4">
-          <div className="w-full md:w-[60%] pt-8 md:pt-[80px]">
+          <div className="w-full md:w-[50%] pt-8 md:pt-[80px]">
             <Image
               src="/assets/images/logo.webp"
               alt="logo"
@@ -20,8 +20,8 @@ const Footer = () => {
             />
           </div>
 
-          <div className="w-full md:w-[40%] pt-4 md:pt-[50px] flex flex-col md:flex-row md:justify-start gap-4">
-            <div className="flex flex-col items-center md:items-start gap-4 text-center md:text-left">
+          <div className="w-full md:w-[50%] pt-4 md:pt-[50px] flex flex-col md:flex-row md:justify-between">
+            <div className="flex flex-col gap-4 items-center md:items-start text-center md:text-left">
               <div className="text-lg md:text-[20px] font-semibold leading-6 md:leading-[26px] text-white">
                 Discover Meant
               </div>

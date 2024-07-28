@@ -2,12 +2,13 @@
 
 import React, { useState } from "react";
 import initialProducts from "@/constants/products"; // Import products as initialProducts
-import Image from "next/image";
 import Pagination from "@/components/Pagination";
-import Link from "next/link";
 import Accordion from "./Accordian";
+import ProductCard from "./ProductCard";
 import Header from "./Header";
 import Footer from "./Footer";
+import Banner from "./Banner";
+import { useWishlist } from "/context/WishlistContext.js";
 
 const CategoryFilter = ({
   categories,
@@ -79,11 +80,11 @@ const ProductList = () => {
   const [quantities, setQuantities] = useState(
     initialProducts.reduce((acc, product) => ({ ...acc, [product.id]: 1 }), {})
   );
-  const [wishlist, setWishlist] = useState(new Set());
   const [sortOption, setSortOption] = useState("Featured");
   const [filterOpen, setFilterOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [openIndex, setOpenIndex] = useState(null);
+  const { wishlist, addToWishlist, removeFromWishlist } = useWishlist();
   const productsPerPage = 16;
 
   const parsePrice = (price) => {
@@ -107,17 +108,11 @@ const ProductList = () => {
   };
 
   const handleAddToWishlist = (product) => {
-    setWishlist((prev) => {
-      const updatedWishlist = new Set(prev);
-      if (updatedWishlist.has(product.id)) {
-        updatedWishlist.delete(product.id);
-        console.log(`Removed ${product.name} from the wishlist.`);
-      } else {
-        updatedWishlist.add(product.id);
-        console.log(`Added ${product.name} to the wishlist.`);
-      }
-      return updatedWishlist;
-    });
+    if (wishlist.has(product.id)) {
+      removeFromWishlist(product.id);
+    } else {
+      addToWishlist(product);
+    }
   };
 
   const handleSortChange = (option) => {
@@ -216,25 +211,25 @@ const ProductList = () => {
     setOpenIndex(openIndex === index ? null : index);
   };
 
-  const hasActiveFilters = selectedCategories.length > 0 || priceRange !== "";
-
   return (
     <div className="pb-4">
       <Header />
-      <div className="p-4 relative w-[82%] m-auto pt-[8.5rem]">
+      <div className="banner pt-[8rem]">
+      <Banner />
+      </div>
+      <div className="p-4 relative w-[82%] m-auto pt-[2rem]">
         {/* Product count and sort by filter */}
         <div className="flex justify-between items-center mb-6">
           {/* Product count */}
           <h2 className="text-white font-poppins font-semibold text-lg">
-            {products.length} Products
+            {currentProducts.length} Products
           </h2>
           <div className="flex items-center space-x-2">
             {/* Sort By Filter */}
             <select
               value={sortOption}
               onChange={(e) => handleSortChange(e.target.value)}
-              className="bg-black text-white border border-white rounded-md px-4 py-2"
-              style={{ marginRight: "20px" }}
+              className="bg-black text-white border mr-[20px] border-white rounded-md px-4 py-2"
             >
               <option value="Featured">Sort By: Featured</option>
               <option value="Newest">Sort By: Newest</option>
@@ -320,101 +315,15 @@ const ProductList = () => {
         {/* Product grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-10">
           {currentProducts.map((product) => (
-            <div
+            <ProductCard
               key={product.id}
-              className="relative border rounded-lg overflow-hidden shadow-lg bg-white"
-            >
-              <div className="relative">
-                {/* Link to the single product page */}
-                <Link href={`/product/${product.id}`}>
-                  <Image
-                    src={product.image}
-                    alt={product.name}
-                    width={400}
-                    height={350}
-                    className="w-full h-auto"
-                  />
-                </Link>
-                {/* Wishlist heart icon */}
-                <div
-                  className="absolute top-8 right-2 cursor-pointer"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleAddToWishlist(product);
-                  }}
-                >
-                  <svg
-                    className="w-8 h-8"
-                    fill={wishlist.has(product.id) ? "#D76D8E" : "none"}
-                    stroke="#D76D8E"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-                  </svg>
-                </div>
-              </div>
-              <div className="p-4">
-                {/* Ratings section */}
-                <div className="flex items-center mb-2 font-poppins">
-                  <span className="text-black mr-2 flex items-center">
-                    {Array.from({ length: 5 }, (_, i) => (
-                      <svg
-                        key={i}
-                        className={`w-4 h-4 ${
-                          i < product.rating ? "text-black" : "text-gray-300"
-                        }`}
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path d="M10 15l-5.878 3.09L5.092 12.37 1.115 8.91l6.017-.868L10 2l2.868 5.031 6.017.868-4.977 3.46 1.248 5.72L10 15z" />
-                      </svg>
-                    ))}
-                  </span>
-                  <span className="text-gray-600">({product.rating})</span>
-                </div>
-
-                {/* Product name and price */}
-                <div className="flex justify-between items-center mb-2">
-                  <h3 className="text-xl font-poppins font-medium text-black">
-                    {product.name}
-                  </h3>
-                  <p className="text-lg font-poppins font-semibold text-black">
-                    {product.price}
-                  </p>
-                </div>
-
-                {/* Quantity and Add to Cart */}
-                <div className="flex items-center justify-between mt-4">
-                  {/* Quantity controls */}
-                  <div className="flex items-center border border-black bg-white rounded-md">
-                    <button
-                      onClick={() => handleQuantityChange(product.id, -1)}
-                      className="w-6 h-6 text-black font-poppins font-medium border-black rounded-l-md flex items-center justify-center"
-                    >
-                      -
-                    </button>
-                    <span className="w-8 h-8 text-black font-poppins font-medium border-black flex items-center justify-center">
-                      {quantities[product.id]}
-                    </span>
-                    <button
-                      onClick={() => handleQuantityChange(product.id, 1)}
-                      className="w-8 h-8 text-black font-poppins font-medium rounded-r-md flex items-center justify-center"
-                    >
-                      +
-                    </button>
-                  </div>
-                  {/* Add to Cart button */}
-                  <button
-                    onClick={() => handleAddToCart(product)}
-                    className="bg-white text-black border border-black px-4 py-1.5 rounded-md font-poppins font-medium"
-                  >
-                    Add to Cart
-                  </button>
-                </div>
-              </div>
-            </div>
+              product={product}
+              quantity={quantities[product.id]}
+              onQuantityChange={handleQuantityChange}
+              onAddToCart={handleAddToCart}
+              onAddToWishlist={() => handleAddToWishlist(product)}
+              isInWishlist={wishlist.has(product.id)}
+            />
           ))}
         </div>
         {/* Pagination */}

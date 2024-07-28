@@ -1,16 +1,25 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useWishlist } from "/context/WishlistContext.js";
 
-const ProductCard = ({
-  product,
-  quantity,
-  onQuantityChange,
-  onAddToCart,
-  onAddToWishlist,
-  isInWishlist,
-}) => {
-  const [wishlistFilled, setWishlistFilled] = useState(isInWishlist);
+const ProductCard = ({ product, quantity, onQuantityChange, onAddToCart }) => {
+  const { addToWishlist, removeFromWishlist, wishlist } = useWishlist();
+  const [wishlistFilled, setWishlistFilled] = useState(false);
+
+  useEffect(() => {
+    setWishlistFilled(wishlist.has(product));
+  }, [wishlist, product]);
+
+  const handleWishlistClick = (e) => {
+    e.stopPropagation();
+    if (wishlistFilled) {
+      removeFromWishlist(product.id);
+    } else {
+      addToWishlist(product);
+    }
+    setWishlistFilled(!wishlistFilled);
+  };
 
   return (
     <div className="relative border rounded-lg overflow-hidden shadow-lg bg-white">
@@ -27,12 +36,8 @@ const ProductCard = ({
         </Link>
         {/* Wishlist heart icon */}
         <div
-          className="absolute top-8 right-2 cursor-pointer"
-          onClick={(e) => {
-            e.stopPropagation();
-            setWishlistFilled(!wishlistFilled);
-            onAddToWishlist(product);
-          }}
+          className="absolute top-4 right-2 cursor-pointer"
+          onClick={handleWishlistClick}
         >
           <svg
             className="w-8 h-8"
@@ -63,7 +68,9 @@ const ProductCard = ({
               </svg>
             ))}
           </span>
-          <span className="text-black font-poppins font-medium">({product.rating})</span>
+          <span className="text-black font-poppins font-medium">
+            ({product.rating})
+          </span>
         </div>
 
         {/* Product name and price */}

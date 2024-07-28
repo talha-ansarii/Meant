@@ -5,8 +5,10 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
 import { FaRegHeart, FaShoppingCart, FaUser } from "react-icons/fa";
+import { useWishlist } from "/context/WishlistContext.js";
 
 const Header = () => {
+  const { wishlistCount } = useWishlist();
   const [isOpen, setIsOpen] = useState(false);
 
   const containerVariants = {
@@ -44,11 +46,8 @@ const Header = () => {
   };
 
   return (
-    <div className="w-full my-4  ">
-      <div
-        className="w-[80%] hidden  fixed z-50 left-[50%] translate-x-[-50%] backdrop-blur-md  px-[20px] m-auto h-[86px] rounded-[116px] nav-shadow border md:flex lg:flex items-center justify-between ;
-"
-      >
+    <div className="w-full my-4">
+      <div className="w-[80%] hidden fixed z-50 left-[50%] translate-x-[-50%] backdrop-blur-md px-[20px] m-auto h-[86px] rounded-[116px] nav-shadow border md:flex lg:flex items-center justify-between">
         <div>
           <Image
             src="/assets/images/logo.webp"
@@ -58,22 +57,29 @@ const Header = () => {
             className="lg:ml-[50px] md:ml-[20px]"
           />
         </div>
-        <div className=" flex lg:gap-[50px] md:gap-4 playfair font-[500] lg:text-[20px] lg:leading-[26.66px] md:text-[15px] md:leading-[20.66px] text-white">
+        <div className="flex lg:gap-[50px] md:gap-4 playfair font-[500] lg:text-[20px] lg:leading-[26.66px] md:text-[15px] md:leading-[20.66px] text-white">
           <Link href={"/"}>Home</Link>
           <Link href={"/products"}>Products</Link>
           <Link href={"/aboutus"}>About Us</Link>
           <Link href={"/contactus"}>Contact Us</Link>
         </div>
         <div className="flex gap-4 mr-[20px] cursor-pointer">
-          <FaRegHeart className="w-8 h-8 text-[#D76D8E]" />
+          <Link href="/wishlist">
+            <FaRegHeart className="w-8 h-8 text-[#D76D8E]" />
+            {wishlistCount > 0 && (
+              <span className="absolute top-[17px] right-[7.8rem] bg-white text-black rounded-full text-xs w-5 h-5 flex items-center justify-center">
+                {wishlistCount}
+              </span>
+            )}
+          </Link>
           <FaUser className="w-8 h-8 text-white" />
           <FaShoppingCart className="w-8 h-8 text-white" />
         </div>
       </div>
 
       <div>
-        <div className="md:hidden relative lg:hidden  flex w-[100%] px-[5%]  m-auto justify-between items-center">
-          <div className="my-6 ml-4 ">
+        <div className="md:hidden relative lg:hidden flex w-[100%] px-[5%] m-auto justify-between items-center">
+          <div className="my-6 ml-4">
             <Image
               src="/assets/images/logo.webp"
               alt="logo"
@@ -83,7 +89,7 @@ const Header = () => {
             />
           </div>
           <div>
-            <d iv>
+            <div>
               {!isOpen ? (
                 <button
                   onClick={() => {
@@ -129,12 +135,12 @@ const Header = () => {
                   </svg>
                 </button>
               )}
-            </d>
+            </div>
             <div>
               <AnimatePresence>
                 {isOpen && (
                   <motion.div
-                    className="fixed playfair md:hidden bg-black mt-[86px] h-[calc(100vh-0px)] lg:hidden  inset-0 z-[200]  justify-evenly pb-[80px] items-start pl-6 text-font-blue inter font-[700] text-[20px] flex flex-col gap-[32px]"
+                    className="fixed playfair md:hidden bg-black mt-[86px] h-[calc(100vh-0px)] lg:hidden inset-0 z-[200] justify-evenly pb-[80px] items-start pl-6 text-font-blue inter font-[700] text-[20px] flex flex-col gap-[32px]"
                     initial="hidden"
                     animate="visible"
                     exit="hidden"
@@ -142,7 +148,7 @@ const Header = () => {
                   >
                     <motion.div variants={linkVariants}>
                       <Link
-                        className="flex gap-3   text-[#FFFFFF] text-[40px] leading-[28.66px] text-center -10"
+                        className="flex gap-3 text-[#FFFFFF] text-[40px] leading-[28.66px] text-center -10"
                         href="/"
                       >
                         Home
@@ -150,8 +156,8 @@ const Header = () => {
                     </motion.div>
                     <motion.div variants={linkVariants}>
                       <Link
-                        className="flex gap-3   text-[#FFFFFF] text-[40px] leading-[28.66px] text-center -10"
-                        href="/"
+                        className="flex gap-3 text-[#FFFFFF] text-[40px] leading-[28.66px] text-center -10"
+                        href="/products"
                       >
                         Products
                       </Link>
@@ -159,15 +165,15 @@ const Header = () => {
 
                     <motion.div variants={linkVariants}>
                       <Link
-                        className="flex gap-3   text-[#FFFFFF] text-[40px] leading-[28.66px] text-center -10"
-                        href="/ourstory"
+                        className="flex gap-3 text-[#FFFFFF] text-[40px] leading-[28.66px] text-center -10"
+                        href="/aboutus"
                       >
                         About Us
                       </Link>
                     </motion.div>
                     <motion.div variants={linkVariants}>
                       <Link
-                        className="flex gap-3   text-[#FFFFFF] text-[40px] leading-[28.66px] text-center -10"
+                        className="flex gap-3 text-[#FFFFFF] text-[40px] leading-[28.66px] text-center -10"
                         href="/contactus"
                       >
                         Contact Us
