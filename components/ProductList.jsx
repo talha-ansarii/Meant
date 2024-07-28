@@ -97,6 +97,7 @@ const ProductList = () => {
 
   return (
     <div className="p-4 relative">
+    
       {/* Product count and sort by filter */}
       <div className="flex justify-between items-center mb-6">
         {/* Product count */}
