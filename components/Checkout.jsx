@@ -1,39 +1,74 @@
-"use client"
-import React, { useState } from 'react';
-import CartItem from './CartItem';
-import CheckoutItem from './CheckoutItem';
+"use client";
+
+import React from "react";
+import { useCheckout } from "/context/CheckoutContext";
+import Image from "next/image";
+
+const parsePrice = (priceString) => {
+  const priceNumber = parseFloat(priceString.replace("$", ""));
+  return isNaN(priceNumber) ? 0 : priceNumber;
+};
 
 const Checkout = () => {
-  const [checkoutItem, setCheckoutItem] = useState([
-    {
-      id: 1,
-      name: 'Day Dazzle Lipstick',
-      shades: ['#FA70CB', '#DA3D12', '#F7879A','#841644'],
-      price: 20,
-      quantity: 1,
-      imageUrl: '/HomePage/banner/2.jpeg', // Replace with actual image URL
-    },
-    
-   
-  ]);
+  const { checkoutItems } = useCheckout();
+
   return (
     <div className="flex flex-col items-center justify-between min-h-screen bg-[#CDC8C8]/[40%] p-4">
       <div className="w-full p-6">
-      <div className=' h-[calc(100vh-40%)] overflow-auto '>
-          {checkoutItem.map(item => (
-            <CheckoutItem  item={item} />
+        <div className="h-[calc(100vh-40%)] overflow-auto no-scrollbar">
+          {checkoutItems.map((item) => (
+            <div
+              key={item.id}
+              className="flex items-start border border-[#CDC8C8] rounded-[7px] p-4 shadow-md mb-4"
+            >
+              <div className="flex-shrink-0 h-[120px]">
+                <Image
+                  src={item.image}
+                  alt={item.name}
+                  width={100}
+                  height={100}
+                  className="w-[120px] h-[120px] object-cover rounded-[10px]"
+                />
+              </div>
+              <div className="ml-4 flex-1">
+                <div className="flex justify-between items-center">
+                  <h2 className="text-lg text-black font-normal font-merriweather">
+                    {item.name}
+                  </h2>
+                </div>
+                <div className="my-2 mb-[1rem]">
+                  <div className="grid grid-cols-2 gap-1 w-[26px]">
+                    {item.shades.map((shade, index) => (
+                      <span
+                        key={index}
+                        className="w-[13px] h-[13px] inline-block"
+                        style={{ backgroundColor: shade }}
+                      ></span>
+                    ))}
+                  </div>
+                </div>
+                <div className="flex items-center justify-between mt-2 space-x-4">
+                  <div className="flex items-center border border-black rounded-[3px]">
+                    <span className="mx-4 text-black font-poppins font-medium">
+                      {item.quantity}
+                    </span>
+                  </div>
+                  <p className="text-lg text-black font-bold font-merriweather">
+                    {item.price}
+                  </p>
+                </div>
+              </div>
+            </div>
           ))}
-          </div>
-         
+        </div>
       </div>
-      <div className='w-full p-6'>
-       <div className='w-full h-[1px] bg-[#CDC8C8]'></div>
+      <div className="w-full p-6">
+        <div className="w-full h-[1px] bg-[#CDC8C8]"></div>
         <div className="my-12">
-          
           <div className="mt-1 flex my-4">
             <input
               type="text"
-              placeholder='Discount code'
+              placeholder="Discount code"
               id="discount-code"
               className="block w-full px-3 border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
             />
@@ -42,24 +77,45 @@ const Checkout = () => {
             </button>
           </div>
         </div>
-       <div className='w-full h-[1px] bg-[#CDC8C8]'></div>
-
-        <div className=" pt-4">
-          <div className="flex justify-between text-[10px] font-poppins font-[500] text-[#827777]">
-            <span>Subtotal</span>
-            <span className='text-[13px] text-black'>$20</span>
+        <div className="w-full h-[1px] bg-[#CDC8C8]"></div>
+        <div className="pt-4">
+          <div className="flex justify-between items-center mb-2">
+            <p className="text-[16px] font-poppins font-semibold text-[#827777]">
+              Shipping & Handling:
+            </p>
+            <p className="text-[16px] font-poppins font-semibold text-[#827777]">
+              $0
+            </p>
           </div>
-          <div className="flex justify-between text-[10px] font-poppins mb-4 font-[500] text-[#827777] mt-2">
-            <span>Shipping</span>
-            <span className='text-[13px] text-black'>$4</span>
+          <div className="flex justify-between items-center mb-2">
+            <p className="text-[16px] font-poppins font-semibold text-[#827777]">
+              Discount:
+            </p>
+            <p className="text-[16px] font-poppins font-semibold text-[#827777]">
+              -$0
+            </p>
           </div>
-       <div className='w-full h-[1px] bg-[#CDC8C8]'></div>
-
-          <div className="flex justify-between text-[10px] font-[500] font-poppins text-black mt-4">
-            <span>Total</span>
-            <span className='text-[20px] text-black'>$24</span>
+          <div className="w-full h-[1px] bg-[#CDC8C8]"></div>
+          <div className="flex justify-between items-center mt-4">
+            <h2 className="text-[30px] text-black font-semibold font-playfair-display">
+              Estimated Total:
+            </h2>
+            <h2 className="text-[30px] text-black font-semibold font-playfair-display">
+              $
+              {checkoutItems
+                .reduce(
+                  (total, item) =>
+                    total + parsePrice(item.price) * item.quantity,
+                  0
+                )
+                .toFixed(2)}
+            </h2>
           </div>
-        </div></div>
+          <button className="mt-8 text-[18px] font-playfair-display font-extrabold inline-block bg-black text-white py-2 px-8 rounded-[30px] text-center w-full md:w-auto">
+            Place Order
+          </button>
+        </div>
+      </div>
     </div>
   );
 };
