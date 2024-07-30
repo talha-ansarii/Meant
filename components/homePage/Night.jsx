@@ -9,9 +9,11 @@ import NightModelComponent from './NightModelComponents';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/all';
+import { HoverBorderGradient } from '../ui/hover-border-gradient';
 
 const Night = () => {
     const [mouseIn, setMouseIn] = useState(false);
+    const canvasref = useRef(null);
 
   
     const ref = useRef(null);
@@ -36,12 +38,12 @@ const Night = () => {
         });
   
         ScrollTrigger.create({
-          trigger: ref.current,
-          start: "top 90%",
+          trigger: canvasref.current,
+          start: "top 100%",
           // markers: true,
           onEnter: () =>
             gsap.to(window, {
-              scrollTo: { y: ref.current, offsetY: 200 },
+              scrollTo: { y: ref.current, offsetY: 100 },
               duration: 0.3,
             }),
         });
@@ -53,16 +55,17 @@ const Night = () => {
     <div >
        
         <div className='w-full bg-black relative overflow-hidden'>
-        <div className='bg-black  w-[80%] m-auto flex  '>
+        <div className='bg-black  w-[80%] h-[100vh]  overflow-hidden m-auto flex  '>
         <Meteors number={20} />
-            <div className='w-[50%] text-white z-20 flex flex-col gap-10 px-16 h-[500px] pt-[100px]' >
+            <div className='w-[50%] text-white z-20 flex flex-col gap-10 px-16 h-[850px] pt-[200px]' >
 
                 <din className="">
                     <Image src="/HomePage/Night/Night Muse Lipstick.svg" alt="hero" width={556} height={75} />
                 </din>
-                <div className='font-poppins font-[400] text-[26px] leading-[39px]'>Four stunning matte lipstick shades for your perfect day out!<br/>
+                <div className='font-poppins font-[400] text-[26px] leading-[39px]'>
+                Four stunning matte lipstick shades for your perfect day out!<br/>
                 Available in four new lip adapting shades.</div>
-                <div className='flex gap-4'>  
+                <div className='flex items-center gap-4'>  
                 <svg
                   className="w-8 h-8"
                   fill={"none"}
@@ -72,21 +75,37 @@ const Night = () => {
                 >
                   <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
                 </svg>
-                <button className='font-poppins font-[500] text-[16px] leading-[24px]  w-[147px] h-[44px] bg-white text-black rounded-[34px] shadow-md'>ADD TO CART</button>
-                <button className='font-poppins font-[500] text-[16px] leading-[24px] text-black w-[147px] h-[44px] bg-white rounded-[34px] shadow-md'>ORDER NOW</button>
+                
+                <HoverBorderGradient
+        containerClassName="rounded-full"
+        as="button"
+        className="font-poppins font-[500] text-[16px] leading-[24px]  w-[147px] h-[44px] bg-black text-white rounded-[34px]"
+      >
+        <span>ADD TO CART</span>
+      </HoverBorderGradient>
+                <HoverBorderGradient
+        containerClassName="rounded-full"
+        as="button"
+        className="font-poppins font-[500] text-[16px] leading-[24px]  w-[147px] h-[44px] bg-black text-white rounded-[34px]"
+      >
+        <span>ORDER NOW</span>
+      </HoverBorderGradient>
+                
                 </div>
             </div>
-            <div className='w-[50%] relative'>
-            <div className='w-[1257px] absolute z-0 top-[-300px] left-[-200px]  h-[1180px] radial-gradient2'></div>
+            <div 
+            ref={canvasref}
+            className='w-[50%] h-[850px] relative'>
+            {/* <div className='w-[1257px] absolute z-0 top-[-300px] left-[-200px]  h-[1180px] radial-gradient2'></div> */}
 
             <Meteors number={20} />
                 <div
-      
+
                  onMouseLeave={
         ()=>setMouseIn(false)
       } onMouseEnter={
         ()=>setMouseIn(true)
-      } className=" w-[100%]  p-[50px] h-[800px] z-30 ">
+      } className=" w-[100%]  pt-[150px] h-[850px] z-30 ">
     <Canvas ref={ref} >
         <Suspense fallback={null}>
         <NightModelComponent mouseIn={mouseIn} />

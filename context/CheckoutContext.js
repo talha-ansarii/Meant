@@ -8,10 +8,16 @@ export const useCheckout = () => useContext(CheckoutContext);
 
 export const CheckoutProvider = ({ children }) => {
   const [checkoutItems, setCheckoutItems] = useState([]);
-
   return (
     <CheckoutContext.Provider value={{ checkoutItems, setCheckoutItems }}>
       {children}
     </CheckoutContext.Provider>
   );
 };
+
+
+
+
+
+
+

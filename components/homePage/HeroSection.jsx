@@ -17,7 +17,7 @@ const HeroSection = () => {
   return (
     <div  >
 
-    <div   className="relative flex justify-center items-center h-[1000px] bg-black w-full ">
+    <div   className="relative flex justify-center items-center h-[800px] bg-black w-full ">
 
       <Spotlight
         className="absolute -top-40 left-[200px] md:left-60 md:-top-20"
@@ -29,7 +29,7 @@ const HeroSection = () => {
         ()=>setMouseIn(false)
       } onMouseEnter={
         ()=>setMouseIn(true)
-      } className=" w-[900px] h-[800px]  ">
+      } className=" w-[900px] mt-[-200px]  h-[800px]  ">
       
        <Canvas   className="absolute" >
         

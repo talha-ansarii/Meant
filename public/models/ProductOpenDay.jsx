@@ -29,7 +29,9 @@ export function ProductOpenDay(props) {
   
 
   return (
-    <group ref={group} {...props} dispose={null}>
+    <group
+    
+    ref={group} {...props} dispose={null}>
       <group name="Scene">
         <group name="Cube049" rotation={[0.716, 0, 0]} scale={[0.258, 0.262, 0.336]}>
           <mesh
