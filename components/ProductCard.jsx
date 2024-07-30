@@ -28,7 +28,7 @@ const ProductCard = ({ product, quantity, onQuantityChange }) => {
     setWishlistFilled(!wishlistFilled);
   };
 
-  const handleCardClick = (e) => {
+  const handleCartClick = (e) => {
     e.stopPropagation();
 
     const cartItem = cart.find((item) => item.id === product.id);
@@ -127,7 +127,7 @@ const ProductCard = ({ product, quantity, onQuantityChange }) => {
           </div>
           {/* Add to Cart button */}
           <button
-            onClick={handleCardClick}
+            onClick={handleCartClick}
             className="bg-white text-black border border-black px-4 py-1.5 rounded-md font-merriweather font-bold"
           >
             Add to Cart

@@ -73,7 +73,7 @@ const Header = () => {
           <Link href="/wishlist">
             <FaRegHeart className="w-8 h-8 text-[#D76D8E]" />
             {wishlistCount > 0 && (
-              <span className="absolute top-[17px] right-[7.8rem] bg-white text-black rounded-full text-xs w-5 h-5 flex items-center justify-center">
+              <span className="absolute top-[12px] right-[7.8rem] bg-white text-black rounded-full text-xs w-5 h-5 flex items-center justify-center">
                 {wishlistCount}
               </span>
             )}

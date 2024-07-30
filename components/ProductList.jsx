@@ -5,6 +5,7 @@ import initialProducts from "@/constants/products"; // Import products as initia
 import Pagination from "@/components/Pagination";
 import Accordion from "./Accordian";
 import ProductCard from "./ProductCard";
+import CustomDropdown from "@/components/CustomDropdown";
 import Header from "./Header";
 import Footer from "./Footer";
 import Banner from "./Banner";
@@ -199,6 +200,8 @@ const ProductList = () => {
     setOpenIndex(openIndex === index ? null : index);
   };
 
+  
+
   return (
     <div className="pb-4">
       <Header />
@@ -214,17 +217,13 @@ const ProductList = () => {
           </h2>
           <div className="flex items-center space-x-2">
             {/* Sort By Filter */}
-            <select
-              value={sortOption}
-              onChange={(e) => handleSortChange(e.target.value)}
-              className="bg-black text-white border mr-[20px] border-white rounded-md px-4 py-2"
-            >
-              <option value="Featured">Sort By: Featured</option>
-              <option value="Newest">Sort By: Newest</option>
-              <option value="Best Selling">Sort By: Best Selling</option>
-              <option value="High to Low">Sort By: Price: High to Low</option>
-              <option value="Low to High">Sort By: Price: Low to High</option>
-            </select>
+            <CustomDropdown
+              options={["Featured", "Newest", "Best Selling", "High to Low", "Low to High"]}
+              selectedOption={sortOption}
+              onSelect={handleSortChange}
+              prefix="Sort By:"
+              className="mr-4"
+            />
             {/* Filter button */}
             <button
               onClick={toggleFilter}

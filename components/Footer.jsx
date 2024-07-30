@@ -1,4 +1,3 @@
-
 import Image from "next/image";
 import React from "react";
 import { FaFacebook, FaInstagram } from "react-icons/fa";
@@ -76,14 +75,13 @@ const Footer = () => {
               </Link>
             </div>
 
-
             <div className="flex flex-col items-center md:items-start gap-4 text-center md:text-left">
               <div className="text-lg md:text-[20px] font-semibold leading-6 md:leading-[26px] text-white">
                 Social
               </div>
               <a
                 className="text-sm md:text-[14px] text-white flex items-center gap-2"
-                href="https://instagram.com"
+                href="https://www.instagram.com/meant_official/"
               >
                 <FaInstagram className="w-5 h-5" />
                 <div>Instagram</div>
@@ -98,7 +96,6 @@ const Footer = () => {
             </div>
           </div>
         </div>
-
 
         <div className="w-full h-[22px] flex flex-col md:flex-row justify-between text-white inter font-normal text-xs md:text-[12px] leading-[14px] md:leading-[18px] py-4">
           <div className="text-center md:text-left">

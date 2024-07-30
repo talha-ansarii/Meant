@@ -12,20 +12,19 @@ import { Suspense } from "react";
 export default function Home() {
   return (
     <div>
-    <Suspense fallback={<div>Loading...</div>}>
-      <Header />
-      <div className="pt-[100px] pb-4">
-        <HeroSection />
-        <Day />
-        <Night />
-        <Marquee />
-        <Picture />
-        <Icons />
-        <Banner />
-        <Footer />
-      </div>
-
-    </Suspense>
+      <Suspense fallback={<div>Loading...</div>}>
+        <Header />
+        <div className="pt-[100px] pb-4">
+          <HeroSection />
+          <Day />
+          <Night />
+          <Marquee />
+          <Picture />
+          <Icons />
+          <Banner />
+          <Footer />
+        </div>
+      </Suspense>
     </div>
   );
 }

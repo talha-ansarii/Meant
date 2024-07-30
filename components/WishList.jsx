@@ -4,12 +4,19 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useWishlist } from "/context/WishlistContext.js";
+import { useCart } from "/context/CartContext.js";
 import Header from "./Header";
 import Footer from "./Footer";
 
 const WishList = () => {
   const { wishlist, removeFromWishlist } = useWishlist();
+  const { addToCart } = useCart();
   const wishlistArray = Array.from(wishlist);
+
+  const handleAddToCart = (item) => {
+    addToCart({ ...item, quantity: 1 });
+    removeFromWishlist(item.id);
+  };
 
   return (
     <div className="pb-4">
@@ -53,6 +60,12 @@ const WishList = () => {
                 </div>
                 {/* Remove from wishlist button */}
                 <div className="flex flex-col items-center mt-[1rem]">
+                  <button
+                    className=" bg-white w-[75%] text-black border border-black p-2 rounded-[3px] font-merriweather font-bold mb-4"
+                    onClick={() => handleAddToCart(item)}
+                  >
+                    Add to Cart
+                  </button>
                   <button
                     className=" bg-white text-black border border-black p-2 rounded-[3px] font-merriweather font-bold"
                     onClick={() => removeFromWishlist(item.id)}
