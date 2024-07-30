@@ -17,14 +17,16 @@ const SingleProductPage = ({ productId }) => {
   const [wishlist, setWishlist] = useState(new Set());
   const [relatedProducts, setRelatedProducts] = useState([]);
   const [relatedQuantities, setRelatedQuantities] = useState({});
+  const [hoveredShade, setHoveredShade] = useState(null);
+
+  const shadeNames = ["Emily", "Grace", "Diva", "Veronica"];
 
   useEffect(() => {
     // Fetch related products based on category
     const fetchRelatedProducts = () => {
       const fetchedRelatedProducts = initialProducts
         .filter((p) => p.category === product.category)
-        .sort(() => 0.5 - Math.random())
-        .slice(0, 4);
+        .sort(() => 0.5 - Math.random());
       console.log(fetchedRelatedProducts);
       setRelatedProducts(fetchedRelatedProducts);
     };
@@ -91,6 +93,10 @@ const SingleProductPage = ({ productId }) => {
     setSelectedImage(img);
   };
 
+  const handleShadeClick = (img) => {
+    setSelectedImage(img);
+  };
+
   if (!product) return <p>Product not found</p>;
 
   return (
@@ -102,7 +108,10 @@ const SingleProductPage = ({ productId }) => {
           {/* Product Images and Main Image */}
           <div className="flex space-x-4 w-3/4">
             <div className="w-20 space-y-2">
-              {product.images.slice(0, 4).map((img, index) => (
+              {[
+                product.image,
+                ...product.shades.map((shade, index) => product.images[index]),
+              ].map((img, index) => (
                 <div
                   key={index}
                   className={`cursor-pointer ${
@@ -129,7 +138,7 @@ const SingleProductPage = ({ productId }) => {
                 alt={product.name}
                 width={400}
                 height={400}
-                className="w-full h-auto rounded-xl"
+                className="w-full h-[65%] rounded-xl"
               />
             </div>
           </div>
@@ -151,6 +160,29 @@ const SingleProductPage = ({ productId }) => {
                 ({product.reviews} reviews)
               </span>
             </div>
+            {/* Color Palette */}
+            <h3 className="text-lg font-bold font-merriweather mt-4">Shades</h3>
+            <div className="flex flex-wrap gap-2 my-2">
+              {product.shades.map((shade, index) => (
+                <div
+                  key={index}
+                  className="relative w-6 h-6 flex items-center justify-center cursor-pointer"
+                  style={{ backgroundColor: shade }}
+                  onMouseEnter={() => setHoveredShade(shadeNames[index])}
+                  onMouseLeave={() => setHoveredShade(null)}
+                  onClick={() => handleShadeClick(product.images[index])}
+                >
+                  <span
+                    className={`absolute text-[8px] font-poppins font-medium text-white ${
+                      hoveredShade === shadeNames[index] ? "block" : "hidden"
+                    }`}
+                  >
+                    {shadeNames[index]}
+                  </span>
+                </div>
+              ))}
+            </div>
+
             <div className="flex items-center mt-4">
               <div className="flex items-center border border-white bg-black rounded-md mr-6">
                 <button
@@ -197,7 +229,7 @@ const SingleProductPage = ({ productId }) => {
               fontWeight="font-bold"
             >
               <p className="text-sm font-medium font-poppins text-gray-400">
-                {product.description}
+                {product.ingredients}
               </p>
             </Accordion>
             <Accordion
@@ -209,7 +241,7 @@ const SingleProductPage = ({ productId }) => {
               fontWeight="font-bold"
             >
               <p className="text-sm font-medium font-poppins text-gray-400">
-                {product.description}
+                {product.howToUse}
               </p>
             </Accordion>
 

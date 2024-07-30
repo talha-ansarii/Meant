@@ -30,28 +30,28 @@ export default function ProductOpenNight(props) {
           position={[-0.183, 0, 0.171]}
           rotation={[-Math.PI / 2, 0, 0]}
           scale={4.249}
-        />  
+        />
         <group name="Cube015" rotation={[0.873, 0, 0]} scale={[0.258, 0.262, 0.336]}>
           <mesh
             name="Cube015_1"
             castShadow
             receiveShadow
             geometry={nodes.Cube015_1.geometry}
-            material={materials['Material.020']}
+            material={materials['Material.002']}
           />
           <mesh
             name="Cube015_2"
             castShadow
             receiveShadow
             geometry={nodes.Cube015_2.geometry}
-            material={materials['Material.022']}
+            material={materials['Material.003']}
           />
           <mesh
             name="Cube016"
             castShadow
             receiveShadow
             geometry={nodes.Cube016.geometry}
-            material={materials['Material.019']}
+            material={materials['Material.008']}
             position={[0, 0.114, -0.223]}
             scale={[0.964, 1, 1.011]}
           />
@@ -60,7 +60,7 @@ export default function ProductOpenNight(props) {
             castShadow
             receiveShadow
             geometry={nodes.Cube017.geometry}
-            material={materials['Material.018']}
+            material={materials['Material.013']}
             position={[0, 1.383, -3.517]}
             rotation={[-2.104, 0, 0]}
             scale={[1, 0.84, 1.218]}>
@@ -69,14 +69,14 @@ export default function ProductOpenNight(props) {
               castShadow
               receiveShadow
               geometry={nodes.Cube018.geometry}
-              material={materials['Material.016']}
+              material={materials['Material.015']}
               position={[0, 0, 6.875]}>
               <mesh
                 name="Plane015"
                 castShadow
                 receiveShadow
                 geometry={nodes.Plane015.geometry}
-                material={materials['Material.001']}
+                material={materials['Material.017']}
                 position={[0.023, 1.65, 0.174]}
                 rotation={[-Math.PI / 2, 0, 0]}
                 scale={[-5.41, -5.334, -4.16]}
@@ -87,7 +87,7 @@ export default function ProductOpenNight(props) {
               castShadow
               receiveShadow
               geometry={nodes.Plane003.geometry}
-              material={materials['Material.017']}
+              material={materials['Material.021']}
               position={[0.023, -0.092, 2.735]}
               rotation={[Math.PI, 0, 0]}
               scale={[-5.41, -5.334, -4.16]}
@@ -103,7 +103,7 @@ export default function ProductOpenNight(props) {
               castShadow
               receiveShadow
               geometry={nodes.Cube066.geometry}
-              material={materials['Dull Silver Metal.001']}
+              material={materials['Dull Silver Metal.002']}
               position={[0, 0.079, -0.001]}
               rotation={[-0.006, 0, 0]}
               scale={0.009}>
@@ -112,7 +112,7 @@ export default function ProductOpenNight(props) {
                 castShadow
                 receiveShadow
                 geometry={nodes.Cube067.geometry}
-                material={materials['Material.014']}
+                material={materials['Material.023']}
                 position={[0, -3.059, 0]}>
                 <mesh
                   name="Cube070"
@@ -128,7 +128,7 @@ export default function ProductOpenNight(props) {
                   castShadow
                   receiveShadow
                   geometry={nodes.Curve009.geometry}
-                  material={materials['Material.009']}
+                  material={materials['Material.024']}
                   position={[-0.4, 1.936, 1.254]}
                   rotation={[1.577, -Math.PI / 2, 0]}
                   scale={0.563}
@@ -140,24 +140,14 @@ export default function ProductOpenNight(props) {
                   geometry={nodes.Cylinder009.geometry}
                   material={nodes.Cylinder009.material}
                   position={[0, -2.395, 0.008]}
-                  scale={[74.864, 1.468, 74.864]}>
-                  <mesh
-                    name="Cube071"
-                    castShadow
-                    receiveShadow
-                    geometry={nodes.Cube071.geometry}
-                    material={materials['Material.012']}
-                    position={[0, -1.345, 0]}
-                    rotation={[0, 0, 3.025]}
-                    scale={[0.002, 0.287, 0.002]}
-                  />
-                </mesh>
+                  scale={[74.864, 1.468, 74.864]}
+                />
                 <mesh
                   name="Plane001"
                   castShadow
                   receiveShadow
                   geometry={nodes.Plane001.geometry}
-                  material={materials['cap.002']}
+                  material={materials['cap.001']}
                   position={[-0.001, 0.358, 0.008]}
                   rotation={[-1.565, 0, 1.676]}
                   scale={0.961}
@@ -169,14 +159,14 @@ export default function ProductOpenNight(props) {
               castShadow
               receiveShadow
               geometry={nodes.Cube068.geometry}
-              material={materials['Material.011']}
+              material={materials['Material.026']}
               position={[0, 0.044, 0]}>
               <mesh
                 name="Cube069"
                 castShadow
                 receiveShadow
                 geometry={nodes.Cube069.geometry}
-                material={materials['Material.015']}
+                material={materials['Material.027']}
                 rotation={[0, -0.017, 0]}
                 scale={0.996}
               />
@@ -192,7 +182,7 @@ export default function ProductOpenNight(props) {
               castShadow
               receiveShadow
               geometry={nodes.Cube073.geometry}
-              material={materials['Dull Silver Metal.001']}
+              material={materials['Dull Silver Metal.002']}
               position={[0, 0.079, -0.001]}
               rotation={[-0.006, 0, 0]}
               scale={0.009}>
@@ -201,7 +191,7 @@ export default function ProductOpenNight(props) {
                 castShadow
                 receiveShadow
                 geometry={nodes.Cube074.geometry}
-                material={materials['Material.014']}
+                material={materials['Material.023']}
                 position={[0, -3.059, 0]}>
                 <mesh
                   name="Cube075"
@@ -217,7 +207,7 @@ export default function ProductOpenNight(props) {
                   castShadow
                   receiveShadow
                   geometry={nodes.Curve010.geometry}
-                  material={materials['Material.009']}
+                  material={materials['Material.024']}
                   position={[-0.4, 1.936, 1.254]}
                   rotation={[1.577, -Math.PI / 2, 0]}
                   scale={0.563}
@@ -229,24 +219,14 @@ export default function ProductOpenNight(props) {
                   geometry={nodes.Cylinder010.geometry}
                   material={nodes.Cylinder010.material}
                   position={[0, -2.395, 0.008]}
-                  scale={[74.864, 1.468, 74.864]}>
-                  <mesh
-                    name="Cube078"
-                    castShadow
-                    receiveShadow
-                    geometry={nodes.Cube078.geometry}
-                    material={materials['Material.012']}
-                    position={[0, -1.345, 0]}
-                    rotation={[0, 0, 3.025]}
-                    scale={[0.002, 0.287, 0.002]}
-                  />
-                </mesh>
+                  scale={[74.864, 1.468, 74.864]}
+                />
                 <mesh
                   name="Plane002"
                   castShadow
                   receiveShadow
                   geometry={nodes.Plane002.geometry}
-                  material={materials['cap.002']}
+                  material={materials['cap.001']}
                   position={[-0.001, 0.358, 0.008]}
                   rotation={[-1.565, 0, 1.676]}
                   scale={0.961}
@@ -258,14 +238,14 @@ export default function ProductOpenNight(props) {
               castShadow
               receiveShadow
               geometry={nodes.Cube076.geometry}
-              material={materials['Material.011']}
+              material={materials['Material.026']}
               position={[0, 0.044, 0]}>
               <mesh
                 name="Cube077"
                 castShadow
                 receiveShadow
                 geometry={nodes.Cube077.geometry}
-                material={materials['Material.013']}
+                material={materials['Material.028']}
                 rotation={[0, -0.017, 0]}
                 scale={0.996}
               />
@@ -281,7 +261,7 @@ export default function ProductOpenNight(props) {
               castShadow
               receiveShadow
               geometry={nodes.Cube080.geometry}
-              material={materials['Dull Silver Metal.001']}
+              material={materials['Dull Silver Metal.002']}
               position={[0, 0.079, -0.001]}
               rotation={[-0.006, 0, 0]}
               scale={0.009}>
@@ -290,7 +270,7 @@ export default function ProductOpenNight(props) {
                 castShadow
                 receiveShadow
                 geometry={nodes.Cube081.geometry}
-                material={materials['Material.014']}
+                material={materials['Material.023']}
                 position={[0, -3.059, 0]}>
                 <mesh
                   name="Cube082"
@@ -306,7 +286,7 @@ export default function ProductOpenNight(props) {
                   castShadow
                   receiveShadow
                   geometry={nodes.Curve011.geometry}
-                  material={materials['Material.009']}
+                  material={materials['Material.024']}
                   position={[-0.4, 1.936, 1.254]}
                   rotation={[1.577, -Math.PI / 2, 0]}
                   scale={0.563}
@@ -318,24 +298,14 @@ export default function ProductOpenNight(props) {
                   geometry={nodes.Cylinder011.geometry}
                   material={nodes.Cylinder011.material}
                   position={[0, -2.395, 0.008]}
-                  scale={[74.864, 1.468, 74.864]}>
-                  <mesh
-                    name="Cube083"
-                    castShadow
-                    receiveShadow
-                    geometry={nodes.Cube083.geometry}
-                    material={materials['Material.012']}
-                    position={[0, -1.345, 0]}
-                    rotation={[0, 0, 3.025]}
-                    scale={[0.002, 0.287, 0.002]}
-                  />
-                </mesh>
+                  scale={[74.864, 1.468, 74.864]}
+                />
                 <mesh
                   name="Plane017"
                   castShadow
                   receiveShadow
                   geometry={nodes.Plane017.geometry}
-                  material={materials['cap.002']}
+                  material={materials['cap.001']}
                   position={[-0.001, 0.358, 0.008]}
                   rotation={[-1.565, 0, 1.676]}
                   scale={0.961}
@@ -347,14 +317,14 @@ export default function ProductOpenNight(props) {
               castShadow
               receiveShadow
               geometry={nodes.Cube084.geometry}
-              material={materials['Material.011']}
+              material={materials['Material.026']}
               position={[0, 0.044, 0]}>
               <mesh
                 name="Cube085"
                 castShadow
                 receiveShadow
                 geometry={nodes.Cube085.geometry}
-                material={materials['Material.004']}
+                material={materials['Material.029']}
                 rotation={[0, -0.017, 0]}
                 scale={0.996}
               />
@@ -370,14 +340,14 @@ export default function ProductOpenNight(props) {
               castShadow
               receiveShadow
               geometry={nodes.Cube087.geometry}
-              material={materials['Material.011']}
+              material={materials['Material.026']}
               position={[0, 0.044, 0]}>
               <mesh
                 name="Cube088"
                 castShadow
                 receiveShadow
                 geometry={nodes.Cube088.geometry}
-                material={materials['Material.008']}
+                material={materials['Material.030']}
                 rotation={[0, -0.017, 0]}
                 scale={0.996}
               />
@@ -387,7 +357,7 @@ export default function ProductOpenNight(props) {
               castShadow
               receiveShadow
               geometry={nodes.Cube089.geometry}
-              material={materials['Dull Silver Metal.001']}
+              material={materials['Dull Silver Metal.002']}
               position={[0, 0.079, -0.001]}
               rotation={[-0.006, 0, 0]}
               scale={0.009}>
@@ -396,7 +366,7 @@ export default function ProductOpenNight(props) {
                 castShadow
                 receiveShadow
                 geometry={nodes.Cube090.geometry}
-                material={materials['Material.014']}
+                material={materials['Material.023']}
                 position={[0, -3.059, 0]}>
                 <mesh
                   name="Cube091"
@@ -412,7 +382,7 @@ export default function ProductOpenNight(props) {
                   castShadow
                   receiveShadow
                   geometry={nodes.Curve012.geometry}
-                  material={materials['Material.009']}
+                  material={materials['Material.024']}
                   position={[-0.4, 1.936, 1.254]}
                   rotation={[1.577, -Math.PI / 2, 0]}
                   scale={0.563}
@@ -424,24 +394,14 @@ export default function ProductOpenNight(props) {
                   geometry={nodes.Cylinder012.geometry}
                   material={nodes.Cylinder012.material}
                   position={[0, -2.395, 0.008]}
-                  scale={[74.864, 1.468, 74.864]}>
-                  <mesh
-                    name="Cube092"
-                    castShadow
-                    receiveShadow
-                    geometry={nodes.Cube092.geometry}
-                    material={materials['Material.012']}
-                    position={[0, -1.345, 0]}
-                    rotation={[0, 0, 3.025]}
-                    scale={[0.002, 0.287, 0.002]}
-                  />
-                </mesh>
+                  scale={[74.864, 1.468, 74.864]}
+                />
                 <mesh
                   name="Plane018"
                   castShadow
                   receiveShadow
                   geometry={nodes.Plane018.geometry}
-                  material={materials['cap.002']}
+                  material={materials['cap.001']}
                   position={[-0.001, 0.358, 0.008]}
                   rotation={[-1.565, 0, 1.676]}
                   scale={0.961}
@@ -449,22 +409,15 @@ export default function ProductOpenNight(props) {
               </mesh>
             </mesh>
           </group>
-          <group name="Plane016" position={[0.023, -1.071, 0.023]} scale={[5.825, 3.501, 3.461]}>
-            <mesh
-              name="Plane016_1"
-              castShadow
-              receiveShadow
-              geometry={nodes.Plane016_1.geometry}
-              material={materials['Material.001']}
-            />
-            <mesh
-              name="Plane016_2"
-              castShadow
-              receiveShadow
-              geometry={nodes.Plane016_2.geometry}
-              material={materials['Material.001']}
-            />
-          </group>
+          <mesh
+            name="Plane016"
+            castShadow
+            receiveShadow
+            geometry={nodes.Plane016.geometry}
+            material={materials['Material.017']}
+            position={[0.023, -1.071, 0.023]}
+            scale={[5.825, 3.501, 3.461]}
+          />
         </group>
         <group
           name="Cube093"
@@ -489,4 +442,4 @@ export default function ProductOpenNight(props) {
   )
 }
 
-useGLTF.preload('/product_Open_Night.glb')
+useGLTF.preload('/models/product_Open_Night.glb')

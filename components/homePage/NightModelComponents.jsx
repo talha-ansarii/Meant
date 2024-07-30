@@ -42,10 +42,23 @@ const NightModelComponent = ({ mouseIn }) => {
         <ProductOpenNight />
       </mesh>
 
-      <ambientLight args={["#ffffff", 5]} />
       <directionalLight
-        args={["#ffffff", 15, 7, 0.785398, 0.4]}
-        position={[0, 2, 0]}
+        position={[2, 5, 5]}
+        intensity={1}
+        
+      />
+      <directionalLight
+        position={[-2, 5, 5]}
+        intensity={1}
+        
+      />
+      <directionalLight
+        position={[0, -5, 5]}
+        intensity={0.2}
+      />
+      <directionalLight
+        position={[0, 3, 5]}
+        intensity={1}
       />
     </>
   );

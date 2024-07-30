@@ -1,4 +1,3 @@
-
 "use client";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
@@ -6,12 +5,16 @@ import Link from "next/link";
 import React, { useState } from "react";
 import { FaRegHeart, FaShoppingCart, FaUser } from "react-icons/fa";
 import { useWishlist } from "/context/WishlistContext.js";
-import Cart from './Cart';
+import { useCart } from "@/context/CartContext";
+import Cart from "./Cart";
+
 
 const Header = () => {
   const { wishlistCount } = useWishlist();
+  const { cartItemCount } = useCart();
   const [isOpen, setIsOpen] = useState(false);
-  const [cartOpen, setCartOpen] = useState(false);
+
+  const [isCartOpen, setIsCartOpen] = useState(false);
 
   const containerVariants = {
     hidden: {
@@ -49,19 +52,7 @@ const Header = () => {
 
   return (
     <div className="w-full my-4">
-     <AnimatePresence>
-      {cartOpen && (
-        <motion.div
-          initial="hidden"
-          animate="visible"
-          exit="hidden"
-          variants={containerVariants}
-          className='fixed right-0 top-0 z-[100]'
-        >
-          <Cart setCartOpen={setCartOpen} />
-        </motion.div>
-      )}
-    </AnimatePresence>
+      
       <div className="w-[80%] hidden fixed z-50 left-[50%] translate-x-[-50%] backdrop-blur-md px-[20px] m-auto h-[86px] rounded-[116px] nav-shadow border md:flex lg:flex items-center justify-between">
         <div>
           <Image
@@ -88,7 +79,17 @@ const Header = () => {
             )}
           </Link>
           <FaUser className="w-8 h-8 text-white" />
-          <FaShoppingCart className="w-8 h-8 text-white" />
+          <div
+            className="relative flex items-center"
+            onClick={() => setIsCartOpen(true)}
+          >
+            <FaShoppingCart className="w-8 h-8 text-white" />
+            {cartItemCount > 0 && (
+              <span className="absolute bottom-[1.3rem] left-[1.2rem] bg-black text-white rounded-full text-xs w-5 h-5 flex items-center justify-center">
+                {cartItemCount}
+              </span>
+            )}
+          </div>
         </div>
       </div>
 
@@ -201,8 +202,27 @@ const Header = () => {
           </div>
         </div>
       </div>
-    </div>
 
+      <AnimatePresence>
+        {isCartOpen && (
+          <motion.div
+            className="fixed top-0 right-0 w-full md:w-1/3 bg-white text-black h-full transition-transform transform z-50"
+            initial="hidden"
+          animate="visible"
+          exit="hidden"
+          variants={containerVariants}
+          >
+            <div className="p-4 flex justify-between items-center">
+              <h2 className="text-[30px] font-semibold font-playfair-display">Cart</h2>
+              <button onClick={() => setIsCartOpen(false)} className="text-xl text-[#CDC8C8]">
+                ✕
+              </button>
+            </div>
+            <Cart />
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
   );
 };
 

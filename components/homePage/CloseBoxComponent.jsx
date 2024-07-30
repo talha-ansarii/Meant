@@ -4,6 +4,19 @@ import { useFrame } from '@react-three/fiber';
 import React, { use, useEffect, useRef } from 'react'
 
 const CloseBoxComponent = ({mouseIn}) => {
+  const modelRef = useRef();
+  const lightRef = useRef();
+
+  // useFrame(() => {
+  //   if (modelRef.current && lightRef.current) {
+  //     modelRef.current.rotation.y += 0.01;
+  //     lightRef.current.position.set(
+  //       10 * Math.sin(modelRef.current.rotation.y),
+  //       10,
+  //       10 * Math.cos(modelRef.current.rotation.y)
+  //     );
+  //   }
+  // });
     const angleToRadians = (angleInDegrees) => {
         return (angleInDegrees * Math.PI) / 180;
       };
@@ -32,6 +45,7 @@ const CloseBoxComponent = ({mouseIn}) => {
     },[mouseIn])
   return (
     <>
+     <group ref={modelRef}>
     <PerspectiveCamera makeDefault position={[0, 2, 10]} />
     <OrbitControls enableZoom={false} ref={orbitRef} />
 
@@ -39,13 +53,34 @@ const CloseBoxComponent = ({mouseIn}) => {
       <ProductClosed   />
        
     </mesh>
-
-    <ambientLight args={["#ffffff", 10]} />
-    <directionalLight
-      args={["#ffffff", 15, 7, 0.785398, 0.4]}
+{/* 
+    <ambientLight 
+    args={["#ffffff", 5]} /> */}
+    {/* <directionalLight
+      args={["#ffffff", 10]}
       position={[0, 2, 0]}
 
-    />
+    /> */}
+    {/* <directionalLight  intensity={  1} position={[0, 10, 5]} /> */}
+    <ambientLight intensity={0.3} />
+      <directionalLight
+        position={[1, 5, 5]}
+        intensity={1}
+        
+      />
+      <directionalLight
+        position={[-1, 5, 5]}
+        intensity={1}
+        
+      />
+      <directionalLight
+        position={[0, 5, -5]}
+        intensity={1}
+        
+      />
+      {/* <pointLight position={[0, 5, 0]} intensity={10} /> */}
+
+     </group>
   </>
   )
 }

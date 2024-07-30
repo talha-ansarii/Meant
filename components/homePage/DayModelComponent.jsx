@@ -42,12 +42,30 @@ const DayModelComponent = ({mouseIn}) => {
        
     </mesh>
 
-    <ambientLight args={["#ffffff", 10]} />
+    {/* <ambientLight args={["#ffffff", 10]} />
     <directionalLight
       args={["#ffffff", 15, 7, 0.785398, 0.4]}
       position={[0, 2, 0]}
-
-    />
+    /> */}
+    <ambientLight intensity={0.5} />
+      <directionalLight
+        position={[2, 5, 5]}
+        intensity={1}
+        
+      />
+      <directionalLight
+        position={[-2, 5, 5]}
+        intensity={1}
+        
+      />
+      <directionalLight
+        position={[0, -5, 5]}
+        intensity={0.2}
+      />
+      {/* <directionalLight
+        position={[0, 3, 5]}
+        intensity={1}
+      /> */}
   </>
   )
 }

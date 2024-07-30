@@ -93,18 +93,8 @@ export function ProductOpenDay(props) {
                   geometry={nodes.Cylinder016.geometry}
                   material={nodes.Cylinder016.material}
                   position={[0, -2.395, 0.008]}
-                  scale={[74.864, 1.468, 74.864]}>
-                  <mesh
-                    name="Cube117"
-                    castShadow
-                    receiveShadow
-                    geometry={nodes.Cube117.geometry}
-                    material={materials['Material.012']}
-                    position={[0, -1.345, 0]}
-                    rotation={[0, 0, 3.025]}
-                    scale={[0.002, 0.287, 0.002]}
-                  />
-                </mesh>
+                  scale={[74.864, 1.468, 74.864]}
+                />
                 <mesh
                   name="Plane022"
                   castShadow
@@ -246,18 +236,8 @@ export function ProductOpenDay(props) {
                   geometry={nodes.Cylinder013.geometry}
                   material={nodes.Cylinder013.material}
                   position={[0, -2.395, 0.008]}
-                  scale={[74.864, 1.468, 74.864]}>
-                  <mesh
-                    name="Cube099"
-                    castShadow
-                    receiveShadow
-                    geometry={nodes.Cube099.geometry}
-                    material={materials['Material.012']}
-                    position={[0, -1.345, 0]}
-                    rotation={[0, 0, 3.025]}
-                    scale={[0.002, 0.287, 0.002]}
-                  />
-                </mesh>
+                  scale={[74.864, 1.468, 74.864]}
+                />
                 <mesh
                   name="Plane019"
                   castShadow
@@ -335,18 +315,8 @@ export function ProductOpenDay(props) {
                   geometry={nodes.Cylinder014.geometry}
                   material={nodes.Cylinder014.material}
                   position={[0, -2.395, 0.008]}
-                  scale={[74.864, 1.468, 74.864]}>
-                  <mesh
-                    name="Cube106"
-                    castShadow
-                    receiveShadow
-                    geometry={nodes.Cube106.geometry}
-                    material={materials['Material.012']}
-                    position={[0, -1.345, 0]}
-                    rotation={[0, 0, 3.025]}
-                    scale={[0.002, 0.287, 0.002]}
-                  />
-                </mesh>
+                  scale={[74.864, 1.468, 74.864]}
+                />
                 <mesh
                   name="Plane020"
                   castShadow
@@ -424,18 +394,8 @@ export function ProductOpenDay(props) {
                   geometry={nodes.Cylinder015.geometry}
                   material={nodes.Cylinder015.material}
                   position={[0, -2.395, 0.008]}
-                  scale={[74.864, 1.468, 74.864]}>
-                  <mesh
-                    name="Cube113"
-                    castShadow
-                    receiveShadow
-                    geometry={nodes.Cube113.geometry}
-                    material={materials['Material.012']}
-                    position={[0, -1.345, 0]}
-                    rotation={[0, 0, 3.025]}
-                    scale={[0.002, 0.287, 0.002]}
-                  />
-                </mesh>
+                  scale={[74.864, 1.468, 74.864]}
+                />
                 <mesh
                   name="Plane021"
                   castShadow
@@ -449,22 +409,15 @@ export function ProductOpenDay(props) {
               </mesh>
             </mesh>
           </group>
-          <group name="Plane005" position={[0.023, -1.071, 0.023]} scale={[5.825, 3.501, 3.461]}>
-            <mesh
-              name="Plane008"
-              castShadow
-              receiveShadow
-              geometry={nodes.Plane008.geometry}
-              material={materials['Material.001']}
-            />
-            <mesh
-              name="Plane008_1"
-              castShadow
-              receiveShadow
-              geometry={nodes.Plane008_1.geometry}
-              material={materials['Material.001']}
-            />
-          </group>
+          <mesh
+            name="Plane005"
+            castShadow
+            receiveShadow
+            geometry={nodes.Plane005.geometry}
+            material={materials['Material.001']}
+            position={[0.023, -1.071, 0.023]}
+            scale={[5.825, 3.501, 3.461]}
+          />
         </group>
         <group
           name="Cube065"
@@ -495,4 +448,4 @@ export function ProductOpenDay(props) {
   )
 }
 
-useGLTF.preload('/product_Open_Day .glb')
+useGLTF.preload('/models/product_Open_Day.glb')
