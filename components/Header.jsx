@@ -1,4 +1,3 @@
-
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
@@ -7,10 +6,14 @@ import Link from "next/link";
 import React, { useState } from "react";
 import { FaRegHeart, FaShoppingCart, FaUser } from "react-icons/fa";
 import { useWishlist } from "/context/WishlistContext.js";
+import { useCart } from "/context/CartContext.js";
+import Cart from "./Cart";
 
 const Header = () => {
   const { wishlistCount } = useWishlist();
+  const { cartItemCount } = useCart();
   const [isOpen, setIsOpen] = useState(false);
+  const [isCartOpen, setIsCartOpen] = useState(false);
 
   const containerVariants = {
     hidden: {
@@ -74,7 +77,17 @@ const Header = () => {
             )}
           </Link>
           <FaUser className="w-8 h-8 text-white" />
-          <FaShoppingCart className="w-8 h-8 text-white" />
+          <div
+            className="relative flex items-center"
+            onClick={() => setIsCartOpen(true)}
+          >
+            <FaShoppingCart className="w-8 h-8 text-white" />
+            {cartItemCount > 0 && (
+              <span className="absolute bottom-[1.3rem] left-[1.2rem] bg-black text-white rounded-full text-xs w-5 h-5 flex items-center justify-center">
+                {cartItemCount}
+              </span>
+            )}
+          </div>
         </div>
       </div>
 
@@ -187,8 +200,27 @@ const Header = () => {
           </div>
         </div>
       </div>
-    </div>
 
+      <AnimatePresence>
+        {isCartOpen && (
+          <motion.div
+            className="fixed top-0 right-0 w-full md:w-1/3 bg-white text-black h-full transition-transform transform z-50"
+            initial={{ x: "100%" }}
+            animate={{ x: 0 }}
+            exit={{ x: "100%" }}
+            transition={{ type: "tween", duration: 0.5 }}
+          >
+            <div className="p-4 flex justify-between items-center">
+              <h2 className="text-[30px] font-semibold font-playfair-display">Cart</h2>
+              <button onClick={() => setIsCartOpen(false)} className="text-xl text-[#CDC8C8]">
+                ✕
+              </button>
+            </div>
+            <Cart />
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
   );
 };
 

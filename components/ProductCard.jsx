@@ -2,14 +2,21 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useWishlist } from "/context/WishlistContext.js";
+import { useCart } from "/context/CartContext.js";
 
-const ProductCard = ({ product, quantity, onQuantityChange, onAddToCart }) => {
+const ProductCard = ({ product, quantity, onQuantityChange }) => {
   const { addToWishlist, removeFromWishlist, wishlist } = useWishlist();
+  const { addToCart, cart } = useCart();
   const [wishlistFilled, setWishlistFilled] = useState(false);
+  const [inCart, setInCart] = useState(false);
 
   useEffect(() => {
     setWishlistFilled(wishlist.has(product));
   }, [wishlist, product]);
+
+  useEffect(() => {
+    setInCart(cart.some((item) => item.id === product.id));
+  }, [cart, product]);
 
   const handleWishlistClick = (e) => {
     e.stopPropagation();
@@ -19,6 +26,21 @@ const ProductCard = ({ product, quantity, onQuantityChange, onAddToCart }) => {
       addToWishlist(product);
     }
     setWishlistFilled(!wishlistFilled);
+  };
+
+  const handleCardClick = (e) => {
+    e.stopPropagation();
+
+    const cartItem = cart.find((item) => item.id === product.id);
+
+    if (cartItem) {
+      const newQuantity = cartItem.quantity + quantity;
+      addToCart(product, newQuantity);
+    } else {
+      addToCart(product, quantity);
+    }
+
+    setInCart(!inCart);
   };
 
   return (
@@ -105,7 +127,7 @@ const ProductCard = ({ product, quantity, onQuantityChange, onAddToCart }) => {
           </div>
           {/* Add to Cart button */}
           <button
-            onClick={() => onAddToCart(product)}
+            onClick={handleCardClick}
             className="bg-white text-black border border-black px-4 py-1.5 rounded-md font-merriweather font-bold"
           >
             Add to Cart

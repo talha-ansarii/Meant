@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useWishlist } from "/context/WishlistContext.js";
-import { FaTrashAlt } from "react-icons/fa";
 import Header from "./Header";
 import Footer from "./Footer";
 

@@ -8,7 +8,6 @@ import ProductCard from "./ProductCard";
 import Header from "./Header";
 import Footer from "./Footer";
 import Banner from "./Banner";
-import { useWishlist } from "/context/WishlistContext.js";
 
 const CategoryFilter = ({
   categories,
@@ -84,7 +83,7 @@ const ProductList = () => {
   const [filterOpen, setFilterOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [openIndex, setOpenIndex] = useState(null);
-  const { wishlist, addToWishlist, removeFromWishlist } = useWishlist();
+
   const productsPerPage = 16;
 
   const parsePrice = (price) => {
@@ -101,18 +100,6 @@ const ProductList = () => {
       ...prev,
       [id]: Math.max(1, (prev[id] || 1) + change),
     }));
-  };
-
-  const handleAddToCart = (product) => {
-    console.log(`Added ${quantities[product.id]} ${product.name} to the cart.`);
-  };
-
-  const handleAddToWishlist = (product) => {
-    if (wishlist.has(product.id)) {
-      removeFromWishlist(product.id);
-    } else {
-      addToWishlist(product);
-    }
   };
 
   const handleSortChange = (option) => {
@@ -321,9 +308,6 @@ const ProductList = () => {
               product={product}
               quantity={quantities[product.id]}
               onQuantityChange={handleQuantityChange}
-              onAddToCart={handleAddToCart}
-              onAddToWishlist={() => handleAddToWishlist(product)}
-              isInWishlist={wishlist.has(product.id)}
             />
           ))}
         </div>
