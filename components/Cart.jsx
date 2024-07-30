@@ -59,7 +59,7 @@ onClick={() => setCartOpen(false)}
 
         <div className=' h-[calc(100vh-40%)] overflow-auto '>
           {cartItems.map(item => (
-            <CartItem handleQuantityChange={handleQuantityChange} handleRemoveItem={handleRemoveItem} item={item} />
+            <CartItem  handleQuantityChange={handleQuantityChange} handleRemoveItem={handleRemoveItem} item={item} />
           ))}
           </div>
           <div className=" mx-6 p-4 border-t pt-4 mt-4">

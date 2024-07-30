@@ -13,8 +13,6 @@ const Checkout = () => {
       quantity: 1,
       imageUrl: '/HomePage/banner/2.jpeg', // Replace with actual image URL
     },
-    
-   
   ]);
   return (
     <div className="flex flex-col items-center justify-between min-h-screen bg-[#CDC8C8]/[40%] p-4">

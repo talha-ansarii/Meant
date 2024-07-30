@@ -17,6 +17,7 @@ const CheckoutItem = ({item}) => {
                   {item.shades.map((shade, index) => (
                     <span key={index} className="w-[13px] h-[13px] inline-block mr-1" style={{ backgroundColor: shade }}></span>
                   ))}
+                  
                 </div>
                 
               </div>

@@ -1,16 +1,17 @@
 
 "use client";
-
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
 import { FaRegHeart, FaShoppingCart, FaUser } from "react-icons/fa";
 import { useWishlist } from "/context/WishlistContext.js";
+import Cart from './Cart';
 
 const Header = () => {
   const { wishlistCount } = useWishlist();
   const [isOpen, setIsOpen] = useState(false);
+  const [cartOpen, setCartOpen] = useState(false);
 
   const containerVariants = {
     hidden: {
@@ -48,6 +49,19 @@ const Header = () => {
 
   return (
     <div className="w-full my-4">
+     <AnimatePresence>
+      {cartOpen && (
+        <motion.div
+          initial="hidden"
+          animate="visible"
+          exit="hidden"
+          variants={containerVariants}
+          className='fixed right-0 top-0 z-[100]'
+        >
+          <Cart setCartOpen={setCartOpen} />
+        </motion.div>
+      )}
+    </AnimatePresence>
       <div className="w-[80%] hidden fixed z-50 left-[50%] translate-x-[-50%] backdrop-blur-md px-[20px] m-auto h-[86px] rounded-[116px] nav-shadow border md:flex lg:flex items-center justify-between">
         <div>
           <Image
