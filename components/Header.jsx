@@ -8,7 +8,6 @@ import { useWishlist } from "/context/WishlistContext.js";
 import { useCart } from "@/context/CartContext";
 import Cart from "./Cart";
 
-
 const Header = () => {
   const { wishlistCount } = useWishlist();
   const { cartItemCount } = useCart();
@@ -52,38 +51,37 @@ const Header = () => {
 
   return (
     <div className="w-full my-4">
-      
-      <div className="w-[80%] hidden fixed z-50 left-[50%] translate-x-[-50%] px-[20px] m-auto h-[70px] rounded-[116px]  border md:flex lg:flex items-center justify-between bg-black  ">
+      <div className="w-[892px] hidden fixed z-50 left-[50%] translate-x-[-50%] px-[20px] m-auto h-[43px] rounded-[116px]  border md:flex lg:flex items-center justify-between bg-black  ">
         <div>
           <Image
             src="/assets/images/logo.webp"
-            width={100}
-            height={33}
+            width={62}
+            height={21}
             alt="logo"
             className="lg:ml-[50px] md:ml-[20px]"
           />
         </div>
-        <div className="flex lg:gap-[50px] md:gap-4 playfair font-[500] lg:text-[20px] lg:leading-[26.66px] md:text-[15px] md:leading-[20.66px] text-white">
+        <div className="flex lg:gap-[50px] md:gap-4 playfair font-[500] lg:text-[17px] lg:leading-[22.66px] md:text-[15px] md:leading-[20.66px] text-white">
           <Link href={"/"}>Home</Link>
           <Link href={"/products"}>Products</Link>
           <Link href={"/aboutus"}>About Us</Link>
           <Link href={"/contactus"}>Contact Us</Link>
         </div>
-        <div className="flex gap-4 mr-[20px] cursor-pointer">
+        <div className="flex gap-4 mr-[20px] items-center justify-center cursor-pointer">
           <Link href="/wishlist">
-            <FaRegHeart className="w-8 h-8 text-[#D76D8E]" />
+            <FaRegHeart className="w-[23px] h-[19px] text-[#D76D8E]" />
             {wishlistCount > 0 && (
               <span className="absolute top-[17px] right-[7.8rem] bg-white text-black rounded-full text-xs w-5 h-5 flex items-center justify-center">
                 {wishlistCount}
               </span>
             )}
           </Link>
-          <FaUser className="w-8 h-8 text-white" />
+          <FaUser className="w-[21px] h-[22px] text-white" />
           <div
             className="relative flex items-center"
             onClick={() => setIsCartOpen(true)}
           >
-            <FaShoppingCart className="w-8 h-8 text-white" />
+            <FaShoppingCart className="w-[20px] h-[22px] text-white" />
             {cartItemCount > 0 && (
               <span className="absolute bottom-[1.3rem] left-[1.2rem] bg-black text-white rounded-full text-xs w-5 h-5 flex items-center justify-center">
                 {cartItemCount}
@@ -208,13 +206,18 @@ const Header = () => {
           <motion.div
             className="fixed top-0 right-0 w-full md:w-1/3 bg-white text-black h-full transition-transform transform z-50"
             initial="hidden"
-          animate="visible"
-          exit="hidden"
-          variants={containerVariants}
+            animate="visible"
+            exit="hidden"
+            variants={containerVariants}
           >
             <div className="p-4 flex justify-between items-center">
-              <h2 className="text-[30px] font-semibold font-playfair-display">Cart</h2>
-              <button onClick={() => setIsCartOpen(false)} className="text-xl text-[#CDC8C8]">
+              <h2 className="text-[30px] font-semibold font-playfair-display">
+                Cart
+              </h2>
+              <button
+                onClick={() => setIsCartOpen(false)}
+                className="text-xl text-[#CDC8C8]"
+              >
                 ✕
               </button>
             </div>
