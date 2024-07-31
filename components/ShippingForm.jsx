@@ -4,7 +4,7 @@ import React from "react";
 
 const ShippingForm = () => {
   return (
-    <div className="min-h-screen flex flex-col items-center bg-white ray-50 py-10 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen flex lg:mt-[80px] md:mt-[80px] flex-col items-center bg-white ray-50 py-10 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-4">
         <div>
           <div className="w-full flex justify-center items-center ">

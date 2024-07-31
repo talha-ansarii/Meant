@@ -3,6 +3,7 @@
 import React from "react";
 import { useCheckout } from "/context/CheckoutContext";
 import Image from "next/image";
+import Link from "next/link";
 
 const parsePrice = (priceString) => {
   const priceNumber = parseFloat(priceString.replace("$", ""));
@@ -113,9 +114,9 @@ const Checkout = () => {
                 .toFixed(2)}
             </h2>
           </div>
-          <button className="mt-8 text-[18px] font-playfair-display font-extrabold inline-block bg-black text-white py-2 px-8 rounded-[30px] text-center w-full md:w-auto">
+          <Link href={"/order-confirm"} className="mt-8 text-[18px] font-playfair-display font-extrabold inline-block bg-black text-white py-2 px-8 rounded-[30px] text-center w-full md:w-auto">
             Place Order
-          </button>
+          </Link>
         </div>
       </div>
     </div>
