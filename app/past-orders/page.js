@@ -1,17 +1,19 @@
 
 import ContactUs from "@/components/ContactUs";
+import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import PastOrders from "@/components/PastOrders";
 
 const PastOrdersPage = () => {
   return (
-    <div className="bg-white ">
+    <div >
 
     <Header/>
-      <main>
+      <main className="flex w-full m-auto lg:mt-[120px] md:mt-[120px] justify-center items-center">
 
        <PastOrders/>
       </main>
+      <Footer/>
     </div>
   );
 }

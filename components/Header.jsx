@@ -53,7 +53,7 @@ const Header = () => {
 
   return (
     <div className="w-full ">
-      <div className="w-[892px] hidden fixed z-50 top-[30px] left-[50%] translate-x-[-50%] px-[20px] m-auto h-[43px] rounded-[116px]  border md:flex lg:flex items-center justify-between bg-black  ">
+      <div className="lg:w-[892px] md:w-[741px] hidden fixed z-50 top-[30px] left-[50%] translate-x-[-50%] px-[20px] m-auto h-[43px] rounded-[116px]  border md:flex lg:flex items-center justify-between bg-black  ">
         <div>
           <Image
             src="/assets/images/logo.webp"
@@ -63,7 +63,7 @@ const Header = () => {
             className="lg:ml-[50px] md:ml-[20px]"
           />
         </div>
-        <div className="flex lg:gap-[50px] md:gap-4 playfair font-[500] lg:text-[17px] lg:leading-[22.66px] md:text-[15px] md:leading-[20.66px] text-white">
+        <div className="flex lg:gap-[50px] md:gap-4 playfair font-[500] lg:text-[17px] lg:leading-[22.66px] md:text-[13px] md:leading-[17.66px] text-white">
           <Link href={"/"}>Home</Link>
           <Link href={"/products"}>Products</Link>
           <Link href={"/aboutus"}>About Us</Link>
