@@ -8,11 +8,12 @@ import { useWishlist } from "/context/WishlistContext.js";
 import { useCart } from "@/context/CartContext";
 import Cart from "./Cart";
 
-
 const Header = () => {
   const { wishlistCount } = useWishlist();
   const { cartItemCount } = useCart();
   const [isOpen, setIsOpen] = useState(false);
+  const [isLogin, setIsLogin] = useState(true);
+  const [profileOpen, setProfileOpen] = useState(false);
 
   const [isCartOpen, setIsCartOpen] = useState(false);
 
@@ -51,45 +52,73 @@ const Header = () => {
   };
 
   return (
-    <div className="w-full my-4">
-      
-      <div className="w-[80%] hidden fixed z-50 left-[50%] translate-x-[-50%] px-[20px] m-auto h-[70px] rounded-[116px]  border md:flex lg:flex items-center justify-between bg-black  ">
+    <div className="w-full ">
+      <div className="lg:w-[892px] md:w-[741px] hidden fixed z-50 top-[30px] left-[50%] translate-x-[-50%] px-[20px] m-auto h-[43px] rounded-[116px]  border md:flex lg:flex items-center justify-between bg-black  ">
         <div>
           <Image
             src="/assets/images/logo.webp"
-            width={100}
-            height={33}
+            width={62}
+            height={21}
             alt="logo"
             className="lg:ml-[50px] md:ml-[20px]"
           />
         </div>
-        <div className="flex lg:gap-[50px] md:gap-4 playfair font-[500] lg:text-[20px] lg:leading-[26.66px] md:text-[15px] md:leading-[20.66px] text-white">
+        <div className="flex lg:gap-[50px] md:gap-4 playfair font-[500] lg:text-[17px] lg:leading-[22.66px] md:text-[13px] md:leading-[17.66px] text-white">
           <Link href={"/"}>Home</Link>
           <Link href={"/products"}>Products</Link>
           <Link href={"/aboutus"}>About Us</Link>
           <Link href={"/contactus"}>Contact Us</Link>
         </div>
-        <div className="flex gap-4 mr-[20px] cursor-pointer">
+        <div className="flex  relative gap-4 mr-[20px] items-center justify-center ">
           <Link href="/wishlist">
-            <FaRegHeart className="w-8 h-8 text-[#D76D8E]" />
+            <FaRegHeart className="w-[23px] cursor-pointer h-[19px] text-[#D76D8E]" />
             {wishlistCount > 0 && (
               <span className="absolute top-[12px] right-[7.8rem] bg-white text-black rounded-full text-xs w-5 h-5 flex items-center justify-center">
                 {wishlistCount}
               </span>
             )}
           </Link>
-          <FaUser className="w-8 h-8 text-white" />
+          <FaUser
+            onClick={() => setProfileOpen(!profileOpen)}
+           className="w-[21px] cursor-pointer h-[22px] text-white" />
           <div
             className="relative flex items-center"
             onClick={() => setIsCartOpen(true)}
           >
-            <FaShoppingCart className="w-8 h-8 text-white" />
+            <FaShoppingCart className="w-[20px] cursor-pointer h-[22px] text-white" />
             {cartItemCount > 0 && (
-              <span className="absolute bottom-[1.3rem] left-[1.2rem] bg-black text-white rounded-full text-xs w-5 h-5 flex items-center justify-center">
+              <span className="absolute bottom-[1.3rem] left-[1.2rem] bg-black text-white rounded-full text-xs w-5 h-5  flex items-center justify-center">
                 {cartItemCount}
               </span>
             )}
+          </div>{
+            profileOpen && (
+              <div className="absolute  w-[150px] h-[100px] rounded-[4px] shadow-md bg-white top-[45px] right-[50%] translate-x-[50%]">
+<div className="w-[15px] h-[16px] absolute bg-white  top-[-8px] rotate-45 left-[50%] translate-x-[-50%]">
+            
+</div>
+{
+              isLogin? (
+               
+                  <div className="flex text-[16px] font-[700] items-center justify-center playfair text-black flex-col gap-4 p-4">
+                    <Link className="cursor-pointer" href="/profile">Profile</Link>
+                    <Link className="cursor-pointer" href="/past-orders">Orders</Link>
+                    <Link className="cursor-pointer" href="/logout">Logout</Link>
+                </div>
+              ): (
+                
+                  <div className="flex text-[16px] font-[700] justify-center items-center playfair text-black flex-col gap-4 p-4">
+                    <Link className="cursor-pointer" href="/profile">Log in</Link>
+                    <Link className="cursor-pointer" href="/past-orders">Sign up</Link>
+                  </div>
+              )
+
+            }
           </div>
+            )
+          }
+         
+          
         </div>
       </div>
 
@@ -208,13 +237,18 @@ const Header = () => {
           <motion.div
             className="fixed top-0 right-0 w-full md:w-1/3 bg-white text-black h-full transition-transform transform z-50"
             initial="hidden"
-          animate="visible"
-          exit="hidden"
-          variants={containerVariants}
+            animate="visible"
+            exit="hidden"
+            variants={containerVariants}
           >
             <div className="p-4 flex justify-between items-center">
-              <h2 className="text-[30px] font-semibold font-playfair-display">Cart</h2>
-              <button onClick={() => setIsCartOpen(false)} className="text-xl text-[#CDC8C8]">
+              <h2 className="text-[30px] font-semibold font-playfair-display">
+                Cart
+              </h2>
+              <button
+                onClick={() => setIsCartOpen(false)}
+                className="text-xl text-[#CDC8C8]"
+              >
                 ✕
               </button>
             </div>

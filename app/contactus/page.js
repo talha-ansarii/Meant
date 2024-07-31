@@ -4,9 +4,10 @@ import Header from "@/components/Header";
 
 const ContactUsPage = () => {
   return (
-    <div>
+    <div className="bg-white ">
+
     <Header/>
-      <div className="w-full h-[86px] bg-black"></div>
+      <div className="w-full h-[86px] bg-[#F7879A]/[10%]"></div>
       <main>
 
         <ContactUs />

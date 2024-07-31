@@ -93,7 +93,7 @@ const ContactUs = () => {
     console.log(fullname, email, subject, message);
   };
   return (
-    <div className="pb-4">
+    <div className="">
       <main className=" bg-white">
         <header className="p-8 grid grid-cols-1 md:grid-cols-2 gap-4 pt-10 lg:px-40 bg-[#F7879A]/[10%] dark:bg-blue-900 md:h-96">
           <div className="mx-auto mb-10 md:mt-20">
