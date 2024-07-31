@@ -1,16 +1,16 @@
 
 import ContactUs from "@/components/ContactUs";
 import Header from "@/components/Header";
+import PastOrders from "@/components/PastOrders";
 
-const ContactUsPage = () => {
+const PastOrdersPage = () => {
   return (
     <div className="bg-white ">
 
     <Header/>
-      <div className="w-full h-[86px] bg-[#F7879A]/[10%]"></div>
       <main>
 
-        <ContactUs />
+       <PastOrders/>
       </main>
     </div>
   );
@@ -18,5 +18,5 @@ const ContactUsPage = () => {
 
 
 
-export default ContactUsPage;
+export default PastOrdersPage;
 

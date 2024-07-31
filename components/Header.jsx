@@ -12,6 +12,8 @@ const Header = () => {
   const { wishlistCount } = useWishlist();
   const { cartItemCount } = useCart();
   const [isOpen, setIsOpen] = useState(false);
+  const [isLogin, setIsLogin] = useState(true);
+  const [profileOpen, setProfileOpen] = useState(false);
 
   const [isCartOpen, setIsCartOpen] = useState(false);
 
@@ -67,27 +69,56 @@ const Header = () => {
           <Link href={"/aboutus"}>About Us</Link>
           <Link href={"/contactus"}>Contact Us</Link>
         </div>
-        <div className="flex gap-4 mr-[20px] items-center justify-center cursor-pointer">
+        <div className="flex  relative gap-4 mr-[20px] items-center justify-center ">
           <Link href="/wishlist">
-            <FaRegHeart className="w-[23px] h-[19px] text-[#D76D8E]" />
+            <FaRegHeart className="w-[23px] cursor-pointer h-[19px] text-[#D76D8E]" />
             {wishlistCount > 0 && (
               <span className="absolute top-[17px] right-[7.8rem] bg-white text-black rounded-full text-xs w-5 h-5 flex items-center justify-center">
                 {wishlistCount}
               </span>
             )}
           </Link>
-          <FaUser className="w-[21px] h-[22px] text-white" />
+          <FaUser
+            onClick={() => setProfileOpen(!profileOpen)}
+           className="w-[21px] cursor-pointer h-[22px] text-white" />
           <div
             className="relative flex items-center"
             onClick={() => setIsCartOpen(true)}
           >
-            <FaShoppingCart className="w-[20px] h-[22px] text-white" />
+            <FaShoppingCart className="w-[20px] cursor-pointer h-[22px] text-white" />
             {cartItemCount > 0 && (
-              <span className="absolute bottom-[1.3rem] left-[1.2rem] bg-black text-white rounded-full text-xs w-5 h-5 flex items-center justify-center">
+              <span className="absolute bottom-[1.3rem] left-[1.2rem] bg-black text-white rounded-full text-xs w-5 h-5  flex items-center justify-center">
                 {cartItemCount}
               </span>
             )}
+          </div>{
+            profileOpen && (
+              <div className="absolute  w-[150px] h-[100px] rounded-[4px] shadow-md bg-white top-[45px] right-[50%] translate-x-[50%]">
+<div className="w-[15px] h-[16px] absolute bg-white  top-[-8px] rotate-45 left-[50%] translate-x-[-50%]">
+            
+</div>
+{
+              isLogin? (
+               
+                  <div className="flex text-[16px] font-[700] items-center justify-center playfair text-black flex-col gap-4 p-4">
+                    <Link className="cursor-pointer" href="/profile">Profile</Link>
+                    <Link className="cursor-pointer" href="/past-orders">Orders</Link>
+                    <Link className="cursor-pointer" href="/logout">Logout</Link>
+                </div>
+              ): (
+                
+                  <div className="flex text-[16px] font-[700] justify-center items-center playfair text-black flex-col gap-4 p-4">
+                    <Link className="cursor-pointer" href="/profile">Log in</Link>
+                    <Link className="cursor-pointer" href="/past-orders">Sign up</Link>
+                  </div>
+              )
+
+            }
           </div>
+            )
+          }
+         
+          
         </div>
       </div>
 
