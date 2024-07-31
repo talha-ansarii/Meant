@@ -50,8 +50,8 @@ const Header = () => {
   };
 
   return (
-    <div className="w-full my-4">
-      <div className="w-[892px] hidden fixed z-50 left-[50%] translate-x-[-50%] px-[20px] m-auto h-[43px] rounded-[116px]  border md:flex lg:flex items-center justify-between bg-black  ">
+    <div className="w-full ">
+      <div className="w-[892px] hidden fixed z-50 top-[30px] left-[50%] translate-x-[-50%] px-[20px] m-auto h-[43px] rounded-[116px]  border md:flex lg:flex items-center justify-between bg-black  ">
         <div>
           <Image
             src="/assets/images/logo.webp"
