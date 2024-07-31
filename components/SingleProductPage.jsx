@@ -6,6 +6,9 @@ import { FaStar } from "react-icons/fa";
 import initialProducts from "@/constants/products";
 import Accordion from "./Accordian";
 import ProductCard from "./ProductCard";
+import { useCart } from "/context/CartContext.js";
+import { useWishlist } from "/context/WishlistContext.js";
+import { FaRegHeart, FaHeart } from "react-icons/fa";
 import Footer from "./Footer";
 import Header from "./Header";
 
@@ -14,12 +17,13 @@ const SingleProductPage = ({ productId }) => {
   const [selectedImage, setSelectedImage] = useState(product?.image);
   const [quantity, setQuantity] = useState(1);
   const [openIndex, setOpenIndex] = useState(null);
-  const [wishlist, setWishlist] = useState(new Set());
   const [relatedProducts, setRelatedProducts] = useState([]);
   const [relatedQuantities, setRelatedQuantities] = useState({});
   const [hoveredShade, setHoveredShade] = useState(null);
-
-  const shadeNames = ["Emily", "Grace", "Diva", "Veronica"];
+  const { addToWishlist, removeFromWishlist, wishlist } = useWishlist();
+  const { addToCart, cart } = useCart();
+  const [wishlistFilled, setWishlistFilled] = useState(false);
+  const [inCart, setInCart] = useState(false);
 
   useEffect(() => {
     // Fetch related products based on category
@@ -27,7 +31,6 @@ const SingleProductPage = ({ productId }) => {
       const fetchedRelatedProducts = initialProducts
         .filter((p) => p.category === product.category)
         .sort(() => 0.5 - Math.random());
-      console.log(fetchedRelatedProducts);
       setRelatedProducts(fetchedRelatedProducts);
     };
 
@@ -35,6 +38,14 @@ const SingleProductPage = ({ productId }) => {
       fetchRelatedProducts();
     }
   }, [product, productId]);
+
+  useEffect(() => {
+    setWishlistFilled(wishlist.has(product));
+  }, [wishlist, product]);
+
+  useEffect(() => {
+    setInCart(cart.some((item) => item.id === product.id));
+  }, [cart, product]);
 
   const handleQuantityChange = (delta) => {
     setQuantity((prevQuantity) => {
@@ -53,23 +64,27 @@ const SingleProductPage = ({ productId }) => {
     });
   };
 
-  const handleAddToCart = (product) => {
-    // Implement add to cart functionality here
-    console.log(`Added ${quantity} of ${product.name} to cart`);
+  const handleCartClick = (e) => {
+    const cartItem = cart.find((item) => item.id === product.id);
+
+    if (cartItem) {
+      const newQuantity = cartItem.quantity + quantity;
+      addToCart(product, newQuantity);
+    } else {
+      addToCart(product, quantity);
+    }
+
+    setInCart(!inCart);
   };
 
-  const handleAddToWishlist = (product) => {
-    setWishlist((prev) => {
-      const updatedWishlist = new Set(prev);
-      if (updatedWishlist.has(product.id)) {
-        updatedWishlist.delete(product.id);
-        console.log(`Removed ${product.name} from the wishlist.`);
-      } else {
-        updatedWishlist.add(product.id);
-        console.log(`Added ${product.name} to the wishlist.`);
-      }
-      return updatedWishlist;
-    });
+  const handleWishlistClick = (e) => {
+    e.stopPropagation();
+    if (wishlistFilled) {
+      removeFromWishlist(product.id);
+    } else {
+      addToWishlist(product);
+    }
+    setWishlistFilled(!wishlistFilled);
   };
 
   const renderStars = (rating) => {
@@ -107,7 +122,7 @@ const SingleProductPage = ({ productId }) => {
         <div className="flex space-between">
           {/* Product Images and Main Image */}
           <div className="flex space-x-4 w-3/4">
-            <div className="w-20 space-y-2">
+            <div className="w-20 space-y-2 mr-[1rem]">
               {[
                 product.image,
                 ...product.shades.map((shade, index) => product.images[index]),
@@ -145,9 +160,22 @@ const SingleProductPage = ({ productId }) => {
 
           {/* Product Details */}
           <div className="w-2/3 space-y-4">
-            <h1 className="font-size-heading font-bold font-playfair-display">
-              {product.name}
-            </h1>
+            <div className="flex items-center justify-between">
+              <h1 className="font-size-heading font-bold font-playfair-display">
+                {product.name}
+              </h1>
+              {wishlistFilled ? (
+                <FaHeart
+                  onClick={handleWishlistClick}
+                  className="w-8 h-8 text-[#D76D8E] cursor-pointer"
+                />
+              ) : (
+                <FaRegHeart
+                  onClick={handleWishlistClick}
+                  className="w-8 h-8 text-[#D76D8E] cursor-pointer"
+                />
+              )}
+            </div>
             <p className="text-sm font-normal font-merriweather text-white mt-2">
               {product.details}
             </p>
@@ -162,25 +190,36 @@ const SingleProductPage = ({ productId }) => {
             </div>
             {/* Color Palette */}
             <h3 className="text-lg font-bold font-merriweather mt-4">Shades</h3>
-            <div className="flex flex-wrap gap-2 my-2">
+            <div className="grid grid-cols-2 w-[48px] my-2">
+              {" "}
               {product.shades.map((shade, index) => (
                 <div
                   key={index}
-                  className="relative w-6 h-6 flex items-center justify-center cursor-pointer"
-                  style={{ backgroundColor: shade }}
-                  onMouseEnter={() => setHoveredShade(shadeNames[index])}
-                  onMouseLeave={() => setHoveredShade(null)}
-                  onClick={() => handleShadeClick(product.images[index])}
+                  className="flex items-center space-x-2 relative"
                 >
+                  {" "}
+                  <div
+                    className="w-6 h-6"
+                    style={{ backgroundColor: shade }}
+                    onMouseEnter={() =>
+                      setHoveredShade(product.shadeNames[index])
+                    }
+                    onMouseLeave={() => setHoveredShade(null)}
+                    onClick={() => handleShadeClick(product.images[index])}
+                  />{" "}
                   <span
-                    className={`absolute text-[8px] font-poppins font-medium text-white ${
-                      hoveredShade === shadeNames[index] ? "block" : "hidden"
+                    className={`text-white text-xs font-poppins font-medium absolute transition-opacity duration-300 ${
+                      hoveredShade === product.shadeNames[index]
+                        ? "opacity-100"
+                        : "opacity-0"
                     }`}
+                    style={{ left: index % 2 === 0 ? "-3rem" : "1.5rem" }}
                   >
-                    {shadeNames[index]}
-                  </span>
+                    {" "}
+                    {product.shadeNames[index]}{" "}
+                  </span>{" "}
                 </div>
-              ))}
+              ))}{" "}
             </div>
 
             <div className="flex items-center mt-4">
@@ -203,12 +242,13 @@ const SingleProductPage = ({ productId }) => {
               </div>
 
               <button
-                onClick={() => handleAddToCart(product)}
+                onClick={() => handleCartClick(product)}
                 className="bg-white text-black border border-black px-6 py-2 rounded-md font-merriweather font-bold w-full max-w-xs"
               >
                 Add to Cart
               </button>
             </div>
+
             <Accordion
               title="Details"
               isOpen={openIndex === 0}
@@ -312,8 +352,8 @@ const SingleProductPage = ({ productId }) => {
                 product={p}
                 quantity={relatedQuantities[p.id] || 1}
                 onQuantityChange={handleRelatedQuantityChange}
-                onAddToCart={handleAddToCart}
-                onAddToWishlist={handleAddToWishlist}
+                onAddToCart={handleCartClick}
+                onAddToWishlist={handleWishlistClick}
                 isInWishlist={false}
               />
             ))}

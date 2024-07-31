@@ -13,11 +13,13 @@ export const CartProvider = ({ children }) => {
       if (existingProduct) {
         // Update the quantity of the existing product
         return prevCart.map((item) =>
-          item.id === product.id ? { ...item, quantity } : item
+          item.id === product.id
+            ? { ...item, quantity: item.quantity + 1 }
+            : item
         );
       } else {
         // Add the new product to the cart
-        return [...prevCart, { ...product, quantity }];
+        return [...prevCart, { ...product, quantity: product.quantity || 1 }];
       }
     });
   };
