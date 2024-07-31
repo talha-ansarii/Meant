@@ -118,11 +118,12 @@ const SingleProductPage = ({ productId }) => {
     <div className="bg-black text-white min-h-screen">
       {/* Header Placeholder */}
       <Header />
-      <div className="p-4 max-w-7xl mx-auto pt-[130px]">
+      <div className="p-4 max-w-7xl mx-auto pt-[130px] ">
         <div className="flex space-between">
           {/* Product Images and Main Image */}
-          <div className="flex space-x-4 w-3/4">
-            <div className="w-20 space-y-2 mr-[1rem]">
+          <div className="flex space-x-4 w-3/4 ">
+            <div className=" flex w-full h-[500px]">
+            <div className="w-20 space-y-2 mr-[1rem] ">
               {[
                 product.image,
                 ...product.shades.map((shade, index) => product.images[index]),
@@ -147,19 +148,20 @@ const SingleProductPage = ({ productId }) => {
               ))}
             </div>
 
-            <div className="w-2/3">
+            <div className="w-2/3 ">
               <Image
                 src={selectedImage}
                 alt={product.name}
                 width={400}
                 height={400}
-                className="w-full h-[65%] rounded-xl"
+                className="w-[400px] h-[400px] rounded-xl"
               />
+            </div>
             </div>
           </div>
 
           {/* Product Details */}
-          <div className="w-2/3 space-y-4">
+          <div className="w-2/3 space-y-4 ">
             <div className="flex items-center justify-between">
               <h1 className="font-size-heading font-bold font-playfair-display">
                 {product.name}
