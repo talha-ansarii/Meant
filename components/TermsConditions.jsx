@@ -48,7 +48,7 @@ const TermsConditions = () => {
           <p className="text-base text-gray-500 md:text-lg font-poppins font-medium leading-relaxed mb-8">
             You agree to use this website only for lawful purposes and in a way
             that does not infringe the rights of, restrict, or inhibit anyone
-            else's use and enjoyment of the site. Prohibited behavior includes
+            elses use and enjoyment of the site. Prohibited behavior includes
             harassing or causing distress or inconvenience to any other user,
             transmitting obscene or offensive content, or disrupting the normal
             flow of dialogue within our site.

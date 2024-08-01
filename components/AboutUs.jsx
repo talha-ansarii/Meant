@@ -20,7 +20,7 @@ const AboutUs = () => {
             <p className="lg:text-2xl  lg:leading-8 md:text-lg md:leading-6 text-sm leading-4">
               Welcome to <b>Meant,</b> where every product is crafted with
               intention, purpose, and a commitment to making a difference. We
-              believe that beauty is more than skin deep; it's about embracing
+              believe that beauty is more than skin deep; its about embracing
               your true self and celebrating your unique essence. We thrive to
               empower individuals to feel confident and beautiful in their skin,
               while making a positive impact on the world around us.
