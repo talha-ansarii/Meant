@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useWishlist } from "/context/WishlistContext.js";
 import { useCart } from "/context/CartContext.js";
+import { FaStar } from "react-icons/fa";
 
 const ProductCard = ({ product, quantity, onQuantityChange }) => {
   const { addToWishlist, removeFromWishlist, wishlist } = useWishlist();
@@ -77,17 +78,12 @@ const ProductCard = ({ product, quantity, onQuantityChange }) => {
         <div className="flex items-center mb-2 font-poppins">
           <span className="text-black mr-2 flex items-center">
             {Array.from({ length: 5 }, (_, i) => (
-              <svg
+              <FaStar
                 key={i}
                 className={`w-4 h-4 ${
                   i < product.rating ? "text-black" : "text-gray-300"
                 }`}
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path d="M10 15l-5.878 3.09L5.092 12.37 1.115 8.91l6.017-.868L10 2l2.868 5.031 6.017.868-4.977 3.46 1.248 5.72L10 15z" />
-              </svg>
+              />
             ))}
           </span>
           <span className="text-black font-poppins font-medium">
@@ -128,7 +124,7 @@ const ProductCard = ({ product, quantity, onQuantityChange }) => {
           {/* Add to Cart button */}
           <button
             onClick={handleCartClick}
-            className="bg-white text-black border border-black px-4 py-1.5 rounded-md font-merriweather font-bold"
+            className="bg-white text-black border border-black px-4 py-1.5 rounded-md font-merriweather font-bold hover:bg-gray-300"
           >
             Add to Cart
           </button>

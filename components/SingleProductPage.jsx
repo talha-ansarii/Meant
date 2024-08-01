@@ -123,40 +123,42 @@ const SingleProductPage = ({ productId }) => {
           {/* Product Images and Main Image */}
           <div className="flex space-x-4 w-3/4 ">
             <div className=" flex w-full h-[500px]">
-            <div className="w-20 space-y-2 mr-[1rem] ">
-              {[
-                product.image,
-                ...product.shades.map((shade, index) => product.images[index]),
-              ].map((img, index) => (
-                <div
-                  key={index}
-                  className={`cursor-pointer ${
-                    selectedImage === img
-                      ? "border-white"
-                      : "border-transparent"
-                  } border rounded-lg`}
-                  onMouseEnter={() => handleMouseEnter(img)}
-                >
-                  <Image
-                    src={img}
-                    alt={`Product image ${index + 1}`}
-                    width={80}
-                    height={80}
-                    className="w-full h-auto rounded-md"
-                  />
-                </div>
-              ))}
-            </div>
+              <div className="w-20 space-y-2 mr-[1rem] ">
+                {[
+                  product.image,
+                  ...product.shades.map(
+                    (shade, index) => product.images[index]
+                  ),
+                ].map((img, index) => (
+                  <div
+                    key={index}
+                    className={`cursor-pointer ${
+                      selectedImage === img
+                        ? "border-white"
+                        : "border-transparent"
+                    } border rounded-lg`}
+                    onMouseEnter={() => handleMouseEnter(img)}
+                  >
+                    <Image
+                      src={img}
+                      alt={`Product image ${index + 1}`}
+                      width={80}
+                      height={80}
+                      className="w-full h-auto rounded-md"
+                    />
+                  </div>
+                ))}
+              </div>
 
-            <div className="w-2/3 ">
-              <Image
-                src={selectedImage}
-                alt={product.name}
-                width={400}
-                height={400}
-                className="w-[400px] h-[400px] rounded-xl"
-              />
-            </div>
+              <div className="w-2/3 ">
+                <Image
+                  src={selectedImage}
+                  alt={product.name}
+                  width={400}
+                  height={400}
+                  className="w-[400px] h-[400px] rounded-xl"
+                />
+              </div>
             </div>
           </div>
 
@@ -245,7 +247,7 @@ const SingleProductPage = ({ productId }) => {
 
               <button
                 onClick={() => handleCartClick(product)}
-                className="bg-white text-black border border-black px-6 py-2 rounded-md font-merriweather font-bold w-full max-w-xs"
+                className="bg-white text-black border border-black px-6 py-2 rounded-md font-merriweather font-bold w-full max-w-xs hover:bg-gray-300"
               >
                 Add to Cart
               </button>
