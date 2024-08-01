@@ -20,7 +20,7 @@ const products = [
       "Use the applicator that comes with the product or a lip brush to apply the liquid lipstick to your lips. Start from the center of your lips and work your way outwards. Let it dry: Allow the liquid lipstick to dry completely, which usually takes a few minutes. Avoid rubbing your lips together until the lipstick has dried.",
     ingredients:
       "Isododecane, Trimethylsiloxysilicate, Cyclopentasiloxane, PMSQ IDD, Bentone Gel, Mica, Fumed Silica, Garamite, Colour, Pentaerythrityl Tetra-di-t-butyl Hydroxyhydrocinnamate, Vitamin C.",
-    shades: ["#FA70CB", "#DA3D12", "#F7879A", "#841644"],
+    shades: ["#A32C42", "#663024", "#AD5B55", "#995A60"],
     shadeNames: ["Emily", "Grace", "Diva", "Veronica"],
   },
   {
@@ -44,7 +44,7 @@ const products = [
       "Isododecane, Trimethylsiloxysilicate, Cyclopentasiloxane, PMSQ IDD, Bentone Gel, Mica, Fumed Silica, Garamite, Colour, Pentaerythrityl Tetra-di-t-butyl Hydroxyhydrocinnamate, Vitamin C.",
     howToUse:
       "Use the applicator that comes with the product or a lip brush to apply the liquid lipstick to your lips. Start from the center of your lips and work your way outwards. Let it dry: Allow the liquid lipstick to dry completely, which usually takes a few minutes. Avoid rubbing your lips together until the lipstick has dried.",
-    shades: ["#FA70CB", "#DA3D12", "#F7879A", "#841644"],
+    shades: ["#3B1A12", "#6B1227", "#A10303", "#963039"],
     shadeNames: ["Margaret", "Elizabeth", "Marilyn", "Scarlet"],
   },
   {
@@ -68,7 +68,7 @@ const products = [
       "Isododecane, Trimethylsiloxysilicate, Cyclopentasiloxane, PMSQ IDD, Bentone Gel, Mica, Fumed Silica, Garamite, Colour, Pentaerythrityl Tetra-di-t-butyl Hydroxyhydrocinnamate, Vitamin C.",
     howToUse:
       "Use the applicator that comes with the product or a lip brush to apply the liquid lipstick to your lips. Start from the center of your lips and work your way outwards. Let it dry: Allow the liquid lipstick to dry completely, which usually takes a few minutes. Avoid rubbing your lips together until the lipstick has dried.",
-    shades: ["#FA70CB", "#DA3D12", "#F7879A", "#841644"],
+    shades: ["#3B1A12", "#6B1227", "#A10303", "#963039"],
     shadeNames: ["Margaret", "Elizabeth", "Marilyn", "Scarlet"],
   },
   {
@@ -92,7 +92,7 @@ const products = [
       "Use the applicator that comes with the product or a lip brush to apply the liquid lipstick to your lips. Start from the center of your lips and work your way outwards. Let it dry: Allow the liquid lipstick to dry completely, which usually takes a few minutes. Avoid rubbing your lips together until the lipstick has dried.",
     ingredients:
       "Isododecane, Trimethylsiloxysilicate, Cyclopentasiloxane, PMSQ IDD, Bentone Gel, Mica, Fumed Silica, Garamite, Colour, Pentaerythrityl Tetra-di-t-butyl Hydroxyhydrocinnamate, Vitamin C.",
-    shades: ["#FA70CB", "#DA3D12", "#F7879A", "#841644"],
+    shades: ["#A32C42", "#663024", "#AD5B55", "#995A60"],
     shadeNames: ["Emily", "Grace", "Diva", "Veronica"],
   },
 ];

@@ -124,7 +124,7 @@ const Day = () => {
             </div>
             <div className="flex items-center gap-4">
               <svg
-                className="w-8 h-8"
+                className="w-8 h-8 cursor-pointer"
                 fill={isInWishlist ? "#D76D8E" : "none"}
                 stroke="#D76D8E"
                 viewBox="0 0 24 24"

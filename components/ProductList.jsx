@@ -195,18 +195,15 @@ const ProductList = () => {
     setCurrentPage(pageNumber);
   };
 
-
   const handleToggleAccordion = (index) => {
     setOpenIndex(openIndex === index ? null : index);
   };
-
-  
 
   return (
     <div className="pb-4">
       <Header />
       <div className="banner pt-[8rem]">
-      <Banner />
+        <Banner />
       </div>
       <div className="p-4 relative w-[82%] m-auto pt-[2rem]">
         {/* Product count and sort by filter */}
@@ -218,7 +215,13 @@ const ProductList = () => {
           <div className="flex items-center space-x-2">
             {/* Sort By Filter */}
             <CustomDropdown
-              options={["Featured", "Newest", "Best Selling", "High to Low", "Low to High"]}
+              options={[
+                "Featured",
+                "Newest",
+                "Best Selling",
+                "High to Low",
+                "Low to High",
+              ]}
               selectedOption={sortOption}
               onSelect={handleSortChange}
               prefix="Sort By:"
@@ -266,6 +269,7 @@ const ProductList = () => {
             <h3 className="text-black font-playfair-display font-semibold text-[25px] mb-4">
               Filter
             </h3>
+
             {/* Filter Options */}
             <Accordion
               title="Price Range"
@@ -300,7 +304,8 @@ const ProductList = () => {
         </div>
 
         {/* Product grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-10">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {" "}
           {currentProducts.map((product) => (
             <ProductCard
               key={product.id}

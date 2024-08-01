@@ -55,13 +55,15 @@ const Header = () => {
     <div className="w-full ">
       <div className="lg:w-[892px] md:w-[741px] hidden fixed z-50 top-[30px] left-[50%] translate-x-[-50%] px-[20px] m-auto h-[43px] rounded-[116px]  border md:flex lg:flex items-center justify-between bg-black  ">
         <div>
-          <Image
-            src="/assets/images/logo.webp"
-            width={62}
-            height={21}
-            alt="logo"
-            className="lg:ml-[50px] md:ml-[20px]"
-          />
+          <Link href={"/"}>
+            <Image
+              src="/assets/images/logo.webp"
+              width={62}
+              height={21}
+              alt="logo"
+              className="lg:ml-[50px] md:ml-[20px]"
+            />
+          </Link>
         </div>
         <div className="flex lg:gap-[50px] md:gap-4 playfair font-[500] lg:text-[17px] lg:leading-[22.66px] md:text-[13px] md:leading-[17.66px] text-white">
           <Link href={"/"}>Home</Link>
@@ -80,58 +82,61 @@ const Header = () => {
           </Link>
           <FaUser
             onClick={() => setProfileOpen(!profileOpen)}
-           className="w-[21px] cursor-pointer h-[22px] text-white" />
+            className="w-[21px] cursor-pointer h-[22px] text-white"
+          />
           <div
             className="relative flex items-center"
             onClick={() => setIsCartOpen(true)}
           >
             <FaShoppingCart className="w-[20px] cursor-pointer h-[22px] text-white" />
             {cartItemCount > 0 && (
-              <span className="absolute bottom-[1.3rem] left-[1.2rem] bg-black text-white rounded-full text-xs w-5 h-5  flex items-center justify-center">
+              <span className="absolute bottom-[0.8rem] left-[0.8rem] bg-black text-white rounded-full text-[9px] w-3 h-3  flex items-center justify-center">
                 {cartItemCount}
               </span>
             )}
-          </div>{
-            profileOpen && (
-              <div className="absolute  w-[150px] h-[100px] rounded-[4px] shadow-md bg-white top-[45px] right-[50%] translate-x-[50%]">
-<div className="w-[15px] h-[16px] absolute bg-white  top-[-8px] rotate-45 left-[50%] translate-x-[-50%]">
-            
-</div>
-{
-              isLogin? (
-               
-                  <div className="flex text-[16px] font-[700] items-center justify-center playfair text-black flex-col gap-4 p-4">
-                    <Link className="cursor-pointer" href="/profile">Profile</Link>
-                    <Link className="cursor-pointer" href="/past-orders">Orders</Link>
-                    <Link className="cursor-pointer" href="/logout">Logout</Link>
-                </div>
-              ): (
-                
-                  <div className="flex text-[16px] font-[700] justify-center items-center playfair text-black flex-col gap-4 p-4">
-                    <Link className="cursor-pointer" href="/profile">Log in</Link>
-                    <Link className="cursor-pointer" href="/past-orders">Sign up</Link>
-                  </div>
-              )
-
-            }
           </div>
-            )
-          }
-         
-          
+          {profileOpen && (
+            <div className="absolute  w-[150px] h-[100px] rounded-[4px] shadow-md bg-white top-[45px] right-[50%] translate-x-[50%]">
+              <div className="w-[15px] h-[16px] absolute bg-white  top-[-8px] rotate-45 left-[50%] translate-x-[-50%]"></div>
+              {isLogin ? (
+                <div className="flex text-[16px] font-[700] items-center justify-center playfair text-black flex-col gap-4 p-4">
+                  <Link className="cursor-pointer" href="/profile">
+                    Profile
+                  </Link>
+                  <Link className="cursor-pointer" href="/past-orders">
+                    Orders
+                  </Link>
+                  <Link className="cursor-pointer" href="/logout">
+                    Logout
+                  </Link>
+                </div>
+              ) : (
+                <div className="flex text-[16px] font-[700] justify-center items-center playfair text-black flex-col gap-4 p-4">
+                  <Link className="cursor-pointer" href="/profile">
+                    Log in
+                  </Link>
+                  <Link className="cursor-pointer" href="/past-orders">
+                    Sign up
+                  </Link>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </div>
 
       <div>
         <div className="md:hidden relative lg:hidden flex w-[100%] px-[5%] m-auto justify-between items-center">
           <div className="my-6 ml-4">
-            <Image
-              src="/assets/images/logo.webp"
-              alt="logo"
-              width={100}
-              height={50}
-              className="w-[100px] h-[50px]"
-            />
+            <Link href={"/"}>
+              <Image
+                src="/assets/images/logo.webp"
+                alt="logo"
+                width={100}
+                height={50}
+                className="w-[100px] h-[50px]"
+              />
+            </Link>
           </div>
           <div>
             <div>
