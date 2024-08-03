@@ -17,10 +17,10 @@ const AboutUs = () => {
         </div>
         <div className="bg-white w-full max-w-screen-lg mt-12 rounded-[10px] flex flex-col items-center px-6 py-12">
           <div className="text-black playfair font-medium text-center lg:w-1/2 md:w-3/4 w-full">
-            <p className="lg:text-2xl  lg:leading-8 md:text-lg md:leading-6 text-sm leading-4">
+            <p className="lg:text-2xl lg:leading-8 md:text-lg md:leading-6 text-sm leading-4">
               Welcome to <b>Meant,</b> where every product is crafted with
               intention, purpose, and a commitment to making a difference. We
-              believe that beauty is more than skin deep; its about embracing
+              believe that beauty is more than skin deep; it's about embracing
               your true self and celebrating your unique essence. We thrive to
               empower individuals to feel confident and beautiful in their skin,
               while making a positive impact on the world around us.
@@ -103,27 +103,32 @@ const AboutUs = () => {
         </div>
 
         <div className="lg:mb-[200px] md:w-[650px] m-auto md:h-[321px] lg:w-full mt-12 rounded-md lg:h-[537px] w-[309px] h-[162px] gap-2 md:gap-4 lg:gap-4 flex justify-center items-center">
-  <div className="lg:w-[50%] lg:h-[537px] md:w-[510px] md:h-[321px] w-[162px] h-[162px] rounded-md overflow-hidden border-r-[10px] border-l-[10px] border-black">
-    <Image
-      src="/assets/images/vision.jpeg"
-      alt="Our Vision Banner"
-      width={510}
-      height={537}
-      className="md:w-[510px] md:h-[321px] lg:h-[537px] w-[162px] h-[162px] overflow-hidden rounded-md object-cover"
-    />
-  </div>
-  <div className="flex justify-center items-center w-1/2">
-    <div className="text-black w-[154px] md:w-[309px] md:h-[321px] h-[162px] lg:h-[537px] bg-white rounded-md playfair flex flex-col text-center justify-center items-center lg:w-[567px] m-auto p-2 lg:p-4 gap-1 lg:gap-6">
-      <div className="lg:text-[48px] font-bold lg:leading-[63px] md:text-[36px] text-[20px]">
-        Our Vision
-      </div>
-      <div className="lg:text-[20px] lg:w-[80%] lg:leading-[26px] font-medium md:text-[16px] md:leading-[21px] text-[7px] leading-[9.33px]">
-        <strong>Our vision</strong> is to redefine beauty standards by promoting inclusivity, diversity, and authenticity. We envision a world where everyone feels valued and beautiful in their own skin, free from societal pressures and stereotypes. We aim to lead the beauty industry towards a more sustainable future, where every product not only makes a difference to your skin but also contributes positively to the environment and society.
-      </div>
-    </div>
-  </div>
-</div>
-
+          <div className="lg:w-[50%] lg:h-[537px] md:w-[510px] md:h-[321px] w-[162px] h-[162px] rounded-md overflow-hidden border-r-[10px] border-l-[10px] border-black">
+            <Image
+              src="/assets/images/vision.jpeg"
+              alt="Our Vision Banner"
+              width={510}
+              height={537}
+              className="md:w-[510px] md:h-[321px] lg:h-[537px] w-[162px] h-[162px] overflow-hidden rounded-md object-cover"
+            />
+          </div>
+          <div className="flex justify-center items-center w-1/2">
+            <div className="text-black w-[154px] md:w-[309px] md:h-[321px] h-[162px] lg:h-[537px] bg-white rounded-md playfair flex flex-col text-center justify-center items-center lg:w-[567px] m-auto p-2 lg:p-4 gap-1 lg:gap-6">
+              <div className="lg:text-[48px] font-bold lg:leading-[63px] md:text-[36px] text-[20px]">
+                Our Vision
+              </div>
+              <div className="lg:text-[20px] lg:w-[80%] lg:leading-[26px] font-medium md:text-[16px] md:leading-[21px] text-[7px] leading-[9.33px]">
+                <strong>Our vision</strong> is to redefine beauty standards by
+                promoting inclusivity, diversity, and authenticity. We envision
+                a world where everyone feels valued and beautiful in their own
+                skin, free from societal pressures and stereotypes. We aim to
+                lead the beauty industry towards a more sustainable future,
+                where every product not only makes a difference to your skin
+                but also contributes positively to the environment and society.
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       <Footer />
     </div>

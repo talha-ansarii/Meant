@@ -50,7 +50,7 @@ const ProductCard = ({ product, quantity, onQuantityChange }) => {
         {/* Link to the single product page */}
         <Link href={`/product/${product.id}`}>
           <Image
-            src={product.image}
+            src={product.images[0]?.src}
             alt={product.name}
             width={400}
             height={350}
@@ -81,13 +81,13 @@ const ProductCard = ({ product, quantity, onQuantityChange }) => {
               <FaStar
                 key={i}
                 className={`w-4 h-4 ${
-                  i < product.rating ? "text-black" : "text-gray-300"
+                  i < product.average_rating ? "text-black" : "text-gray-300"
                 }`}
               />
             ))}
           </span>
           <span className="text-black font-poppins font-medium">
-            ({product.rating})
+            ({product.average_rating})
           </span>
         </div>
 
@@ -97,7 +97,7 @@ const ProductCard = ({ product, quantity, onQuantityChange }) => {
             {product.name}
           </h3>
           <p className="text-lg font-playfair-display font-semibold text-black">
-            {product.price}
+            ${product.price}
           </p>
         </div>
 

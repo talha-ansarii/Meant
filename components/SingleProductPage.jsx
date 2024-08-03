@@ -344,7 +344,6 @@ const SingleProductPage = ({ productId }) => {
           <h2 className="font-size-heading font-medium font-playfair-display flex-shrink-0">
             You May Also Like
           </h2>
-          <div className="flex-grow ml-4 bg-white h-[1px] my-6"></div>
         </div>
 
         {/* You May Also Like Section */}
@@ -356,9 +355,6 @@ const SingleProductPage = ({ productId }) => {
                 product={p}
                 quantity={relatedQuantities[p.id] || 1}
                 onQuantityChange={handleRelatedQuantityChange}
-                onAddToCart={handleCartClick}
-                onAddToWishlist={handleWishlistClick}
-                isInWishlist={false}
               />
             ))}
           </div>
@@ -369,7 +365,6 @@ const SingleProductPage = ({ productId }) => {
           <h2 className="font-size-heading font-medium font-playfair-display flex-shrink-0">
             Reviews
           </h2>
-          <div className="flex-grow ml-4 bg-white h-[1px] my-6"></div>
         </div>
 
         {/* Reviews Section */}

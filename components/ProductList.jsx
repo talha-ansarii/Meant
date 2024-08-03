@@ -1,7 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
-import initialProducts from "@/constants/products"; // Import products as initialProducts
+import React, { useState, useEffect } from "react";
 import Pagination from "@/components/Pagination";
 import Accordion from "./Accordian";
 import ProductCard from "./ProductCard";
@@ -76,16 +75,34 @@ const PriceFilter = ({ priceRange, onPriceChange, onReset }) => {
 };
 
 const ProductList = () => {
-  const [products, setProducts] = useState(initialProducts); // Initialize state with initialProducts
-  const [quantities, setQuantities] = useState(
-    initialProducts.reduce((acc, product) => ({ ...acc, [product.id]: 1 }), {})
-  );
+  const [products, setProducts] = useState([]);
+  const [quantities, setQuantities] = useState({});
   const [sortOption, setSortOption] = useState("Featured");
   const [filterOpen, setFilterOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [openIndex, setOpenIndex] = useState(null);
 
   const productsPerPage = 16;
+
+  useEffect(() => {
+    // Fetch products from API
+    const fetchProducts = async () => {
+      try {
+        const response = await fetch("/api/get-products");
+        const data = await response.json();
+        console.log("Fetched products:", data);
+
+        setProducts(data);
+        setQuantities(
+          data.reduce((acc, product) => ({ ...acc, [product.id]: 1 }), {})
+        );
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    };
+
+    fetchProducts();
+  }, []);
 
   const parsePrice = (price) => {
     // Remove the dollar sign and convert to number
@@ -109,10 +126,12 @@ const ProductList = () => {
 
     switch (option) {
       case "Featured":
-        sortedProducts = [...initialProducts];
+        sortedProducts = [...products];
         break;
       case "Newest":
-        sortedProducts.sort((a, b) => new Date(b.date) - new Date(a.date));
+        sortedProducts.sort(
+          (a, b) => new Date(b.date_created) - new Date(a.date_created)
+        );
         break;
       case "Best Selling":
         sortedProducts.sort((a, b) => b.rating - a.rating);
@@ -128,10 +147,10 @@ const ProductList = () => {
         );
         break;
       default:
-        sortedProducts = [...initialProducts];
+        sortedProducts = [...products];
     }
 
-    setProducts(sortedProducts);
+    sortedProducts;
     setCurrentPage(1);
   };
 
@@ -162,7 +181,7 @@ const ProductList = () => {
   // Filter products based on selected categories and price range
   const filteredProducts = products.filter((product) => {
     const matchesCategory = selectedCategories.length
-      ? selectedCategories.includes(product.category)
+      ? product.categories.some((cat) => selectedCategories.includes(cat.name))
       : true; // If no category is selected, include all products
 
     const matchesPrice = priceRange
@@ -225,12 +244,11 @@ const ProductList = () => {
               selectedOption={sortOption}
               onSelect={handleSortChange}
               prefix="Sort By:"
-              className="mr-4"
             />
             {/* Filter button */}
             <button
               onClick={toggleFilter}
-              className="bg-black text-white border border-white rounded-md px-4 py-2"
+              className="bg-black text-white border border-white rounded-md pl-[.7rem] pr-[.83rem] py-2"
             >
               Filter
             </button>

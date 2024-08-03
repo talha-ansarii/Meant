@@ -30,7 +30,7 @@ const Footer = () => {
         </div>
         <div className="w-full bg-white h-[1px]"></div>
         <div className="flex w-full pb-2 ">
-          <div className=" hidden lg:block md:block w-full pt-8 lg:w-[60%] md:w-[50%] pt-[80px]">
+          <div className=" hidden lg:block md:block w-full pt-8 lg:w-[60%] md:w-[50%]">
             <Link href="/">
               <Image
                 src="/assets/images/logo.webp"
@@ -76,12 +76,6 @@ const Footer = () => {
                   className="text-[11px] leading-[16px] md:text-[14px] md:leading-[21px]  lg:text-[14px] font-[400] lg:leading-[21px]"
                 >
                   Contact US
-                </Link>
-                <Link
-                  href={"/"}
-                  className="text-[11px] leading-[16px] md:text-[14px] md:leading-[21px]  lg:text-[14px] font-[400] lg:leading-[21px]"
-                >
-                  Track Package
                 </Link>
                 <Link
                   href={"/"}
