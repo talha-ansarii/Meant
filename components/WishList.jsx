@@ -40,7 +40,7 @@ const WishList = () => {
                 {/* Link to the single product page */}
                 <Link href={`/product/${item.id}`}>
                   <Image
-                    src={item.image}
+                    src={item.images[0]?.src}
                     alt={item.name}
                     width={400}
                     height={350}

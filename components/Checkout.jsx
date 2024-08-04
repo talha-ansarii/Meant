@@ -26,7 +26,7 @@ const Checkout = () => {
             >
               <div className="flex-shrink-0 h-[120px]">
                 <Image
-                  src={item.image}
+                  src={item.images[0]?.src}
                   alt={item.name}
                   width={100}
                   height={100}
@@ -39,7 +39,7 @@ const Checkout = () => {
                     {item.name}
                   </h2>
                 </div>
-                <div className="my-2 mb-[1rem]">
+                {/* <div className="my-2 mb-[1rem]">
                   <div className="grid grid-cols-2 gap-1 w-[26px]">
                     {item.shades.map((shade, index) => (
                       <span
@@ -49,7 +49,7 @@ const Checkout = () => {
                       ></span>
                     ))}
                   </div>
-                </div>
+                </div> */}
                 <div className="flex items-center justify-between mt-2 space-x-4">
                   <div className="flex items-center border border-black rounded-[3px]">
                     <span className="mx-4 text-black font-poppins font-medium">

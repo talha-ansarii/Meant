@@ -1,7 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
-import initialProducts from "@/constants/products"; // Import products as initialProducts
+import React, { useState, useEffect } from "react";
 import Pagination from "@/components/Pagination";
 import Accordion from "./Accordian";
 import ProductCard from "./ProductCard";
@@ -76,16 +75,34 @@ const PriceFilter = ({ priceRange, onPriceChange, onReset }) => {
 };
 
 const ProductList = () => {
-  const [products, setProducts] = useState(initialProducts); // Initialize state with initialProducts
-  const [quantities, setQuantities] = useState(
-    initialProducts.reduce((acc, product) => ({ ...acc, [product.id]: 1 }), {})
-  );
+  const [products, setProducts] = useState([]);
+  const [quantities, setQuantities] = useState({});
   const [sortOption, setSortOption] = useState("Featured");
   const [filterOpen, setFilterOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [openIndex, setOpenIndex] = useState(null);
 
   const productsPerPage = 16;
+
+  useEffect(() => {
+    // Fetch products from API
+    const fetchProducts = async () => {
+      try {
+        const response = await fetch("/api/get-products");
+        const data = await response.json();
+        console.log("Fetched products:", data);
+
+        setProducts(data);
+        setQuantities(
+          data.reduce((acc, product) => ({ ...acc, [product.id]: 1 }), {})
+        );
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    };
+
+    fetchProducts();
+  }, []);
 
   const parsePrice = (price) => {
     // Remove the dollar sign and convert to number
@@ -109,10 +126,12 @@ const ProductList = () => {
 
     switch (option) {
       case "Featured":
-        sortedProducts = [...initialProducts];
+        sortedProducts = [...products];
         break;
       case "Newest":
-        sortedProducts.sort((a, b) => new Date(b.date) - new Date(a.date));
+        sortedProducts.sort(
+          (a, b) => new Date(b.date_created) - new Date(a.date_created)
+        );
         break;
       case "Best Selling":
         sortedProducts.sort((a, b) => b.rating - a.rating);
@@ -128,10 +147,10 @@ const ProductList = () => {
         );
         break;
       default:
-        sortedProducts = [...initialProducts];
+        sortedProducts = [...products];
     }
 
-    setProducts(sortedProducts);
+    sortedProducts;
     setCurrentPage(1);
   };
 
@@ -162,7 +181,7 @@ const ProductList = () => {
   // Filter products based on selected categories and price range
   const filteredProducts = products.filter((product) => {
     const matchesCategory = selectedCategories.length
-      ? selectedCategories.includes(product.category)
+      ? product.categories.some((cat) => selectedCategories.includes(cat.name))
       : true; // If no category is selected, include all products
 
     const matchesPrice = priceRange
@@ -195,18 +214,15 @@ const ProductList = () => {
     setCurrentPage(pageNumber);
   };
 
-
   const handleToggleAccordion = (index) => {
     setOpenIndex(openIndex === index ? null : index);
   };
-
-  
 
   return (
     <div className="pb-4">
       <Header />
       <div className="banner pt-[8rem]">
-      <Banner />
+        <Banner />
       </div>
       <div className="p-4 relative w-[82%] m-auto pt-[2rem]">
         {/* Product count and sort by filter */}
@@ -218,16 +234,21 @@ const ProductList = () => {
           <div className="flex items-center space-x-2">
             {/* Sort By Filter */}
             <CustomDropdown
-              options={["Featured", "Newest", "Best Selling", "High to Low", "Low to High"]}
+              options={[
+                "Featured",
+                "Newest",
+                "Best Selling",
+                "High to Low",
+                "Low to High",
+              ]}
               selectedOption={sortOption}
               onSelect={handleSortChange}
               prefix="Sort By:"
-              className="mr-4"
             />
             {/* Filter button */}
             <button
               onClick={toggleFilter}
-              className="bg-black text-white border border-white rounded-md px-4 py-2"
+              className="bg-black text-white border border-white rounded-md pl-[.7rem] pr-[.83rem] py-2"
             >
               Filter
             </button>
@@ -266,6 +287,7 @@ const ProductList = () => {
             <h3 className="text-black font-playfair-display font-semibold text-[25px] mb-4">
               Filter
             </h3>
+
             {/* Filter Options */}
             <Accordion
               title="Price Range"
@@ -300,7 +322,8 @@ const ProductList = () => {
         </div>
 
         {/* Product grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-10">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {" "}
           {currentProducts.map((product) => (
             <ProductCard
               key={product.id}
