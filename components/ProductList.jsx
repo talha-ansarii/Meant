@@ -134,7 +134,7 @@ const ProductList = () => {
         );
         break;
       case "Best Selling":
-        sortedProducts.sort((a, b) => b.rating - a.rating);
+        sortedProducts.sort((a, b) => b.average_rating - a.average_rating);
         break;
       case "High to Low":
         sortedProducts.sort(
@@ -150,7 +150,7 @@ const ProductList = () => {
         sortedProducts = [...products];
     }
 
-    sortedProducts;
+    setProducts(sortedProducts);
     setCurrentPage(1);
   };
 
