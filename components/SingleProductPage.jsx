@@ -14,8 +14,8 @@ import Header from "./Header";
 const shades = ["#A32C42", "#663024", "#AD5B55", "#995A60"];
 const shadeNames = ["Emily", "Grace", "Diva", "Veronica"];
 
-const SingleProductPage = ({ productId, product }) => {
-  const [selectedImage, setSelectedImage] = useState(product?.images[0]);
+const SingleProductPage = ({ productId }) => {
+  const [selectedImage, setSelectedImage] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [openIndex, setOpenIndex] = useState(null);
   const [relatedProducts, setRelatedProducts] = useState([]);
@@ -26,6 +26,27 @@ const SingleProductPage = ({ productId, product }) => {
   const [wishlistFilled, setWishlistFilled] = useState(false);
   const [inCart, setInCart] = useState(false);
   const [initialProducts, setInitialProducts] = useState([]);
+  const [product, setProduct] = useState(null);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    async function fetchProduct() {
+      try {
+        const response = await fetch(`/api/get-product/${productId}`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch product');
+        }
+        const data = await response.json();
+        console.log(data)
+        setProduct(data);
+        setSelectedImage(data.images[0].src);
+      } catch (error) {
+        setError(error.message);
+      }
+    }
+  
+    fetchProduct();
+  }, [productId]);
 
   useEffect(() => {
     // Fetch products from API

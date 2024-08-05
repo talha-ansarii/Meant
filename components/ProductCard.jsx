@@ -6,6 +6,7 @@ import { useCart } from "/context/CartContext.js";
 import { FaStar } from "react-icons/fa";
 import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
+import {addProductToCart} from "../utils/cartUtils";
 
 const ProductCard = ({ product, quantity, onQuantityChange }) => {
   const { addToWishlist, removeFromWishlist, wishlist } = useWishlist();
@@ -54,7 +55,7 @@ const ProductCard = ({ product, quantity, onQuantityChange }) => {
     setWishlistFilled(!wishlistFilled);
   };
 
-  const handleCartClick = (e) => {
+  const handleCartClick =  async(e) => {
     e.stopPropagation();
 
     if (!isSignedIn) {
@@ -65,13 +66,26 @@ const ProductCard = ({ product, quantity, onQuantityChange }) => {
     if (cartItem) {
       const newQuantity = cartItem.quantity + quantity;
       addToCart(product, newQuantity);
+      try {
+        const data = await addProductToCart(product.id, newQuantity);
+        console.log('Product added to cart:', data);
+      } catch (error) {
+        console.error('Error adding product to cart:', error);
+      }
     } else {
       addToCart(product, quantity);
+      try {
+        const data = await addProductToCart(product.id, quantity);
+        console.log('Product added to cart:', data);
+      } catch (error) {
+        console.error('Error adding product to cart:', error);
+      }
+      
     }
 
     setInCart(!inCart);
   };
-
+ 
   return (
     <div className="relative border rounded-lg overflow-hidden shadow-lg bg-white">
       <div className="relative">
