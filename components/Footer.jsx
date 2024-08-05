@@ -1,7 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-import { FaYoutube, FaInstagram } from "react-icons/fa";
+import { FaYoutube, FaInstagram, FaFacebook } from "react-icons/fa";
+import { FaThreads } from "react-icons/fa6";
 
 const Footer = () => {
   return (
@@ -23,6 +24,12 @@ const Footer = () => {
         <div className=" lg:hidden md:hidden w-full my-6 flex justify-center items-center gap-4">
           <Link href={"https://www.youtube.com/@mymeant"}>
             <FaYoutube className="w-[33px] h-[33px]" />
+          </Link>
+          <Link href={"https://www.instagram.com/meant_official/"}>
+            <FaFacebook className="w-[31px] h-[31px]" />
+          </Link>
+          <Link href={"https://www.instagram.com/meant_official/"}>
+            <FaThreads className="w-[31px] h-[31px]" />
           </Link>
           <Link href={"https://www.instagram.com/meant_official/"}>
             <FaInstagram className="w-[31px] h-[31px]" />
@@ -78,10 +85,16 @@ const Footer = () => {
                   Contact US
                 </Link>
                 <Link
-                  href={"/"}
+                  href={"/shipping-policy"}
                   className="text-[11px] leading-[16px] md:text-[14px] md:leading-[21px]  lg:text-[14px] font-[400] lg:leading-[21px]"
                 >
-                  Shipping & Returns
+                  Shipping & Delivery Policy
+                </Link>
+                <Link
+                  href={"/refund-policy"}
+                  className="text-[11px] leading-[16px] md:text-[14px] md:leading-[21px]  lg:text-[14px] font-[400] lg:leading-[21px]"
+                >
+                  Return Refund & Cancellation Policy
                 </Link>
                 <Link
                   href={"/terms-conditions"}
@@ -119,6 +132,18 @@ const Footer = () => {
                   >
                     <FaYoutube className="w-[16px] h-[16px]" />
                     <div>Youtube</div>
+                  </Link>
+                </div>
+                <div className="text-[14px] font-[400] leading-[21px]">
+                  <Link href={"@mymeant"} className="flex gap-2 items-center">
+                    <FaFacebook className="w-[16px] h-[16px]" />
+                    <div>Facebook</div>
+                  </Link>
+                </div>
+                <div className="text-[14px] font-[400] leading-[21px]">
+                  <Link href={"@mymeant"} className="flex gap-2 items-center">
+                    <FaThreads className="w-[16px] h-[16px]" />
+                    <div>Threads</div>
                   </Link>
                 </div>
               </div>
