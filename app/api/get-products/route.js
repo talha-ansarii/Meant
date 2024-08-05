@@ -16,3 +16,4 @@ export async function GET() {
     return new Response("Error fetching products", { status: 500 });
   }
 }
+ 

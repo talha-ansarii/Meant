@@ -124,6 +124,90 @@ const Marquee = () => {
               </span>
               <span className="mx-4 text-4xl">LONG LASTING</span>
             </div>
+            <div className="flex items-center">
+              <span>
+                <div className="bg-[#F7879A] w-[25px] h-[25px] rounded-full"></div>
+              </span>
+              <span className="mx-4 text-4xl">WATERPROOF</span>
+              <span>
+                <div className="bg-[#F7879A] w-[25px] h-[25px] rounded-full"></div>
+              </span>
+              <span className="mx-4 text-4xl">SMUDGE PROOF</span>
+              <span>
+                <div className="bg-[#F7879A] w-[25px] h-[25px] rounded-full"></div>
+              </span>
+              <span className="mx-4 text-4xl">LONG LASTING</span>
+            </div>
+            <div className="flex items-center">
+              <span>
+                <div className="bg-[#F7879A] w-[25px] h-[25px] rounded-full"></div>
+              </span>
+              <span className="mx-4 text-4xl">WATERPROOF</span>
+              <span>
+                <div className="bg-[#F7879A] w-[25px] h-[25px] rounded-full"></div>
+              </span>
+              <span className="mx-4 text-4xl">SMUDGE PROOF</span>
+              <span>
+                <div className="bg-[#F7879A] w-[25px] h-[25px] rounded-full"></div>
+              </span>
+              <span className="mx-4 text-4xl">LONG LASTING</span>
+            </div>
+            <div className="flex items-center">
+              <span>
+                <div className="bg-[#F7879A] w-[25px] h-[25px] rounded-full"></div>
+              </span>
+              <span className="mx-4 text-4xl">WATERPROOF</span>
+              <span>
+                <div className="bg-[#F7879A] w-[25px] h-[25px] rounded-full"></div>
+              </span>
+              <span className="mx-4 text-4xl">SMUDGE PROOF</span>
+              <span>
+                <div className="bg-[#F7879A] w-[25px] h-[25px] rounded-full"></div>
+              </span>
+              <span className="mx-4 text-4xl">LONG LASTING</span>
+            </div>
+            <div className="flex items-center">
+              <span>
+                <div className="bg-[#F7879A] w-[25px] h-[25px] rounded-full"></div>
+              </span>
+              <span className="mx-4 text-4xl">WATERPROOF</span>
+              <span>
+                <div className="bg-[#F7879A] w-[25px] h-[25px] rounded-full"></div>
+              </span>
+              <span className="mx-4 text-4xl">SMUDGE PROOF</span>
+              <span>
+                <div className="bg-[#F7879A] w-[25px] h-[25px] rounded-full"></div>
+              </span>
+              <span className="mx-4 text-4xl">LONG LASTING</span>
+            </div>
+            <div className="flex items-center">
+              <span>
+                <div className="bg-[#F7879A] w-[25px] h-[25px] rounded-full"></div>
+              </span>
+              <span className="mx-4 text-4xl">WATERPROOF</span>
+              <span>
+                <div className="bg-[#F7879A] w-[25px] h-[25px] rounded-full"></div>
+              </span>
+              <span className="mx-4 text-4xl">SMUDGE PROOF</span>
+              <span>
+                <div className="bg-[#F7879A] w-[25px] h-[25px] rounded-full"></div>
+              </span>
+              <span className="mx-4 text-4xl">LONG LASTING</span>
+            </div>
+            <div className="flex items-center">
+              <span>
+                <div className="bg-[#F7879A] w-[25px] h-[25px] rounded-full"></div>
+              </span>
+              <span className="mx-4 text-4xl">WATERPROOF</span>
+              <span>
+                <div className="bg-[#F7879A] w-[25px] h-[25px] rounded-full"></div>
+              </span>
+              <span className="mx-4 text-4xl">SMUDGE PROOF</span>
+              <span>
+                <div className="bg-[#F7879A] w-[25px] h-[25px] rounded-full"></div>
+              </span>
+              <span className="mx-4 text-4xl">LONG LASTING</span>
+            </div>
           </motion.div>
         </div>
       </div>

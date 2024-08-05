@@ -7,7 +7,7 @@ const ContactUsPage = () => {
     <div className="bg-white ">
 
     <Header/>
-      <div className="w-full h-[86px] bg-[#F7879A]/[10%]"></div>
+      <div className="w-full h-[86px] bg-black"></div>
       <main>
 
         <ContactUs />

@@ -1,3 +1,4 @@
+'use client'
 import OrderItem from "./OrderItem";
 
 const orders = [
@@ -24,9 +25,12 @@ const orders = [
     },
   ];
 export default function PastOrders() {
+
       
   return (
+    
     <div className=" bg-white w-[80%] m-auto text-black p-12 rounded-[10px]">
+      
     <div className="playfair font-[700] md:text-[32px] text-[24px] lg:text-[32px] mb-6">My Orders</div>
         <div className="flex flex-col gap-4">
 {

@@ -4,12 +4,37 @@ import Link from "next/link";
 import { useWishlist } from "/context/WishlistContext.js";
 import { useCart } from "/context/CartContext.js";
 import { FaStar } from "react-icons/fa";
+import { useUser } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
 
 const ProductCard = ({ product, quantity, onQuantityChange }) => {
   const { addToWishlist, removeFromWishlist, wishlist } = useWishlist();
   const { addToCart, cart } = useCart();
   const [wishlistFilled, setWishlistFilled] = useState(false);
   const [inCart, setInCart] = useState(false);
+  const { isSignedIn, user, isLoaded } = useUser();
+  const router = useRouter();
+
+  useEffect(() => {
+    // Fetch products from API
+    const fetchProducts = async () => {
+      try {
+        const response = await fetch("/api/get-products");
+        const data = await response.json();
+        console.log("Fetched products:", data);
+
+        setProducts(data);
+        setQuantities(
+          data.reduce((acc, product) => ({ ...acc, [product.id]: 1 }), {})
+        );
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
 
   useEffect(() => {
     setWishlistFilled(wishlist.has(product));
@@ -32,6 +57,9 @@ const ProductCard = ({ product, quantity, onQuantityChange }) => {
   const handleCartClick = (e) => {
     e.stopPropagation();
 
+    if (!isSignedIn) {
+      return router.push("/sign-in");
+    }
     const cartItem = cart.find((item) => item.id === product.id);
 
     if (cartItem) {

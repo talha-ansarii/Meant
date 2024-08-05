@@ -8,7 +8,7 @@ const AboutUs = () => {
       <div className="w-full max-w-screen-lg m-auto mt-[-80px] md:mt-0 lg:mt-0">
         <div className="w-full flex justify-center">
           <Image
-            src="/assets/images/aboutusbaanner.jpeg"
+            src="/assets/images/aboutusbaanner.png"
             alt="About Us Banner"
             width={1240}
             height={600}

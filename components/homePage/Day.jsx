@@ -11,11 +11,15 @@ import { HoverBorderGradient } from "../ui/hover-border-gradient";
 import { useCart } from "/context/CartContext";
 import { useWishlist } from "/context/WishlistContext";
 import products from "@/constants/products";
+import { useUser } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
 
 const Day = () => {
   const [mouseIn, setMouseIn] = useState(false);
   const [isInWishlist, setIsInWishlist] = useState(false);
   const [isInCart, setIsInCart] = useState(false);
+  const { isSignedIn, user, isLoaded } = useUser();
+  const router = useRouter();
 
   const ref = useRef(null);
   const canvasref = useRef(null);
@@ -38,6 +42,9 @@ const Day = () => {
   }, [wishlist, cart, product]);
 
   const handleAddToCart = () => {
+    if (!isSignedIn) {
+      return router.push("/sign-in");
+    }
     if (product) {
       addToCart(product, 1); 
       setIsInCart(true);

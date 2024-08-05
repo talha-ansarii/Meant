@@ -12,11 +12,15 @@ import { HoverBorderGradient } from "../ui/hover-border-gradient";
 import { useCart } from "/context/CartContext";
 import { useWishlist } from "/context/WishlistContext";
 import products from "@/constants/products";
+import { useUser } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
 
 const Night = () => {
   const [mouseIn, setMouseIn] = useState(false);
   const [isInWishlist, setIsInWishlist] = useState(false);
   const [isInCart, setIsInCart] = useState(false);
+  const { isSignedIn, user, isLoaded } = useUser();
+  const router = useRouter();
 
   const canvasref = useRef(null);
   const ref = useRef(null);
@@ -41,6 +45,9 @@ const Night = () => {
   }, [wishlist, cart, product]);
 
   const handleAddToCart = () => {
+    if (!isSignedIn) {
+      return router.push("/sign-in");
+    }
     if (product) {
       addToCart(product, 1);
       setIsInCart(true);
@@ -90,7 +97,8 @@ const Night = () => {
     <div>
       <div className="w-full bg-black relative overflow-hidden">
         <div className="bg-black  w-[80%] h-[100vh]  overflow-hidden m-auto flex  ">
-          <Meteors number={20} />
+          <Meteors  number={20} />
+
           <div className="w-[50%] text-white z-20 flex flex-col gap-10 px-16 h-[850px] pt-[200px]">
             <din className="">
               <Image
@@ -149,6 +157,7 @@ const Night = () => {
               </Canvas>
             </div>
           </div>
+
         </div>
       </div>
     </div>

@@ -2,11 +2,12 @@
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaRegHeart, FaShoppingCart, FaUser } from "react-icons/fa";
 import { useWishlist } from "/context/WishlistContext.js";
 import { useCart } from "@/context/CartContext";
 import Cart from "./Cart";
+import { SignedIn, SignedOut, UserButton, useUser } from "@clerk/nextjs";
 
 const Header = () => {
   const { wishlistCount } = useWishlist();
@@ -14,8 +15,31 @@ const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isLogin, setIsLogin] = useState(true);
   const [profileOpen, setProfileOpen] = useState(false);
+  
 
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [scrollDirection, setScrollDirection] = useState("up");
+
+  const { isSignedIn, user, isLoaded } = useUser();
+
+  // console.log(user)
+  useEffect(() => {
+    let lastScrollY = window.scrollY;
+
+    const updateScrollDirection = () => {
+      const scrollY = window.scrollY;
+      const direction = scrollY > lastScrollY ? "down" : "up";
+      if (direction !== scrollDirection && (scrollY - lastScrollY > 10 || scrollY - lastScrollY < -10)) {
+        setScrollDirection(direction);
+      }
+      lastScrollY = scrollY > 0 ? scrollY : 0;
+    };
+
+    window.addEventListener("scroll", updateScrollDirection);
+    return () => {
+      window.removeEventListener("scroll", updateScrollDirection);
+    };
+  }, [scrollDirection]);
 
   const containerVariants = {
     hidden: {
@@ -34,6 +58,13 @@ const Header = () => {
     },
   };
 
+ useEffect(() => {
+    if (user){
+      setIsLogin(true);
+    }else{
+      setIsLogin(false);
+    }
+ }, [user]);
   const linkVariants = {
     hidden: {
       opacity: 0,
@@ -52,8 +83,8 @@ const Header = () => {
   };
 
   return (
-    <div className="w-full ">
-      <div className="lg:w-[892px] md:w-[741px] hidden fixed z-50 top-[30px] left-[50%] translate-x-[-50%] px-[20px] m-auto h-[43px] rounded-[116px]  border md:flex lg:flex items-center justify-between bg-black  ">
+    <div className={`w-full m-auto top-[30px] duration-200 left-[50%] translate-x-[-50%] px-[20px] fixed z-50 transition-transform ${scrollDirection === "down" ? " -translate-y-[80px] " : " translate-y-0 "}`}>
+      <div className="lg:w-[892px] md:w-[741px] hidden z-50  px-[20px] m-auto h-[43px] rounded-[116px]  border md:flex lg:flex items-center justify-between bg-black  ">
         <div>
           <Link href={"/"}>
             <Image
@@ -96,30 +127,35 @@ const Header = () => {
             )}
           </div>
           {profileOpen && (
-            <div className="absolute  w-[150px] h-[100px] rounded-[4px] shadow-md bg-white top-[45px] right-[50%] translate-x-[50%]">
+            <div className="absolute  w-[170px]  rounded-[4px] shadow-md bg-white top-[45px] right-[50%] translate-x-[50%]">
               <div className="w-[15px] h-[16px] absolute bg-white  top-[-8px] rotate-45 left-[50%] translate-x-[-50%]"></div>
-              {isLogin ? (
-                <div className="flex text-[16px] font-[700] items-center justify-center playfair text-black flex-col gap-4 p-4">
-                  <Link className="cursor-pointer" href="/profile">
-                    Profile
-                  </Link>
+             <SignedIn>
+             <div className="flex text-[16px] font-[700] items-center justify-center playfair text-black flex-col gap-4 p-4">
+                    
+                      <div className="flex gap-2 justify-center items-center">
+                    <UserButton/>
+                        <div>{user?.username}</div>
+                      </div>
+
                   <Link className="cursor-pointer" href="/past-orders">
                     Orders
                   </Link>
-                  <Link className="cursor-pointer" href="/logout">
-                    Logout
-                  </Link>
                 </div>
-              ) : (
-                <div className="flex text-[16px] font-[700] justify-center items-center playfair text-black flex-col gap-4 p-4">
-                  <Link className="cursor-pointer" href="/profile">
-                    Log in
+
+             </SignedIn>
+
+                <SignedOut>
+                <div className="flex text-[16px]  font-[700] justify-center items-center playfair text-black flex-col gap-4 p-4">
+                  <Link className="cursor-pointer" href="/sign-in">
+                    Sign in
                   </Link>
-                  <Link className="cursor-pointer" href="/past-orders">
+                  <Link className="cursor-pointer" href="/sign-up">
                     Sign up
                   </Link>
+                  
                 </div>
-              )}
+                </SignedOut>
+             
             </div>
           )}
         </div>

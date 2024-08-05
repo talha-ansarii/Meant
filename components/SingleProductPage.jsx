@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { FaStar } from "react-icons/fa";
-import initialProducts from "@/constants/products";
 import Accordion from "./Accordian";
 import ProductCard from "./ProductCard";
 import { useCart } from "/context/CartContext.js";
@@ -12,9 +11,11 @@ import { FaRegHeart, FaHeart } from "react-icons/fa";
 import Footer from "./Footer";
 import Header from "./Header";
 
-const SingleProductPage = ({ productId }) => {
-  const [product] = useState(initialProducts.find((p) => p.id === productId));
-  const [selectedImage, setSelectedImage] = useState(product?.image);
+const shades = ["#A32C42", "#663024", "#AD5B55", "#995A60"];
+const shadeNames = ["Emily", "Grace", "Diva", "Veronica"];
+
+const SingleProductPage = ({ productId, product }) => {
+  const [selectedImage, setSelectedImage] = useState(product?.images[0]);
   const [quantity, setQuantity] = useState(1);
   const [openIndex, setOpenIndex] = useState(null);
   const [relatedProducts, setRelatedProducts] = useState([]);
@@ -24,6 +25,24 @@ const SingleProductPage = ({ productId }) => {
   const { addToCart, cart } = useCart();
   const [wishlistFilled, setWishlistFilled] = useState(false);
   const [inCart, setInCart] = useState(false);
+  const [initialProducts, setInitialProducts] = useState([]);
+
+  useEffect(() => {
+    // Fetch products from API
+    const fetchProducts = async () => {
+      try {
+        const response = await fetch("/api/get-products");
+        const data = await response.json();
+        console.log("Fetched products:", data);
+
+        setInitialProducts(data);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    };
+
+    fetchProducts();
+  }, []);
 
   useEffect(() => {
     // Fetch related products based on category
@@ -104,12 +123,12 @@ const SingleProductPage = ({ productId }) => {
     setOpenIndex(openIndex === index ? null : index);
   };
 
-  const handleMouseEnter = (img) => {
-    setSelectedImage(img);
+  const handleMouseEnter = (imgSrc) => {
+    setSelectedImage(imgSrc);
   };
 
-  const handleShadeClick = (img) => {
-    setSelectedImage(img);
+  const handleShadeClick = (imgSrc) => {
+    setSelectedImage(imgSrc);
   };
 
   if (!product) return <p>Product not found</p>;
@@ -125,29 +144,32 @@ const SingleProductPage = ({ productId }) => {
             <div className=" flex w-full h-[500px]">
               <div className="w-20 space-y-2 mr-[1rem] ">
                 {[
-                  product.image,
-                  ...product.shades.map(
-                    (shade, index) => product.images[index]
+                  product.images[0].src,
+                  ...shades.map(
+                    (shade, index) => product.images[index + 1]?.src
                   ),
-                ].map((img, index) => (
-                  <div
-                    key={index}
-                    className={`cursor-pointer ${
-                      selectedImage === img
-                        ? "border-white"
-                        : "border-transparent"
-                    } border rounded-lg`}
-                    onMouseEnter={() => handleMouseEnter(img)}
-                  >
-                    <Image
-                      src={img}
-                      alt={`Product image ${index + 1}`}
-                      width={80}
-                      height={80}
-                      className="w-full h-auto rounded-md"
-                    />
-                  </div>
-                ))}
+                ].map(
+                  (imgSrc, index) =>
+                    imgSrc && (
+                      <div
+                        key={index}
+                        className={`cursor-pointer ${
+                          selectedImage === imgSrc
+                            ? "border-white"
+                            : "border-transparent"
+                        } border rounded-lg`}
+                        onMouseEnter={() => handleMouseEnter(imgSrc)}
+                      >
+                        <Image
+                          src={imgSrc}
+                          alt={`Product image ${index + 1}`}
+                          width={80}
+                          height={80}
+                          className="w-[80px]  h-[80px] rounded-md"
+                        />
+                      </div>
+                    )
+                )}
               </div>
 
               <div className="w-2/3 ">
@@ -196,7 +218,7 @@ const SingleProductPage = ({ productId }) => {
             <h3 className="text-lg font-bold font-merriweather mt-4">Shades</h3>
             <div className="grid grid-cols-2 w-[48px] my-2">
               {" "}
-              {product.shades.map((shade, index) => (
+              {shades.map((shade, index) => (
                 <div
                   key={index}
                   className="flex items-center space-x-2 relative"
@@ -206,21 +228,21 @@ const SingleProductPage = ({ productId }) => {
                     className="w-6 h-6"
                     style={{ backgroundColor: shade }}
                     onMouseEnter={() =>
-                      setHoveredShade(product.shadeNames[index])
+                      setHoveredShade(shadeNames[index])
                     }
                     onMouseLeave={() => setHoveredShade(null)}
-                    onClick={() => handleShadeClick(product.images[index])}
+                    onClick={() => handleShadeClick(product.images[index].src)}
                   />{" "}
                   <span
                     className={`text-white text-xs font-poppins font-medium absolute transition-opacity duration-300 ${
-                      hoveredShade === product.shadeNames[index]
+                      hoveredShade === shadeNames[index]
                         ? "opacity-100"
                         : "opacity-0"
                     }`}
                     style={{ left: index % 2 === 0 ? "-3rem" : "1.5rem" }}
                   >
                     {" "}
-                    {product.shadeNames[index]}{" "}
+                    {shadeNames[index]}{" "}
                   </span>{" "}
                 </div>
               ))}{" "}

@@ -7,13 +7,20 @@ import { useWishlist } from "/context/WishlistContext.js";
 import { useCart } from "/context/CartContext.js";
 import Header from "./Header";
 import Footer from "./Footer";
+import { useUser } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
 
 const WishList = () => {
   const { wishlist, removeFromWishlist } = useWishlist();
   const { addToCart } = useCart();
   const wishlistArray = Array.from(wishlist);
+  const { isSignedIn, user, isLoaded } = useUser();
+  const router = useRouter();
 
   const handleAddToCart = (item) => {
+    if (!isSignedIn) {
+      return router.push("/sign-in");
+    }
     addToCart({ ...item, quantity: 1 });
     removeFromWishlist(item.id);
   };
@@ -25,10 +32,11 @@ const WishList = () => {
         WISHLIST
       </h1>
       {wishlistArray.length === 0 ? (
-        <p className="text-center">
+        <p className="text-center h-[100vh] ">
           Your wishlist is empty.{" "}
           <Link href="/products">Start adding some products!</Link>
         </p>
+        
       ) : (
         <div className="p-4 w-[82%] m-auto pt-[2rem] grid grid-cols-1 md:grid-cols-3 gap-8">
           {wishlistArray.map((item) => (

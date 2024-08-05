@@ -69,21 +69,21 @@ const Picture = () => {
               height={209}
               src={"/HomePage/pictures/2.jpeg"}
               alt="example"
-              className="w-[261px] h-[209px] object-cover rounded-[15px] border mx-4"
+              className="w-[261px] h-[209px] object-cover object-top  rounded-[15px] border mx-4"
             />
             <Image
               width={261}
               height={209}
               src={"/HomePage/pictures/3.jpeg"}
               alt="example"
-              className="w-[261px] h-[209px] object-cover rounded-[15px] border mx-4"
+              className="w-[261px] h-[209px] object-cover object-top  rounded-[15px] border mx-4"
             />
             <Image
               width={261}
               height={209}
               src={"/HomePage/pictures/4.jpeg"}
               alt="example"
-              className="w-[261px] h-[209px] object-cover rounded-[15px] border ml-4"
+              className="w-[261px] h-[209px] object-cover object-top  rounded-[15px] border ml-4"
             />
           </motion.div>
           <motion.div
@@ -98,28 +98,28 @@ const Picture = () => {
               height={209}
               src={"/HomePage/pictures/5.jpeg"}
               alt="example"
-              className="w-[261px] h-[209px] object-cover rounded-[15px] border mr-4"
+              className="w-[261px] h-[209px] object-cover object-top  rounded-[15px] border mr-4"
             />
             <Image
               width={261}
               height={209}
               src={"/HomePage/pictures/6.jpeg"}
               alt="example"
-              className="w-[261px] h-[209px] object-cover rounded-[15px] border mx-4"
+              className="w-[261px] h-[209px] object-cover object-top  rounded-[15px] border mx-4"
             />
             <Image
               width={261}
               height={209}
               src={"/HomePage/pictures/7.jpeg"}
               alt="example"
-              className="w-[261px] h-[209px] object-cover rounded-[15px] border mx-4"
+              className="w-[261px] h-[209px] object-cover object-top  rounded-[15px] border mx-4"
             />
             <Image
               width={261}
               height={209}
               src={"/HomePage/pictures/8.jpeg"}
               alt="example"
-              className="w-[261px] h-[209px] object-cover rounded-[15px] border ml-4"
+              className="w-[261px] h-[209px] object-cover object-top  rounded-[15px] border ml-4"
             />
           </motion.div>
         </AnimatePresence>

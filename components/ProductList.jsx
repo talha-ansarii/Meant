@@ -326,6 +326,7 @@ const ProductList = () => {
           {" "}
           {currentProducts.map((product) => (
             <ProductCard
+              id={product.id}
               key={product.id}
               product={product}
               quantity={quantities[product.id]}

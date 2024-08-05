@@ -95,12 +95,12 @@ const ContactUs = () => {
   return (
     <div className="">
       <main className=" bg-white">
-        <header className="p-8 grid grid-cols-1 md:grid-cols-2 gap-4 pt-10 lg:px-40 bg-[#F7879A]/[10%] dark:bg-blue-900 md:h-96">
+        <header className="p-8 grid grid-cols-1 md:grid-cols-2 gap-4 pt-10 lg:px-40 bg-black dark:bg-blue-900 md:h-96">
           <div className="mx-auto mb-10 md:mt-20">
-            <h1 className="text-[48px] font-[700] mt-4 dark:text-gray-50 text-black playfair ">
+            <h1 className="text-[48px] font-[700] mt-4  text-white playfair ">
               CONTACT US
             </h1>
-            <p className="text-[15px] font-[400] text-[#827777]">
+            <p className="text-[15px] font-[400] text-[white]/[80%]">
               Have a question? Check out our FAQ page as your question may be
               answered there. Still need help? Contact us.
             </p>
@@ -205,7 +205,7 @@ const ContactUs = () => {
             </div>
           </form>
         </header>
-        <div className="w-full h-[400px]"></div>
+        <div className="w-full h-[200px]"></div>
         <Footer />
       </main>
     </div>
