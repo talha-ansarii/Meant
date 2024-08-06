@@ -251,22 +251,14 @@ const Header = () => {
               <div className="flex items-center gap-3">
                 <Link href="/wishlist">
                   <FaRegHeart className="w-[23px] cursor-pointer h-[19px] text-[#D76D8E]" />
-                  {wishlistLength > 0 && (
-                    <span className="absolute top-[-2px] left-[12px] bg-white text-black rounded-full text-[9px] w-3 h-3  flex items-center justify-center">
-                      {wishlistLength}
-                    </span>
-                  )}
+                  
                 </Link>
                 <div
                   className="relative flex  items-center"
                   onClick={() => setIsCartOpen(true)}
                 >
                   <FaShoppingCart className="w-[20px] cursor-pointer h-[22px] text-white" />
-                  {cartLength > 0 && (
-                    <span className="absolute bottom-[0.8rem] left-[0.8rem] bg-black text-white rounded-full text-[9px] w-3 h-3  flex items-center justify-center">
-                      {cartLength}
-                    </span>
-                  )}
+                 
                 </div>
               </div>
             </div>
