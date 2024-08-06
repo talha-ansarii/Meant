@@ -7,18 +7,25 @@ import { FaTrash } from "react-icons/fa";
 import Link from "next/link";
 import { useCheckout } from "/context/CheckoutContext";
 import { getAllProducts, getCartProducts, removeFromCart, updateCartQuantity } from "@/utils/cartUtils";
+import VideoLoader from "./VideoLoader";
 
 const Cart = () => {
 
   const { setCheckoutItems } = useCheckout();
   const [cartProducts, setCartProducts] = useState([]);
   const [cartTotal, setCartTotal] = useState(0);
-
+  const [isClient, setIsClient] = useState(false)
+  const [loading, setLoading] = useState(true);
+ 
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
   useEffect(() => {
 
     const fetchData = async () => {
       const cart = await getCartProducts();
       const products = await getAllProducts();
+      setLoading(false);
       // console.log(cart)
       // console.log(products)
       if (cart && products) {
@@ -41,6 +48,9 @@ const Cart = () => {
     };
 
     fetchData();
+    const intervalId = setInterval(fetchData, 1000); 
+
+    return () => clearInterval(intervalId); 
 
   }, []);
 
@@ -88,7 +98,7 @@ const Cart = () => {
 
 
 
-
+  if(loading) return <>{isClient && <VideoLoader/> }</>
   return (
     <div className="w-full min-h-screen bg-white text-black px-4 md:px-8">
       <div className="max-h-[85vh] overflow-auto no-scrollbar">

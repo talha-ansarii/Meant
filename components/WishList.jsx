@@ -12,6 +12,7 @@ import { useRouter } from "next/navigation";
 import { addProductToCart, getAllProducts } from "@/utils/cartUtils";
 import { getWishlistProducts, removeProductFromWishlist } from "@/utils/wishlistUtils";
 import { set } from "mongoose";
+import VideoLoader from "./VideoLoader";
 
 const WishList = () => {
   // const { wishlist, removeFromWishlist } = useWishlist();
@@ -19,6 +20,12 @@ const WishList = () => {
   const { isSignedIn, user, isLoaded } = useUser();
   const router = useRouter();
   const [wishlistArray, setWishlistArray] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [isClient, setIsClient] = useState(false)
+ 
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
 
   const handleAddToCart = async (item) => {
     if (!isSignedIn) {
@@ -42,20 +49,32 @@ const WishList = () => {
 useEffect(() => {
 
   const fetchData = async () => {
+   try {
+
     const wishlistt = await getWishlistProducts();
     const products = await getAllProducts();
    
     if (wishlistt && products) {
-      // Filter products that are in the wishlist
+      
+      setLoading(false);
       const filteredProducts = products.filter(product =>
         wishlistt.some(wishlistItem => wishlistItem.productId === product.id)
       );
 
 
+
       console.log(filteredProducts)
       setWishlistArray(filteredProducts);
     }
-  };
+    
+    
+   } catch (error) {
+     console.error('Error fetching wishlist:', error);
+     setLoading(false);
+    
+   }
+    }
+
 
   fetchData();
 
@@ -70,6 +89,9 @@ const removeFromWishlist = async (productId) => {
 };
 
 
+ 
+  if(loading) return <>{isClient && <VideoLoader/> }</>
+  
   return (
     <div className="pb-4">
       <Header />

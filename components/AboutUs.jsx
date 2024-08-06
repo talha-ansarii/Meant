@@ -5,8 +5,8 @@ import React from "react";
 const AboutUs = () => {
   return (
     <div className="w-full pb-4 flex flex-col items-center">
-      <div className="w-full  m-auto mt-[-80px] md:mt-0 lg:mt-0">
-        <div className="w-[80%] m-auto flex justify-center">
+      <div className="w-full  m-auto mt-0 md:mt-0 lg:mt-0">
+        <div className="md:w-[80%] lg:w-[80%] w-full m-auto flex justify-center">
           <Image
             src="/assets/images/aboutusbaanner.png"
             alt="About Us Banner"
@@ -16,7 +16,10 @@ const AboutUs = () => {
           />
         </div>
         <div className="bg-white w-[80%] m-auto  mt-12 rounded-[10px] flex flex-col items-center px-6 py-12">
-          <div className="text-black playfair font-medium text-center lg:w-1/2 md:w-3/4 w-full">
+          <div className="text-black playfair font-medium text-center lg:w-[80%] md:w-[80%] w-full">
+          <div className="lg:text-4xl md:text-3xl text-xl font-bold mb-12">
+              About Us
+            </div>
             <p className="lg:text-2xl lg:leading-8 md:text-lg md:leading-6 text-sm leading-4">
               Welcome to <b>Meant,</b> where every product is crafted with
               intention, purpose, and a commitment to making a difference. We
@@ -54,49 +57,22 @@ const AboutUs = () => {
           </div>
         </div>
 
-        <div className="bg-white w-[80%] m-auto mt-12 rounded-[10px] flex flex-col items-center p-6 min-h-[280px]">
+        <div className="bg-white w-[80%] m-auto mt-12 rounded-[10px] flex flex-col items-center p-6 min-h-[180px]">
           <div className="text-black playfair font-bold text-center lg:text-4xl md:text-2xl text-xl mt-6 mb-4">
             Our Values
           </div>
-          <div className="flex flex-wrap justify-center gap-16 mt-6">
-            <Image
-              src="/AboutUs/1.png"
-              alt="quality"
-              width={85}
-              height={85}
-              className="hidden md:block"
-            />
-            <Image
-              src="/AboutUs/3.png"
-              alt="transparency"
-              width={85}
-              height={85}
-              className="hidden md:block"
-            />
-            <Image
-              src="/AboutUs/2.png"
-              alt="Inclusivity"
-              width={85}
-              height={85}
-              className="hidden md:block"
-            />
-            <Image
-              src="/AboutUs/4.png"
-              alt="empowerment"
-              width={85}
-              height={85}
-              className="hidden md:block"
-            />
-            <div className="w-10 h-10 md:hidden bg-black rounded-full flex justify-center items-center">
+          <div className="flex flex-wrap justify-center md:gap-8 lg:gap-16 mt-6">
+            
+            <div className="lg:w-[154px] lg:h-[42px] md:w-[147px] md:h-[36px] md:flex bg-black rounded-full flex justify-center items-center">
               <div className="text-xs font-medium text-white">QUALITY</div>
             </div>
-            <div className="w-10 h-10 md:hidden bg-black rounded-full flex justify-center items-center">
+            <div className="lg:w-[154px] lg:h-[42px] md:w-[147px] md:h-[36px] md:flex bg-black rounded-full flex justify-center items-center">
               <div className="text-xs font-medium text-white">TRANSPARENCY</div>
             </div>
-            <div className="w-10 h-10 md:hidden bg-black rounded-full flex justify-center items-center">
+            <div className="lg:w-[154px] lg:h-[42px] md:w-[147px] md:h-[36px] md:flex bg-black rounded-full flex justify-center items-center">
               <div className="text-xs font-medium text-white">INCLUSIVITY</div>
             </div>
-            <div className="w-10 h-10 md:hidden bg-black rounded-full flex justify-center items-center">
+            <div className="lg:w-[154px] lg:h-[42px] md:w-[147px] md:h-[36px] md:flex bg-black rounded-full flex justify-center items-center">
               <div className="text-xs font-medium text-white">EMPOWERMENT</div>
             </div>
           </div>

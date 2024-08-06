@@ -83,6 +83,12 @@ const ProductList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [openIndex, setOpenIndex] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isClient, setIsClient] = useState(false)
+ 
+useEffect(() => {
+  setIsClient(true)
+}, [])
+
 
   const productsPerPage = 16;
 
@@ -93,7 +99,7 @@ const ProductList = () => {
         setLoading(true);
         const response = await fetch("/api/get-products");
         const data = await response.json();
-        console.log("Fetched products:", data);
+        // console.log("Fetched products:", data);
 
         setProducts(data);
         setQuantities(
@@ -224,11 +230,8 @@ const ProductList = () => {
     setOpenIndex(openIndex === index ? null : index);
   };
 
-  if (loading) {
-    return <div className="w-[100vw] h-[100vh] flex justify-center items-center ">
-    <VideoLoader/>
-    </div>;
-  }
+  if(loading) return <>{isClient && <VideoLoader/> }</>
+
 
   return (
     <div className="pb-4">
