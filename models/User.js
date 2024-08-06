@@ -4,18 +4,18 @@ const UserSchema = new mongoose.Schema({
   userId: { type: String, required: true, unique: true },
   cart: [
     {
-      productId: String,
+      productId: Number,
       quantity: Number,
     },
   ],
   wishlist: [
     {
-      productId: String,
+      productId: Number,
     },
   ],
   addresses: [
     {
-      address: String,
+      address: Object,
     },
   ],
   orders: [
@@ -23,7 +23,7 @@ const UserSchema = new mongoose.Schema({
       orderId: String,
         products: [
             {
-            productId: String,
+            productId: Number,
             quantity: Number,
             },
         ],

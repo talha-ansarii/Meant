@@ -33,3 +33,17 @@ export async function DELETE(request) {
 
   return new Response(JSON.stringify(user.wishlist), { status: 200 });
 }
+
+export async function GET(request) {
+  await dbConnect();
+  const { userId } = await auth();
+
+  // Fetch the user from the database
+  const user = await User.findOne({ userId });
+  if (!user) return new Response('User not found', { status: 404 });
+
+ 
+
+  // Return the products
+  return new Response(JSON.stringify(user.wishlist), { status: 200 });
+}

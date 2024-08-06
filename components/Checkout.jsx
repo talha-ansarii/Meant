@@ -1,9 +1,11 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useCheckout } from "/context/CheckoutContext";
 import Image from "next/image";
 import Link from "next/link";
+import { getAllProducts, getCartProducts } from "@/utils/cartUtils";
+
 
 const parsePrice = (priceString) => {
   const priceNumber = parseFloat(priceString.replace("$", ""));
@@ -11,15 +13,45 @@ const parsePrice = (priceString) => {
 };
 
 const Checkout = () => {
+  const [cartProducts, setCartProducts] = useState([]);
+  const [cartTotal, setCartTotal] = useState(0);
+  
+  useEffect(() => {
 
-  const { checkoutItems } = useCheckout();
+    const fetchData = async () => {
+      const cart = await getCartProducts();
+      const products = await getAllProducts();
+      // console.log(cart)
+      // console.log(products)
+      if (cart && products) {
+        // Filter products that are in the cart
+        const filteredProducts = products.filter(product =>
+          cart.some(cartItem => cartItem.productId === product.id)
+        );
+
+        let total = 0;
+        const productsWithQuantity = filteredProducts.map(product => {
+          const cartItem = cart.find(item => item.productId === product.id);
+          total += product.price * cartItem.quantity;
+          
+          return { ...product, quantity: cartItem?.quantity };
+        });
+
+        setCartProducts(productsWithQuantity);
+        setCartTotal(total);
+      }
+    };
+
+    fetchData();
+
+  }, []);
 
 
   return (
-    <div className="flex flex-col items-center justify-between min-h-screen bg-[#CDC8C8]/[40%] p-4">
+    <div className="flex flex-col pt-[100px] items-center justify-between min-h-screen bg-[#CDC8C8]/[40%] p-4">
       <div className="w-full p-6">
         <div className="h-[calc(100vh-40%)] overflow-auto no-scrollbar">
-          {checkoutItems.map((item) => (
+          {cartProducts.map((item) => (
             <div
               key={item.id}
               className="flex items-start border border-[#CDC8C8] rounded-[7px] p-4 shadow-md mb-4"
@@ -105,13 +137,7 @@ const Checkout = () => {
             </h2>
             <h2 className="text-[30px] text-black font-semibold font-playfair-display">
               $
-              {checkoutItems
-                .reduce(
-                  (total, item) =>
-                    total + parsePrice(item.price) * item.quantity,
-                  0
-                )
-                .toFixed(2)}
+              {cartTotal.toFixed(2)}
             </h2>
           </div>
           <Link href={"/order-confirm"} className="mt-8 text-[18px] font-playfair-display font-extrabold inline-block bg-black text-white py-2 px-8 rounded-[30px] text-center w-full md:w-auto">

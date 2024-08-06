@@ -1,17 +1,17 @@
 "use client";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, easeIn } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React, {  useEffect, useState } from "react";
 import { FaRegHeart, FaShoppingCart, FaUser } from "react-icons/fa";
 import { useWishlist } from "/context/WishlistContext.js";
 import { useCart } from "@/context/CartContext";
 import Cart from "./Cart";
 import { SignedIn, SignedOut, UserButton, useUser } from "@clerk/nextjs";
+import { getCartProducts } from "@/utils/cartUtils";
+import { getWishlistProducts } from "@/utils/wishlistUtils";
 
 const Header = () => {
-  const { wishlistCount } = useWishlist();
-  const { cartItemCount } = useCart();
   const [isOpen, setIsOpen] = useState(false);
   const [isLogin, setIsLogin] = useState(true);
   const [profileOpen, setProfileOpen] = useState(false);
@@ -21,8 +21,24 @@ const Header = () => {
   const [scrollDirection, setScrollDirection] = useState("up");
 
   const { isSignedIn, user, isLoaded } = useUser();
+  const [cartLength, setCartLength] = useState(0);
+  const [wishlistLength, setWishlistLength] = useState(0);
 
   // console.log(user)
+  useEffect(() => {
+    const fetchData = async () => {
+      const cart = await getCartProducts()
+      const wishlist = await getWishlistProducts()
+      setCartLength(cart?.length)
+      setWishlistLength(wishlist?.length)
+    }
+    fetchData()
+    const intervalId = setInterval(fetchData, 5000); 
+
+  return () => clearInterval(intervalId); 
+  }, []);
+
+
   useEffect(() => {
     let lastScrollY = window.scrollY;
 
@@ -44,17 +60,11 @@ const Header = () => {
   const containerVariants = {
     hidden: {
       x: "100%",
-      transition: {
-        duration: 0.5,
-      },
+      
     },
     visible: {
-      opacity: 1,
       x: 0,
-      transition: {
-        duration: 0.5,
-        staggerChildren: 0.2,
-      },
+      
     },
   };
 
@@ -105,9 +115,9 @@ const Header = () => {
         <div className="flex  relative gap-4 mr-[20px] items-center justify-center ">
           <Link href="/wishlist">
             <FaRegHeart className="w-[23px] cursor-pointer h-[19px] text-[#D76D8E]" />
-            {wishlistCount > 0 && (
+            {wishlistLength > 0 && (
               <span className="absolute top-[-2px] left-[12px] bg-white text-black rounded-full text-[9px] w-3 h-3  flex items-center justify-center">
-                {wishlistCount}
+                {wishlistLength}
               </span>
             )}
           </Link>
@@ -120,9 +130,9 @@ const Header = () => {
             onClick={() => setIsCartOpen(true)}
           >
             <FaShoppingCart className="w-[20px] cursor-pointer h-[22px] text-white" />
-            {cartItemCount > 0 && (
+            {cartLength > 0 && (
               <span className="absolute bottom-[0.8rem] left-[0.8rem] bg-black text-white rounded-full text-[9px] w-3 h-3  flex items-center justify-center">
-                {cartItemCount}
+                {cartLength}
               </span>
             )}
           </div>
@@ -273,16 +283,16 @@ const Header = () => {
         </div>
       </div>
 
-      <AnimatePresence>
-        {isCartOpen && (
-          <motion.div
-            className="fixed top-0 right-0 w-full md:w-1/3 bg-white text-black h-full transition-transform transform z-50"
+          <div
+            className={`fixed top-[-30px] duration-500 right-0 w-full md:w-1/3 bg-white text-black h-[100vh] transition-transform transform z-50
+            ${isCartOpen ? "translate-x-0" : "translate-x-full"}
+            `}
             initial="hidden"
             animate="visible"
             exit="hidden"
             variants={containerVariants}
           >
-            <div className="p-4 flex justify-between items-center">
+            <div className="p-4 bg-white flex justify-between items-center">
               <h2 className="text-[30px] font-semibold font-playfair-display">
                 Cart
               </h2>
@@ -294,9 +304,7 @@ const Header = () => {
               </button>
             </div>
             <Cart />
-          </motion.div>
-        )}
-      </AnimatePresence>
+          </div>
     </div>
   );
 };

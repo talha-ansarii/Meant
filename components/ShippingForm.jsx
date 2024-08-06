@@ -1,13 +1,61 @@
+"use client"
 import Link from "next/link";
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
+import { addAddress } from "@/utils/addressUtils";
 
 const ShippingForm = () => {
+  // State variables for form inputs
+  const [email, setEmail] = useState("");
+  const [emailOffers, setEmailOffers] = useState(false);
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [address, setAddress] = useState("");
+  const [apartment, setApartment] = useState("");
+  const [city, setCity] = useState("");
+  const [state, setState] = useState("");
+  const [pincode, setPincode] = useState("");
+  const [phone, setPhone] = useState("");
+  const [saveInfo, setSaveInfo] = useState(false);
+
+  
+
+  // Handle input changes
+  const handleInputChange = (setter) => (e) => {
+    setter(e.target.value);
+  };
+
+  const handleCheckboxChange = (setter) => (e) => {
+    setter(e.target.checked);
+  };
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  console.log("Form submitted");
+  const add ={
+    email,
+    emailOffers,
+    firstName,
+    lastName,
+    address,
+    apartment,
+    city,
+    state,
+    pincode,
+    phone,
+    
+    
+  }
+  console.log(add)
+ if(saveInfo){
+  const response = await addAddress(add)
+  console.log(response)
+ }
+}
   return (
     <div className="min-h-screen flex lg:mt-[80px] md:mt-[80px] flex-col items-center bg-white ray-50 py-10 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-4">
         <div>
-          <div className="w-full flex justify-center items-center ">
+          <div className="w-full flex justify-center items-center">
             <Image
               src="/logoBlack.svg"
               alt="Meant"
@@ -37,11 +85,12 @@ const ShippingForm = () => {
             </Link>
           </nav>
         </div>
-        <div className="  text-[32px] text-black font-[500] font-poppins">
+        <div className="text-[32px] text-black font-[500] font-poppins">
           CONTACT
         </div>
-        <form className="  space-y-2">
-          <div className=" shadow-sm -space-y-px">
+        <form 
+        className="space-y-2">
+          <div className="shadow-sm -space-y-px">
             <div>
               <label htmlFor="email-address" className="sr-only">
                 Email
@@ -52,7 +101,9 @@ const ShippingForm = () => {
                 type="email"
                 autoComplete="email"
                 required
-                className="appearance-none  relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900  focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                value={email}
+                onChange={handleInputChange(setEmail)}
+                className="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                 placeholder="Email"
               />
             </div>
@@ -61,7 +112,9 @@ const ShippingForm = () => {
                 id="email-offers"
                 name="email-offers"
                 type="checkbox"
-                className="h-[14px] w-[14px] text-indigo-600 focus:ring-indigo-500 border border-gray-200 "
+                checked={emailOffers}
+                onChange={handleCheckboxChange(setEmailOffers)}
+                className="h-[14px] w-[14px] text-indigo-600 focus:ring-indigo-500 border border-gray-200"
               />
               <label
                 htmlFor="email-offers"
@@ -86,7 +139,9 @@ const ShippingForm = () => {
                   type="text"
                   autoComplete="given-name"
                   required
-                  className="appearance-none  relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900  focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                  value={firstName}
+                  onChange={handleInputChange(setFirstName)}
+                  className="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                   placeholder="First Name"
                 />
               </div>
@@ -100,7 +155,9 @@ const ShippingForm = () => {
                   type="text"
                   autoComplete="family-name"
                   required
-                  className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900  focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                  value={lastName}
+                  onChange={handleInputChange(setLastName)}
+                  className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                   placeholder="Last Name"
                 />
               </div>
@@ -115,6 +172,8 @@ const ShippingForm = () => {
                 type="text"
                 autoComplete="street-address"
                 required
+                value={address}
+                onChange={handleInputChange(setAddress)}
                 className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                 placeholder="Address"
               />
@@ -128,6 +187,8 @@ const ShippingForm = () => {
                 name="apartment"
                 type="text"
                 autoComplete="address-line2"
+                value={apartment}
+                onChange={handleInputChange(setApartment)}
                 className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                 placeholder="Apartment, Suite, etc (optional)"
               />
@@ -143,6 +204,8 @@ const ShippingForm = () => {
                   type="text"
                   autoComplete="address-level2"
                   required
+                  value={city}
+                  onChange={handleInputChange(setCity)}
                   className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                   placeholder="City"
                 />
@@ -151,18 +214,17 @@ const ShippingForm = () => {
                 <label htmlFor="state" className="sr-only">
                   State
                 </label>
-                <select
+                <input
+                type="text"
                   id="state"
                   name="state"
-                  autoComplete="address-level1"
                   required
+                  value={state}
+                  onChange={handleInputChange(setState)}
                   className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                 >
-                  <option value="">State</option>
-                  <option value="State1">State1</option>
-                  <option value="State2">State2</option>
-                  {/* Add more states as needed */}
-                </select>
+                  
+                </input>
               </div>
               <div className="w-1/3">
                 <label htmlFor="pincode" className="sr-only">
@@ -174,6 +236,8 @@ const ShippingForm = () => {
                   type="text"
                   autoComplete="postal-code"
                   required
+                  value={pincode}
+                  onChange={handleInputChange(setPincode)}
                   className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                   placeholder="Pincode"
                 />
@@ -189,6 +253,8 @@ const ShippingForm = () => {
                 type="tel"
                 autoComplete="tel"
                 required
+                value={phone}
+                onChange={handleInputChange(setPhone)}
                 className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                 placeholder="Phone"
               />
@@ -198,6 +264,8 @@ const ShippingForm = () => {
                 id="save-info"
                 name="save-info"
                 type="checkbox"
+                checked={saveInfo}
+                onChange={handleCheckboxChange(setSaveInfo)}
                 className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
               />
               <label
@@ -215,12 +283,18 @@ const ShippingForm = () => {
             >
               &lt; return to cart
             </a>
+            <button
+            type="submit"
+            onClick={handleSubmit}
+            >
+
             <Link
               href={"/checkout"}
               className="mt-4 flex justify-center items-center w-[205px] h-[40px] bg-black text-[14px] font-poppins font-[600] text-white rounded-[34px]"
             >
               <div>Continue to Pay</div>
             </Link>
+            </button>
           </div>
         </form>
         <div className="w-full h-[1px] bg-[#CDC8C8]"></div>

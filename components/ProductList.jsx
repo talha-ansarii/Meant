@@ -96,6 +96,7 @@ const ProductList = () => {
         setQuantities(
           data.reduce((acc, product) => ({ ...acc, [product.id]: 1 }), {})
         );
+
       } catch (error) {
         console.error("Error fetching products:", error);
       }
@@ -331,6 +332,8 @@ const ProductList = () => {
               product={product}
               quantity={quantities[product.id]}
               onQuantityChange={handleQuantityChange}
+              setQuantities={setQuantities}
+              quantities={quantities}
             />
           ))}
         </div>

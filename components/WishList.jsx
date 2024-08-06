@@ -9,21 +9,66 @@ import Header from "./Header";
 import Footer from "./Footer";
 import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
+import { addProductToCart, getAllProducts } from "@/utils/cartUtils";
+import { getWishlistProducts, removeProductFromWishlist } from "@/utils/wishlistUtils";
+import { set } from "mongoose";
 
 const WishList = () => {
-  const { wishlist, removeFromWishlist } = useWishlist();
+  // const { wishlist, removeFromWishlist } = useWishlist();
   const { addToCart } = useCart();
-  const wishlistArray = Array.from(wishlist);
   const { isSignedIn, user, isLoaded } = useUser();
   const router = useRouter();
+  const [wishlistArray, setWishlistArray] = useState([]);
 
-  const handleAddToCart = (item) => {
+  const handleAddToCart = async (item) => {
     if (!isSignedIn) {
       return router.push("/sign-in");
     }
+    try {
+      const data = await addProductToCart(item.id, 1);
+      removeFromWishlist(item.id);
+      console.log('Product added to cart:', data);
+    } catch (error) {
+      console.error('Error adding product to cart:', error);
+      return;
+    }
+
     addToCart({ ...item, quantity: 1 });
-    removeFromWishlist(item.id);
+    
   };
+
+
+
+useEffect(() => {
+
+  const fetchData = async () => {
+    const wishlistt = await getWishlistProducts();
+    const products = await getAllProducts();
+   
+    if (wishlistt && products) {
+      // Filter products that are in the wishlist
+      const filteredProducts = products.filter(product =>
+        wishlistt.some(wishlistItem => wishlistItem.productId === product.id)
+      );
+
+
+      console.log(filteredProducts)
+      setWishlistArray(filteredProducts);
+    }
+  };
+
+  fetchData();
+
+}, []);
+
+const removeFromWishlist = async (productId) => {
+
+  removeProductFromWishlist(productId);
+  const updatedWishlist = wishlistArray.filter((item) => item.id !== productId);
+  setWishlistArray(updatedWishlist);
+
+};
+
 
   return (
     <div className="pb-4">

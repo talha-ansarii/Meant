@@ -7,8 +7,9 @@ import { FaStar } from "react-icons/fa";
 import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import {addProductToCart} from "../utils/cartUtils";
+import { addProductToWishlist, getWishlistProducts, removeProductFromWishlist } from "@/utils/wishlistUtils";
 
-const ProductCard = ({ product, quantity, onQuantityChange }) => {
+const ProductCard = ({ product, quantity, onQuantityChange,setQuantities,quantities }) => {
   const { addToWishlist, removeFromWishlist, wishlist } = useWishlist();
   const { addToCart, cart } = useCart();
   const [wishlistFilled, setWishlistFilled] = useState(false);
@@ -16,18 +17,16 @@ const ProductCard = ({ product, quantity, onQuantityChange }) => {
   const { isSignedIn, user, isLoaded } = useUser();
   const router = useRouter();
 
+
   useEffect(() => {
     // Fetch products from API
     const fetchProducts = async () => {
       try {
         const response = await fetch("/api/get-products");
         const data = await response.json();
-        console.log("Fetched products:", data);
+        // console.log("Fetched products:", data);
 
-        setProducts(data);
-        setQuantities(
-          data.reduce((acc, product) => ({ ...acc, [product.id]: 1 }), {})
-        );
+      
       } catch (error) {
         console.error("Error fetching products:", error);
       }
@@ -38,18 +37,37 @@ const ProductCard = ({ product, quantity, onQuantityChange }) => {
 
 
   useEffect(() => {
-    setWishlistFilled(wishlist.has(product));
-  }, [wishlist, product]);
+    const fetchWishlistProducts = async () => {
+      const wishListproducts = await getWishlistProducts();
+      console.log(wishListproducts);
+      const contains = wishListproducts.some(prod => 
+      {
+        // console.log(prod.productId, product.id)
+        return prod.productId === product.id
+      }
+      );
+      setWishlistFilled(contains);
+    };
+
+    fetchWishlistProducts();
+  }, []);
 
   useEffect(() => {
     setInCart(cart.some((item) => item.id === product.id));
   }, [cart, product]);
 
-  const handleWishlistClick = (e) => {
+  const handleWishlistClick = async (e) => {
     e.stopPropagation();
+
+   
+
     if (wishlistFilled) {
+      removeProductFromWishlist(product.id);
       removeFromWishlist(product.id);
     } else {
+      
+      const updatedWishlist = await addProductToWishlist(product.id); 
+      console.log(updatedWishlist)
       addToWishlist(product);
     }
     setWishlistFilled(!wishlistFilled);
@@ -61,30 +79,30 @@ const ProductCard = ({ product, quantity, onQuantityChange }) => {
     if (!isSignedIn) {
       return router.push("/sign-in");
     }
+    try {
+      const data = await addProductToCart(product.id, quantity);
+      setQuantities({ ...quantities, [product.id]: 1 });
+      console.log('Product added to cart:', data);
+    } catch (error) {
+      console.error('Error adding product to cart:', error);
+      return;
+    }
     const cartItem = cart.find((item) => item.id === product.id);
 
     if (cartItem) {
       const newQuantity = cartItem.quantity + quantity;
       addToCart(product, newQuantity);
-      try {
-        const data = await addProductToCart(product.id, newQuantity);
-        console.log('Product added to cart:', data);
-      } catch (error) {
-        console.error('Error adding product to cart:', error);
-      }
+     
     } else {
       addToCart(product, quantity);
-      try {
-        const data = await addProductToCart(product.id, quantity);
-        console.log('Product added to cart:', data);
-      } catch (error) {
-        console.error('Error adding product to cart:', error);
-      }
+
       
     }
-
+   
     setInCart(!inCart);
   };
+
+  
  
   return (
     <div className="relative border rounded-lg overflow-hidden shadow-lg bg-white">

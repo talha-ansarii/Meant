@@ -10,6 +10,8 @@ import { useWishlist } from "/context/WishlistContext.js";
 import { FaRegHeart, FaHeart } from "react-icons/fa";
 import Footer from "./Footer";
 import Header from "./Header";
+import { addProductToCart } from "@/utils/cartUtils";
+import { addProductToWishlist, getWishlistProducts, removeProductFromWishlist } from "@/utils/wishlistUtils";
 
 const shades = ["#A32C42", "#663024", "#AD5B55", "#995A60"];
 const shadeNames = ["Emily", "Grace", "Diva", "Veronica"];
@@ -54,7 +56,7 @@ const SingleProductPage = ({ productId }) => {
       try {
         const response = await fetch("/api/get-products");
         const data = await response.json();
-        console.log("Fetched products:", data);
+        // console.log("Fetched products:", data);
 
         setInitialProducts(data);
       } catch (error) {
@@ -79,9 +81,7 @@ const SingleProductPage = ({ productId }) => {
     }
   }, [product, productId]);
 
-  useEffect(() => {
-    setWishlistFilled(wishlist.has(product));
-  }, [wishlist, product]);
+
 
   useEffect(() => {
     setInCart(cart.some((item) => item.id === product.id));
@@ -104,7 +104,18 @@ const SingleProductPage = ({ productId }) => {
     });
   };
 
-  const handleCartClick = (e) => {
+  const handleCartClick = async (e) => {
+    console.log("clicked")
+    try {
+      const data = await addProductToCart(product.id, quantity);
+      setQuantity(1);
+      console.log('Product added to cart:', data);
+    } catch (error) {
+      console.error('Error adding product to cart:', error);
+      return;
+    }
+
+
     const cartItem = cart.find((item) => item.id === product.id);
 
     if (cartItem) {
@@ -117,14 +128,20 @@ const SingleProductPage = ({ productId }) => {
     setInCart(!inCart);
   };
 
-  const handleWishlistClick = (e) => {
+  const handleWishlistClick = async (e) => {
     e.stopPropagation();
+    // console.log(wishlistFilled)
     if (wishlistFilled) {
-      removeFromWishlist(product.id);
+    
+      removeProductFromWishlist(parseInt(productId));
+      removeFromWishlist(productId);
+
     } else {
-      addToWishlist(product);
+      
+      const updatedWishlist = await addProductToWishlist(parseInt(productId)); 
+      console.log(updatedWishlist)
+      addToWishlist(productId);
     }
-    setWishlistFilled(!wishlistFilled);
   };
 
   const renderStars = (rating) => {
@@ -151,6 +168,25 @@ const SingleProductPage = ({ productId }) => {
   const handleShadeClick = (imgSrc) => {
     setSelectedImage(imgSrc);
   };
+
+  useEffect(() => {
+    const fetchWishlistProducts = async () => {
+      const wishListproducts = await getWishlistProducts();
+      console.log(wishListproducts);
+      const contains = wishListproducts.some(prod => 
+      {
+        console.log(prod.productId, productId)
+        return prod.productId == productId
+      }
+      );
+      console.log(contains)
+      setWishlistFilled(contains);
+    };
+
+    fetchWishlistProducts();
+  }, [wishlist]);
+
+
 
   if (!product) return <p>Product not found</p>;
 
@@ -289,7 +325,7 @@ const SingleProductPage = ({ productId }) => {
               </div>
 
               <button
-                onClick={() => handleCartClick(product)}
+                onClick={handleCartClick}
                 className="bg-white text-black border border-black px-6 py-2 rounded-md font-merriweather font-bold w-full max-w-xs hover:bg-gray-300"
               >
                 Add to Cart

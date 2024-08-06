@@ -1,3 +1,4 @@
+'use client'
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import Banner from "@/components/homePage/Banner";
@@ -7,17 +8,36 @@ import Icons from "@/components/homePage/Icons";
 import Night from "@/components/homePage/Night";
 import Picture from "@/components/homePage/Picture";
 import Marquee from "@/components/Marquee";
-import { Suspense } from "react";
+import { Suspense, useEffect, useState } from "react";
 
 export default function Home() {
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await fetch("/api/get-products");
+        const data = await response.json();
+        setProducts(data);
+  
+        console.log("Fetched products:", data);
+  
+      
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    };
+  
+    fetchProducts();
+  }, []);
   return (
     <div>
       <Suspense fallback={<div>Loading...</div>}>
         <Header />
         <div className="pt-[100px] pb-4">
           <HeroSection />
-          <Day />
-          <Night />
+          <Day products={products} />
+          <Night products={products} />
           <Marquee />
           <Picture />
           <Icons />

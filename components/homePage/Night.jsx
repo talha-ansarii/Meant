@@ -11,11 +11,12 @@ import { ScrollTrigger } from "gsap/all";
 import { HoverBorderGradient } from "../ui/hover-border-gradient";
 import { useCart } from "/context/CartContext";
 import { useWishlist } from "/context/WishlistContext";
-import products from "@/constants/products";
 import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
+import { addProductToCart } from "@/utils/cartUtils";
+import { addProductToWishlist, getWishlistProducts, removeProductFromWishlist } from "@/utils/wishlistUtils";
 
-const Night = () => {
+const Night = ({products}) => {
   const [mouseIn, setMouseIn] = useState(false);
   const [isInWishlist, setIsInWishlist] = useState(false);
   const [isInCart, setIsInCart] = useState(false);
@@ -26,40 +27,51 @@ const Night = () => {
   const ref = useRef(null);
 
   const { addToCart, cart } = useCart();
-  const { addToWishlist, wishlist, removeFromWishlist } = useWishlist();
 
   const productName = "Night Muse Lipstick";
   const product = products.find((p) => p.name === productName);
 
-  useEffect(() => {
-    if (product) {
-      // Check if product is in wishlist or cart
-      const wishlistArray = Array.from(wishlist)
-      const productInWishlist = wishlistArray.some(
-        (item) => item.id === product.id
-      );
-      const productInCart = cart.some((item) => item.id === product.id);
-      setIsInWishlist(productInWishlist);
-      setIsInCart(productInCart);
-    }
-  }, [wishlist, cart, product]);
 
-  const handleAddToCart = () => {
+
+  const handleAddToCart = async () => {
     if (!isSignedIn) {
       return router.push("/sign-in");
     }
     if (product) {
-      addToCart(product, 1);
+      try {
+        const data = await addProductToCart(product.id, 1);
+        console.log('Product added to cart:', data);
+      } catch (error) {
+        console.error('Error adding product to cart:', error);
+        return;
+      }
+      addToCart(product, 1); 
       setIsInCart(true);
     }
   };
-
+  useEffect(() => {
+    if (product) {
+      const fetchWishlistProducts = async () => {
+        const wishListproducts = await getWishlistProducts();
+        console.log(wishListproducts);
+        const contains = wishListproducts.some(prod => 
+        {
+          // console.log(prod.productId, product.id)
+          return prod.productId === product.id
+        }
+        );
+        setIsInWishlist(contains);
+      };
+  
+      fetchWishlistProducts();
+    }
+  }, [ isInWishlist ]);
   const handleAddToWishlist = () => {
     if (product) {
       if (isInWishlist) {
-        removeFromWishlist(product.id);
+        removeProductFromWishlist(product.id);
       } else {
-        addToWishlist(product);
+        addProductToWishlist(product.id);
       }
       setIsInWishlist(!isInWishlist);
     }

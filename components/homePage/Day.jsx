@@ -10,42 +10,62 @@ import { ScrollTrigger, ScrollToPlugin } from "gsap/all";
 import { HoverBorderGradient } from "../ui/hover-border-gradient";
 import { useCart } from "/context/CartContext";
 import { useWishlist } from "/context/WishlistContext";
-import products from "@/constants/products";
+// import products from "@/constants/products";
 import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
+import { addProductToCart } from "@/utils/cartUtils";
+import { addProductToWishlist, getWishlistProducts, removeProductFromWishlist } from "@/utils/wishlistUtils";
 
-const Day = () => {
+const Day = ({products}) => {
   const [mouseIn, setMouseIn] = useState(false);
   const [isInWishlist, setIsInWishlist] = useState(false);
   const [isInCart, setIsInCart] = useState(false);
   const { isSignedIn, user, isLoaded } = useUser();
+ 
   const router = useRouter();
 
   const ref = useRef(null);
   const canvasref = useRef(null);
 
   const { addToCart, cart } = useCart();
-  const { addToWishlist, wishlist, removeFromWishlist } = useWishlist();
 
-  const productName = "Day Dazzle Lipstick";
-  const product = products.find(p => p.name === productName);
+
+
+ 
+
+const productName = "Day Dazzle Lipstick";
+const product = products.find(p => p.name === productName);
 
   useEffect(() => {
     if (product) {
-      // Check if product is in wishlist or cart
-      const wishlistArray = Array.from(wishlist)
-      const productInWishlist = wishlistArray.some(item => item.id === product.id);
-      const productInCart = cart.some(item => item.id === product.id);
-      setIsInWishlist(productInWishlist);
-      setIsInCart(productInCart);
+      const fetchWishlistProducts = async () => {
+        const wishListproducts = await getWishlistProducts();
+        console.log(wishListproducts);
+        const contains = wishListproducts.some(prod => 
+        {
+          // console.log(prod.productId, product.id)
+          return prod.productId === product.id
+        }
+        );
+        setIsInWishlist(contains);
+      };
+  
+      fetchWishlistProducts();
     }
-  }, [wishlist, cart, product]);
+  }, [ isInWishlist ]);
 
-  const handleAddToCart = () => {
+  const handleAddToCart = async () => {
     if (!isSignedIn) {
       return router.push("/sign-in");
     }
     if (product) {
+      try {
+        const data = await addProductToCart(product.id, 1);
+        console.log('Product added to cart:', data);
+      } catch (error) {
+        console.error('Error adding product to cart:', error);
+        return;
+      }
       addToCart(product, 1); 
       setIsInCart(true);
     }
@@ -54,9 +74,9 @@ const Day = () => {
   const handleAddToWishlist = () => {
     if (product) {
       if (isInWishlist) {
-        removeFromWishlist(product.id);
+        removeProductFromWishlist(product.id);
       } else {
-        addToWishlist(product);
+        addProductToWishlist(product.id);
       }
       setIsInWishlist(!isInWishlist);
     }
