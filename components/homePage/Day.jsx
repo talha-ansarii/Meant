@@ -109,22 +109,7 @@ const product = products.find(p => p.name === productName);
             scrollTo: { y: ref.current, offsetY: 100 },
             duration: 0.5,
           });
-        },
-        onEnterBack: () => {
-          // This callback will fire when scrolling back up to the trigger element
-          gsap.to(window, {
-            scrollTo: { y: canvasref.current.offsetTop, offsetY: 0 },
-            duration: 0.5,
-            ease: "power3.inOut",
-            onComplete: () => {
-              // Prevent further momentum scrolling
-              gsap.set(window, { scrollTo: { y: canvasref.current.offsetTop } });
-            },
-          });
-        },
-        onLeave: () => {
-          // Optional: Add any additional behavior when the trigger leaves the viewport
-        },
+        }
       });
     }
   }, []);
