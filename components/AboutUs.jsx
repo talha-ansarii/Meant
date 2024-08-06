@@ -5,8 +5,8 @@ import React from "react";
 const AboutUs = () => {
   return (
     <div className="w-full pb-4 flex flex-col items-center">
-      <div className="w-full max-w-screen-lg m-auto mt-[-80px] md:mt-0 lg:mt-0">
-        <div className="w-full flex justify-center">
+      <div className="w-full  m-auto mt-[-80px] md:mt-0 lg:mt-0">
+        <div className="w-[80%] m-auto flex justify-center">
           <Image
             src="/assets/images/aboutusbaanner.png"
             alt="About Us Banner"
@@ -15,7 +15,7 @@ const AboutUs = () => {
             className="object-cover rounded-md"
           />
         </div>
-        <div className="bg-white w-full max-w-screen-lg mt-12 rounded-[10px] flex flex-col items-center px-6 py-12">
+        <div className="bg-white w-[80%] m-auto  mt-12 rounded-[10px] flex flex-col items-center px-6 py-12">
           <div className="text-black playfair font-medium text-center lg:w-1/2 md:w-3/4 w-full">
             <p className="lg:text-2xl lg:leading-8 md:text-lg md:leading-6 text-sm leading-4">
               Welcome to <b>Meant,</b> where every product is crafted with
@@ -28,7 +28,7 @@ const AboutUs = () => {
           </div>
         </div>
 
-        <div className="bg-white w-full max-w-screen-lg mt-12 rounded-[10px] flex flex-col md:flex-row items-center justify-center">
+        <div className="bg-white w-[80%] m-auto mt-12 rounded-[10px] flex flex-col md:flex-row items-center justify-center">
           <div className="text-black playfair flex flex-col items-center text-center lg:w-1/2 md:w-1/2 w-full p-8 md:p-12">
             <div className="lg:text-4xl md:text-3xl text-xl font-bold mb-12">
               Our Mission
@@ -43,18 +43,18 @@ const AboutUs = () => {
               beauty industry by prioritizing social responsibility.
             </p>
           </div>
-          <div className="w-full md:w-1/2 flex justify-center">
+          <div className="w-[567px]  md:w-1/2 ">
             <Image
               src="/assets/images/mission.jpeg"
               alt="Our Mission Banner"
               width={567}
               height={537}
-              className="object-cover rounded"
+              className="object-cover w-full object-right rounded"
             />
           </div>
         </div>
 
-        <div className="bg-white w-full max-w-screen-lg mt-12 rounded-[10px] flex flex-col items-center p-6 min-h-[280px]">
+        <div className="bg-white w-[80%] m-auto mt-12 rounded-[10px] flex flex-col items-center p-6 min-h-[280px]">
           <div className="text-black playfair font-bold text-center lg:text-4xl md:text-2xl text-xl mt-6 mb-4">
             Our Values
           </div>
@@ -102,7 +102,7 @@ const AboutUs = () => {
           </div>
         </div>
 
-        <div className="lg:mb-[200px] md:w-[650px] m-auto md:h-[321px] lg:w-full mt-12 rounded-md lg:h-[537px] w-[309px] h-[162px] gap-2 md:gap-4 lg:gap-4 flex justify-center items-center">
+        <div className="lg:mb-[200px] md:w-[650px] m-auto md:h-[321px] lg:w-[80%] mx-auto mt-12 rounded-md lg:h-[537px] w-[309px] h-[162px] gap-2 md:gap-4 lg:gap-4 flex justify-center items-center">
           <div className="lg:w-[50%] lg:h-[537px] md:w-[510px] md:h-[321px] w-[162px] h-[162px] rounded-md overflow-hidden border-r-[10px] border-l-[10px] border-black">
             <Image
               src="/assets/images/vision.jpeg"

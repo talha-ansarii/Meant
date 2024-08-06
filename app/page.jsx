@@ -8,6 +8,7 @@ import Icons from "@/components/homePage/Icons";
 import Night from "@/components/homePage/Night";
 import Picture from "@/components/homePage/Picture";
 import Marquee from "@/components/Marquee";
+import VideoLoader from "@/components/VideoLoader";
 import { Suspense, useEffect, useState } from "react";
 
 export default function Home() {
@@ -32,13 +33,13 @@ export default function Home() {
   }, []);
   return (
     <div>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<div className="w-[100vw] h-[100vh] flex justify-center items-center  "><VideoLoader/></div>}>
         <Header />
         <div className="pt-[100px] pb-4">
           <HeroSection />
           <Day products={products} />
           <Night products={products} />
-          <Marquee />
+          {/* <Marquee /> */}
           <Picture />
           <Icons />
           <Banner />

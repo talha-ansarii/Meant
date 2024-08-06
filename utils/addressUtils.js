@@ -1,3 +1,5 @@
+
+
 export async function fetchAddresses() {
     try {
         const response = await fetch('/api/addresses', {
@@ -40,4 +42,23 @@ export async function fetchAddresses() {
         
     }
   }
+
+  export const updateAddress = async (addressId, newAddress) => {
+    try {
+      const response = await fetch("/api/addresses", {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ addressId, newAddress }),
+      });
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Error updating address:', error);
+      throw error;
+    }
+  };
+
   
+

@@ -19,7 +19,6 @@ export async function POST(request) {
   } else {
     user.cart.push({ productId, quantity });
   }
-
   await user.save();
   return new Response(JSON.stringify(user.cart), { status: 200 });
 }

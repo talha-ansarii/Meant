@@ -17,6 +17,7 @@ export async function POST(request) {
   }
 
   await user.save();
+  
   return new Response(JSON.stringify(user.wishlist), { status: 200 });
 }
 

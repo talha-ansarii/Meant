@@ -140,9 +140,7 @@ const Checkout = () => {
               {cartTotal.toFixed(2)}
             </h2>
           </div>
-          <Link href={"/order-confirm"} className="mt-8 text-[18px] font-playfair-display font-extrabold inline-block bg-black text-white py-2 px-8 rounded-[30px] text-center w-full md:w-auto">
-            Place Order
-          </Link>
+         
         </div>
       </div>
     </div>

@@ -39,8 +39,8 @@ const ProductCard = ({ product, quantity, onQuantityChange,setQuantities,quantit
   useEffect(() => {
     const fetchWishlistProducts = async () => {
       const wishListproducts = await getWishlistProducts();
-      console.log(wishListproducts);
-      const contains = wishListproducts.some(prod => 
+      // console.log(wishListproducts);
+      const contains = wishListproducts?.some(prod => 
       {
         // console.log(prod.productId, product.id)
         return prod.productId === product.id

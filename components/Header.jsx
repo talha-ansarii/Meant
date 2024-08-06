@@ -33,7 +33,7 @@ const Header = () => {
       setWishlistLength(wishlist?.length)
     }
     fetchData()
-    const intervalId = setInterval(fetchData, 5000); 
+    const intervalId = setInterval(fetchData, 500); 
 
   return () => clearInterval(intervalId); 
   }, []);
@@ -149,6 +149,9 @@ const Header = () => {
 
                   <Link className="cursor-pointer" href="/past-orders">
                     Orders
+                  </Link>
+                  <Link className="cursor-pointer" href="/address">
+                    Address
                   </Link>
                 </div>
 

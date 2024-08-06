@@ -12,6 +12,7 @@ import Footer from "./Footer";
 import Header from "./Header";
 import { addProductToCart } from "@/utils/cartUtils";
 import { addProductToWishlist, getWishlistProducts, removeProductFromWishlist } from "@/utils/wishlistUtils";
+import VideoLoader from "./VideoLoader";
 
 const shades = ["#A32C42", "#663024", "#AD5B55", "#995A60"];
 const shadeNames = ["Emily", "Grace", "Diva", "Veronica"];
@@ -30,20 +31,24 @@ const SingleProductPage = ({ productId }) => {
   const [initialProducts, setInitialProducts] = useState([]);
   const [product, setProduct] = useState(null);
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchProduct() {
       try {
+        setLoading(true);
         const response = await fetch(`/api/get-product/${productId}`);
         if (!response.ok) {
           throw new Error('Failed to fetch product');
         }
         const data = await response.json();
+        setLoading(false);
         console.log(data)
         setProduct(data);
         setSelectedImage(data.images[0].src);
       } catch (error) {
         setError(error.message);
+        setLoading(false);
       }
     }
   
@@ -173,9 +178,9 @@ const SingleProductPage = ({ productId }) => {
     const fetchWishlistProducts = async () => {
       const wishListproducts = await getWishlistProducts();
       console.log(wishListproducts);
-      const contains = wishListproducts.some(prod => 
+      const contains = wishListproducts?.some(prod => 
       {
-        console.log(prod.productId, productId)
+        console.log(prod?.productId, productId)
         return prod.productId == productId
       }
       );
@@ -188,7 +193,7 @@ const SingleProductPage = ({ productId }) => {
 
 
 
-  if (!product) return <p>Product not found</p>;
+  if (loading) return <div className="w-[100vw] h-[100vh] flex justify-center items-center "><VideoLoader/></div>;
 
   return (
     <div className="bg-black text-white min-h-screen">

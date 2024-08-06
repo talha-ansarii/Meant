@@ -4,6 +4,7 @@ import React, { Suspense, useState } from "react";
 import { Spotlight } from "../ui/spotlight";
 import { Canvas } from "@react-three/fiber";
 import CloseBoxComponent from "./CloseBoxComponent";
+import VideoLoader from "../VideoLoader";
 
 const HeroSection = () => {
   const [mouseIn, setMouseIn] = useState(false);
@@ -22,7 +23,7 @@ const HeroSection = () => {
         >
           <Canvas className="absolute">
             <ambientLight intensity={1} />
-            <Suspense fallback={null}>
+            <Suspense fallback={<div>Loading...</div>}>
               <CloseBoxComponent mouseIn={mouseIn} />
             </Suspense>
           </Canvas>

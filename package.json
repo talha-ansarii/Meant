@@ -34,7 +34,8 @@
     "react-responsive": "^10.0.0",
     "tailwind-merge": "^2.4.0",
     "tailwindcss-animate": "^1.0.7",
-    "three": "^0.166.1"
+    "three": "^0.166.1",
+    "ws": "^8.18.0"
   },
   "devDependencies": {
     "eslint": "^8",

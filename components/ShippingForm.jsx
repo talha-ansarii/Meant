@@ -289,10 +289,10 @@ const handleSubmit = async (e) => {
             >
 
             <Link
-              href={"/checkout"}
+              href={"/order-confirm"}
               className="mt-4 flex justify-center items-center w-[205px] h-[40px] bg-black text-[14px] font-poppins font-[600] text-white rounded-[34px]"
             >
-              <div>Continue to Pay</div>
+              <div>Continue to Shipping</div>
             </Link>
             </button>
           </div>

@@ -8,6 +8,7 @@ import CustomDropdown from "@/components/CustomDropdown";
 import Header from "./Header";
 import Footer from "./Footer";
 import Banner from "./Banner";
+import VideoLoader from "./VideoLoader";
 
 const CategoryFilter = ({
   categories,
@@ -81,6 +82,7 @@ const ProductList = () => {
   const [filterOpen, setFilterOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [openIndex, setOpenIndex] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   const productsPerPage = 16;
 
@@ -88,6 +90,7 @@ const ProductList = () => {
     // Fetch products from API
     const fetchProducts = async () => {
       try {
+        setLoading(true);
         const response = await fetch("/api/get-products");
         const data = await response.json();
         console.log("Fetched products:", data);
@@ -96,9 +99,11 @@ const ProductList = () => {
         setQuantities(
           data.reduce((acc, product) => ({ ...acc, [product.id]: 1 }), {})
         );
+        setLoading(false);
 
       } catch (error) {
         console.error("Error fetching products:", error);
+        setLoading(false);
       }
     };
 
@@ -218,6 +223,12 @@ const ProductList = () => {
   const handleToggleAccordion = (index) => {
     setOpenIndex(openIndex === index ? null : index);
   };
+
+  if (loading) {
+    return <div className="w-[100vw] h-[100vh] flex justify-center items-center ">
+    <VideoLoader/>
+    </div>;
+  }
 
   return (
     <div className="pb-4">

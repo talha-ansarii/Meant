@@ -1,4 +1,5 @@
 import Checkout from "@/components/Checkout";
+import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import ShippingForm from "@/components/ShippingForm";
 import { RedirectToSignIn, SignedOut, SignedIn } from "@clerk/nextjs";
@@ -23,6 +24,7 @@ const page = () => {
       </div>
     </div>
     </SignedIn>
+    <Footer/>
 
     </div>
   );
