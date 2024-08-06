@@ -4,7 +4,7 @@ import React from "react";
 
 const AboutUs = () => {
   return (
-    <div className="w-full pb-4 flex flex-col items-center">
+    <div className="w-full  pb-4 flex flex-col items-center">
       <div className="w-full  m-auto mt-0 md:mt-0 lg:mt-0">
         <div className="md:w-[80%] lg:w-[80%] w-full m-auto flex justify-center">
           <Image
@@ -17,7 +17,7 @@ const AboutUs = () => {
         </div>
         <div className="bg-white w-[80%] m-auto  mt-12 rounded-[10px] flex flex-col items-center px-6 py-12">
           <div className="text-black playfair font-medium text-center lg:w-[80%] md:w-[80%] w-full">
-          <div className="lg:text-4xl md:text-3xl text-xl font-bold mb-12">
+          <div className="lg:text-4xl md:text-3xl text-xl font-bold mb-4 lg:mb-12 md:mb-12">
               About Us
             </div>
             <p className="lg:text-2xl lg:leading-8 md:text-lg md:leading-6 text-sm leading-4">

@@ -46,7 +46,11 @@ const Banner = () => {
           <div className="absolute left-[50%] top-[63%] translate-x-[-50%] flex flex-col justify-center items-center translate-y-[-50%] ">
            
             <Link href={"/products"} className="poppins-regular font-[600] text-[16px] leading-[24px] text-white w-[116px] h-[36px] bg-black rounded-[3px] mt-[30px]">
+              <div className="w-full h-full flex justify-center items-center">
+              <div>
               SHOP NOW
+              </div>
+              </div>
             </Link>
           </div>
         </div>

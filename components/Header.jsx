@@ -24,7 +24,6 @@ const Header = () => {
   const [cartLength, setCartLength] = useState(0);
   const [wishlistLength, setWishlistLength] = useState(0);
   const [isClient, setIsClient] = useState(false);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     setIsClient(true);
@@ -37,7 +36,6 @@ const Header = () => {
       const wishlist = await getWishlistProducts();
       setCartLength(cart?.length);
       setWishlistLength(wishlist?.length);
-      setLoading(false);
     };
     fetchData();
     const intervalId = setInterval(fetchData, 500);
@@ -83,6 +81,7 @@ const Header = () => {
     },
   };
 
+
   useEffect(() => {
     if (user) {
       setIsLogin(true);
@@ -109,8 +108,8 @@ const Header = () => {
 
   return (
     <div
-      className={`w-full m-auto top-[30px] duration-200 left-[50%] translate-x-[-50%] px-[20px] fixed z-50 transition-transform ${
-        scrollDirection === "down" ? " -translate-y-[80px] " : " translate-y-0 "
+      className={`w-full m-auto top-[30px] duration-200 left-[50%] translate-x-[-50%] px-[20px] absolute lg:fixed md:fixed z-50 transition-transform ${
+        scrollDirection === "down" ? " translate-y-0 lg:-translate-y-[80px] md:-translate-y-[80px] " : " translate-y-0 "
       }`}
     >
       <div className="lg:w-[892px] md:w-[741px] hidden z-50  px-[20px] m-auto h-[43px] rounded-[116px]  border md:flex lg:flex items-center justify-between bg-black  ">
@@ -314,13 +313,38 @@ const Header = () => {
         </div>
       </div>
 
-      {loading ? (
-        <>
-          <Loader />
-        </>
-      ) : (
-        <div
-          className={`fixed top-[-30px] duration-500 right-0 w-full md:w-1/3 bg-white text-black h-[100vh] transition-transform transform z-50
+
+    <AnimatePresence>
+      {isCartOpen && 
+      (
+        <motion.div
+          className={`fixed top-[-120px] playfair bg-white mt-[86px] lg:hidden md:hidden  h-[100vh]  inset-0 z-[200] font-[700] text-[20px]  text-black 
+          
+            `}
+          initial="hidden"
+          animate="visible"
+          exit="hidden"
+          variants={containerVariants}
+        >
+          <div className="p-4 w-full bg-white flex justify-between items-center">
+            <h2 className="text-[30px] font-semibold font-playfair-display">
+              Cart
+            </h2>
+            <button
+              onClick={() => setIsCartOpen(false)}
+              className="text-xl text-[#CDC8C8]"
+            >
+              ✕
+            </button>
+          </div>
+          <Cart />
+        </motion.div>
+
+      )
+      }
+    </AnimatePresence>
+    <div
+          className={`fixed top-[-30px] duration-500 hidden lg:block md:block right-0 w-full md:w-1/3 bg-white text-black h-[100vh] transition-transform transform z-50
             ${isCartOpen ? "translate-x-0" : "translate-x-full"}
             `}
           initial="hidden"
@@ -341,7 +365,6 @@ const Header = () => {
           </div>
           <Cart />
         </div>
-      )}
     </div>
   );
 };
