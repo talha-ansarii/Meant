@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import React, { useEffect, useState } from "react";
 const images = [
   "/HomePage/banner/1.jpeg",
@@ -44,9 +45,9 @@ const Banner = () => {
           />
           <div className="absolute left-[50%] top-[63%] translate-x-[-50%] flex flex-col justify-center items-center translate-y-[-50%] ">
            
-            <button className="poppins-regular font-[600] text-[16px] leading-[24px] text-white w-[116px] h-[36px] bg-black rounded-[3px] mt-[30px]">
+            <Link href={"/products"} className="poppins-regular font-[600] text-[16px] leading-[24px] text-white w-[116px] h-[36px] bg-black rounded-[3px] mt-[30px]">
               SHOP NOW
-            </button>
+            </Link>
           </div>
         </div>
       </div>
