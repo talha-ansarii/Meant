@@ -157,7 +157,7 @@ const ProductCard = ({ product, quantity, onQuantityChange,setQuantities,quantit
             {product.name}
           </h3>
           <p className="text-lg font-playfair-display font-semibold text-black">
-            ${product.price}
+            Rs.{product.price}
           </p>
         </div>
 
