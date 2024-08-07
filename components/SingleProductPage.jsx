@@ -11,7 +11,11 @@ import { FaRegHeart, FaHeart } from "react-icons/fa";
 import Footer from "./Footer";
 import Header from "./Header";
 import { addProductToCart } from "@/utils/cartUtils";
-import { addProductToWishlist, getWishlistProducts, removeProductFromWishlist } from "@/utils/wishlistUtils";
+import {
+  addProductToWishlist,
+  getWishlistProducts,
+  removeProductFromWishlist,
+} from "@/utils/wishlistUtils";
 import VideoLoader from "./VideoLoader";
 
 const shades = ["#A32C42", "#663024", "#AD5B55", "#995A60"];
@@ -39,11 +43,10 @@ const SingleProductPage = ({ productId }) => {
         setLoading(true);
         const response = await fetch(`/api/get-product/${productId}`);
         if (!response.ok) {
-          throw new Error('Failed to fetch product');
+          throw new Error("Failed to fetch product");
         }
         const data = await response.json();
         setLoading(false);
-        console.log(data)
         setProduct(data);
         setSelectedImage(data.images[0].src);
       } catch (error) {
@@ -51,7 +54,7 @@ const SingleProductPage = ({ productId }) => {
         setLoading(false);
       }
     }
-  
+
     fetchProduct();
   }, [productId]);
 
@@ -61,7 +64,8 @@ const SingleProductPage = ({ productId }) => {
       try {
         const response = await fetch("/api/get-products");
         const data = await response.json();
-        // console.log("Fetched products:", data);
+
+        console.log(data);
 
         setInitialProducts(data);
       } catch (error) {
@@ -73,20 +77,23 @@ const SingleProductPage = ({ productId }) => {
   }, []);
 
   useEffect(() => {
-    // Fetch related products based on category
-    const fetchRelatedProducts = () => {
-      const fetchedRelatedProducts = initialProducts
-        .filter((p) => p.category === product.category)
-        .sort(() => 0.5 - Math.random());
-      setRelatedProducts(fetchedRelatedProducts);
-    };
+    if (product && product.categories && product.categories.length > 0) {
+      const fetchRelatedProducts = () => {
+        const productCategoryName = product.categories[0].name;
 
-    if (product) {
+        // Filter products that belong to the same category
+        const fetchedRelatedProducts = initialProducts
+          .filter((p) =>
+            p.categories.some((cat) => cat.name === productCategoryName)
+          )
+          .sort(() => 0.5 - Math.random());
+
+        setRelatedProducts(fetchedRelatedProducts);
+      };
+
       fetchRelatedProducts();
     }
-  }, [product, productId]);
-
-
+  }, [product, initialProducts]);
 
   useEffect(() => {
     setInCart(cart.some((item) => item.id === product.id));
@@ -110,16 +117,15 @@ const SingleProductPage = ({ productId }) => {
   };
 
   const handleCartClick = async (e) => {
-    console.log("clicked")
+    console.log("clicked");
     try {
       const data = await addProductToCart(product.id, quantity);
       setQuantity(1);
-      console.log('Product added to cart:', data);
+      console.log("Product added to cart:", data);
     } catch (error) {
-      console.error('Error adding product to cart:', error);
+      console.error("Error adding product to cart:", error);
       return;
     }
-
 
     const cartItem = cart.find((item) => item.id === product.id);
 
@@ -135,16 +141,12 @@ const SingleProductPage = ({ productId }) => {
 
   const handleWishlistClick = async (e) => {
     e.stopPropagation();
-    // console.log(wishlistFilled)
     if (wishlistFilled) {
-    
       removeProductFromWishlist(parseInt(productId));
       removeFromWishlist(productId);
-
     } else {
-      
-      const updatedWishlist = await addProductToWishlist(parseInt(productId)); 
-      console.log(updatedWishlist)
+      const updatedWishlist = await addProductToWishlist(parseInt(productId));
+      console.log(updatedWishlist);
       addToWishlist(productId);
     }
   };
@@ -177,23 +179,21 @@ const SingleProductPage = ({ productId }) => {
   useEffect(() => {
     const fetchWishlistProducts = async () => {
       const wishListproducts = await getWishlistProducts();
-      console.log(wishListproducts);
-      const contains = wishListproducts?.some(prod => 
-      {
-        console.log(prod?.productId, productId)
-        return prod.productId == productId
-      }
-      );
-      console.log(contains)
+      const contains = wishListproducts?.some((prod) => {
+        return prod.productId == productId;
+      });
       setWishlistFilled(contains);
     };
 
     fetchWishlistProducts();
-  }, [wishlist]);
+  }, [productId, wishlist]);
 
-
-
-  if (loading) return <div className="w-[100vw] h-[100vh] flex justify-center items-center "><VideoLoader/></div>;
+  if (loading)
+    return (
+      <div className="w-[100vw] h-[100vh] flex justify-center items-center ">
+        <VideoLoader />
+      </div>
+    );
 
   return (
     <div className="bg-black text-white min-h-screen">
@@ -227,7 +227,7 @@ const SingleProductPage = ({ productId }) => {
                           alt={`Product image ${index + 1}`}
                           width={80}
                           height={80}
-                          className="w-[80px]  h-[80px] rounded-md"
+                          className="w-[80px] h-[80px] rounded-md"
                         />
                       </div>
                     )
@@ -238,9 +238,9 @@ const SingleProductPage = ({ productId }) => {
                 <Image
                   src={selectedImage}
                   alt={product.name}
-                  width={400}
-                  height={400}
-                  className="w-[400px] h-[400px] rounded-xl"
+                  width={440}
+                  height={440}
+                  className="w-[440px] h-[440px] rounded-xl ml-8"
                 />
               </div>
             </div>
@@ -265,15 +265,15 @@ const SingleProductPage = ({ productId }) => {
               )}
             </div>
             <p className="text-sm font-normal font-merriweather text-white mt-2">
-              {product.details}
+              {product.meta_data[0].value}
             </p>
             <p className="text-xl font-playfair-display font-bold mt-4">
-              {product.price}
+              ${product.price}
             </p>
             <div className="flex items-center mt-2">
-              {renderStars(product.rating)}
+              {renderStars(product.average_rating)}
               <span className="text-white font-poppins font-medium ml-2">
-                ({product.reviews} reviews)
+                ({product.average_rating})
               </span>
             </div>
             {/* Color Palette */}
@@ -289,11 +289,11 @@ const SingleProductPage = ({ productId }) => {
                   <div
                     className="w-6 h-6"
                     style={{ backgroundColor: shade }}
-                    onMouseEnter={() =>
-                      setHoveredShade(shadeNames[index])
-                    }
+                    onMouseEnter={() => setHoveredShade(shadeNames[index])}
                     onMouseLeave={() => setHoveredShade(null)}
-                    onClick={() => handleShadeClick(product.images[index].src)}
+                    onClick={() =>
+                      handleShadeClick(product.images[index + 1].src)
+                    }
                   />{" "}
                   <span
                     className={`text-white text-xs font-poppins font-medium absolute transition-opacity duration-300 ${
@@ -346,7 +346,7 @@ const SingleProductPage = ({ productId }) => {
               fontWeight="font-bold"
             >
               <p className="text-sm font-medium font-poppins text-gray-400">
-                {product.description}
+                {product.meta_data[4].value}
               </p>
             </Accordion>
             <Accordion
@@ -357,7 +357,7 @@ const SingleProductPage = ({ productId }) => {
               fontWeight="font-bold"
             >
               <p className="text-sm font-medium font-poppins text-gray-400">
-                {product.ingredients}
+                {product.meta_data[5].value}
               </p>
             </Accordion>
             <Accordion
@@ -369,7 +369,7 @@ const SingleProductPage = ({ productId }) => {
               fontWeight="font-bold"
             >
               <p className="text-sm font-medium font-poppins text-gray-400">
-                {product.howToUse}
+                {product.meta_data[6].value}
               </p>
             </Accordion>
 

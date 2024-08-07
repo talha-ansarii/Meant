@@ -10,7 +10,10 @@ import Footer from "./Footer";
 import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { addProductToCart, getAllProducts } from "@/utils/cartUtils";
-import { getWishlistProducts, removeProductFromWishlist } from "@/utils/wishlistUtils";
+import {
+  getWishlistProducts,
+  removeProductFromWishlist,
+} from "@/utils/wishlistUtils";
 import { set } from "mongoose";
 
 const WishList = () => {
@@ -27,48 +30,43 @@ const WishList = () => {
     try {
       const data = await addProductToCart(item.id, 1);
       removeFromWishlist(item.id);
-      console.log('Product added to cart:', data);
+      console.log("Product added to cart:", data);
     } catch (error) {
-      console.error('Error adding product to cart:', error);
+      console.error("Error adding product to cart:", error);
       return;
     }
 
     addToCart({ ...item, quantity: 1 });
-    
   };
 
+  useEffect(() => {
+    const fetchData = async () => {
+      const wishlistt = await getWishlistProducts();
+      const products = await getAllProducts();
 
+      if (wishlistt && products) {
+        // Filter products that are in the wishlist
+        const filteredProducts = products.filter((product) =>
+          wishlistt.some(
+            (wishlistItem) => wishlistItem.productId === product.id
+          )
+        );
 
-useEffect(() => {
+        console.log(filteredProducts);
+        setWishlistArray(filteredProducts);
+      }
+    };
 
-  const fetchData = async () => {
-    const wishlistt = await getWishlistProducts();
-    const products = await getAllProducts();
-   
-    if (wishlistt && products) {
-      // Filter products that are in the wishlist
-      const filteredProducts = products.filter(product =>
-        wishlistt.some(wishlistItem => wishlistItem.productId === product.id)
-      );
+    fetchData();
+  }, []);
 
-
-      console.log(filteredProducts)
-      setWishlistArray(filteredProducts);
-    }
+  const removeFromWishlist = async (productId) => {
+    removeProductFromWishlist(productId);
+    const updatedWishlist = wishlistArray.filter(
+      (item) => item.id !== productId
+    );
+    setWishlistArray(updatedWishlist);
   };
-
-  fetchData();
-
-}, []);
-
-const removeFromWishlist = async (productId) => {
-
-  removeProductFromWishlist(productId);
-  const updatedWishlist = wishlistArray.filter((item) => item.id !== productId);
-  setWishlistArray(updatedWishlist);
-
-};
-
 
   return (
     <div className="pb-4">
@@ -81,7 +79,6 @@ const removeFromWishlist = async (productId) => {
           Your wishlist is empty.{" "}
           <Link href="/products">Start adding some products!</Link>
         </p>
-        
       ) : (
         <div className="p-4 w-[82%] m-auto pt-[2rem] grid grid-cols-1 md:grid-cols-3 gap-8">
           {wishlistArray.map((item) => (
@@ -108,7 +105,7 @@ const removeFromWishlist = async (productId) => {
                     {item.name}
                   </h3>
                   <p className="text-lg font-playfair-display font-bold text-black">
-                    {item.price}
+                    ${item.price}
                   </p>
                 </div>
                 {/* Remove from wishlist button */}

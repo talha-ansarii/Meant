@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const UserSchema = new mongoose.Schema({
   userId: { type: String, required: true, unique: true },
@@ -21,15 +21,15 @@ const UserSchema = new mongoose.Schema({
   orders: [
     {
       orderId: String,
-        products: [
-            {
-            productId: Number,
-            quantity: Number,
-            },
-        ],
+      products: [
+        {
+          productId: Number,
+          quantity: Number,
+        },
+      ],
     },
   ],
 });
 
-const User = mongoose.models.User || mongoose.model('User', UserSchema);
+const User = mongoose.models.User || mongoose.model("User", UserSchema);
 export default User;
