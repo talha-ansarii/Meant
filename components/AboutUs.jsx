@@ -1,7 +1,6 @@
 import Footer from "@/components/Footer";
 import Image from "next/image";
 import React from "react";
-
 const AboutUs = () => {
   return (
     <div className="w-full  pb-4 flex flex-col items-center">
