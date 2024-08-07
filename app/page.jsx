@@ -1,4 +1,5 @@
-'use client'
+"use client";
+
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import Banner from "@/components/homePage/Banner";
@@ -7,7 +8,6 @@ import HeroSection from "@/components/homePage/HeroSection";
 import Icons from "@/components/homePage/Icons";
 import Night from "@/components/homePage/Night";
 import Picture from "@/components/homePage/Picture";
-import Marquee from "@/components/Marquee";
 import VideoLoader from "@/components/VideoLoader";
 import { Suspense, useEffect, useState } from "react";
 
@@ -20,26 +20,29 @@ export default function Home() {
         const response = await fetch("/api/get-products");
         const data = await response.json();
         setProducts(data);
-  
+
         console.log("Fetched products:", data);
-  
-      
       } catch (error) {
         console.error("Error fetching products:", error);
       }
     };
-  
+
     fetchProducts();
   }, []);
   return (
     <div>
-      <Suspense fallback={<div className="w-[100vw] h-[100vh] flex justify-center items-center  "><VideoLoader/></div>}>
+      <Suspense
+        fallback={
+          <div className="w-[100vw] h-[100vh] flex justify-center items-center  ">
+            <VideoLoader />
+          </div>
+        }
+      >
         <Header />
         <div className="pt-[100px] pb-4">
           <HeroSection />
           <Day products={products} />
           <Night products={products} />
-          {/* <Marquee /> */}
           <Picture />
           <Icons />
           <Banner />

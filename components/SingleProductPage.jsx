@@ -5,9 +5,8 @@ import Image from "next/image";
 import { FaStar } from "react-icons/fa";
 import Accordion from "./Accordian";
 import ProductCard from "./ProductCard";
-import { useCart } from "/context/CartContext.js";
-import { useWishlist } from "/context/WishlistContext.js";
 import { FaRegHeart, FaHeart } from "react-icons/fa";
+import productShades from "@/constants/productShades";
 import Footer from "./Footer";
 import Header from "./Header";
 import { addProductToCart } from "@/utils/cartUtils";
@@ -19,7 +18,6 @@ import {
 import VideoLoader from "./VideoLoader";
 
 const shades = ["#A32C42", "#663024", "#AD5B55", "#995A60"];
-const shadeNames = ["Emily", "Grace", "Diva", "Veronica"];
 
 const SingleProductPage = ({ productId }) => {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -28,20 +26,16 @@ const SingleProductPage = ({ productId }) => {
   const [relatedProducts, setRelatedProducts] = useState([]);
   const [relatedQuantities, setRelatedQuantities] = useState({});
   const [hoveredShade, setHoveredShade] = useState(null);
-  const { addToWishlist, removeFromWishlist, wishlist } = useWishlist();
-  const { addToCart, cart } = useCart();
   const [wishlistFilled, setWishlistFilled] = useState(false);
-  const [inCart, setInCart] = useState(false);
   const [initialProducts, setInitialProducts] = useState([]);
   const [product, setProduct] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [isClient, setIsClient] = useState(false)
- 
-useEffect(() => {
-  setIsClient(true)
-}, [])
+  const [isClient, setIsClient] = useState(false);
 
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   useEffect(() => {
     async function fetchProduct() {
@@ -101,10 +95,6 @@ useEffect(() => {
     }
   }, [product, initialProducts]);
 
-  useEffect(() => {
-    setInCart(cart.some((item) => item.id === product.id));
-  }, [cart, product]);
-
   const handleQuantityChange = (delta) => {
     setQuantity((prevQuantity) => {
       const newQuantity = prevQuantity + delta;
@@ -132,28 +122,22 @@ useEffect(() => {
       console.error("Error adding product to cart:", error);
       return;
     }
-
-    const cartItem = cart.find((item) => item.id === product.id);
-
-    if (cartItem) {
-      const newQuantity = cartItem.quantity + quantity;
-      addToCart(product, newQuantity);
-    } else {
-      addToCart(product, quantity);
-    }
-
-    setInCart(!inCart);
   };
 
   const handleWishlistClick = async (e) => {
     e.stopPropagation();
-    if (wishlistFilled) {
-      removeProductFromWishlist(parseInt(productId));
-      removeFromWishlist(productId);
-    } else {
-      const updatedWishlist = await addProductToWishlist(parseInt(productId));
-      console.log(updatedWishlist);
-      addToWishlist(productId);
+    try {
+      if (wishlistFilled) {
+        await removeProductFromWishlist(parseInt(productId));
+      } else {
+        await addProductToWishlist(parseInt(productId));
+      }
+      // Re-fetch wishlist state after update
+      const updatedWishlistProducts = await getWishlistProducts();
+      const contains = updatedWishlistProducts?.some((prod) => prod.productId == productId);
+      setWishlistFilled(contains);
+    } catch (error) {
+      console.error("Error updating wishlist:", error);
     }
   };
 
@@ -178,6 +162,11 @@ useEffect(() => {
     setSelectedImage(imgSrc);
   };
 
+  const productStyle = productShades[productId] || {
+    shades: [],
+    shadeNames: [],
+  };
+
   const handleShadeClick = (imgSrc) => {
     setSelectedImage(imgSrc);
   };
@@ -192,9 +181,9 @@ useEffect(() => {
     };
 
     fetchWishlistProducts();
-  }, [productId, wishlist]);
+  }, [productId]);
 
-  if(loading) return <>{isClient && <VideoLoader/> }</>
+  if (loading) return <>{isClient && <VideoLoader />}</>;
 
   return (
     <div className="bg-black text-white min-h-screen">
@@ -266,22 +255,23 @@ useEffect(() => {
               )}
             </div>
             <p className="text-sm font-normal font-merriweather text-white mt-2">
-              {product.meta_data[0].value}
+              {product.meta_data.find((meta) => meta.key === "details")
+                ?.value || "No details available."}
             </p>
             <p className="text-xl font-playfair-display font-bold mt-4">
-              ${product.price}
+              ₹{product.price}
             </p>
             <div className="flex items-center mt-2">
               {renderStars(product.average_rating)}
               <span className="text-white font-poppins font-medium ml-2">
-                ({product.average_rating})
+                ({product.rating_count} reviews)
               </span>
             </div>
             {/* Color Palette */}
             <h3 className="text-lg font-bold font-merriweather mt-4">Shades</h3>
             <div className="grid grid-cols-2 w-[48px] my-2">
               {" "}
-              {shades.map((shade, index) => (
+              {productStyle.shades.map((shade, index) => (
                 <div
                   key={index}
                   className="flex items-center space-x-2 relative"
@@ -290,7 +280,9 @@ useEffect(() => {
                   <div
                     className="w-6 h-6"
                     style={{ backgroundColor: shade }}
-                    onMouseEnter={() => setHoveredShade(shadeNames[index])}
+                    onMouseEnter={() =>
+                      setHoveredShade(productStyle.shadeNames[index])
+                    }
                     onMouseLeave={() => setHoveredShade(null)}
                     onClick={() =>
                       handleShadeClick(product.images[index + 1].src)
@@ -298,14 +290,14 @@ useEffect(() => {
                   />{" "}
                   <span
                     className={`text-white text-xs font-poppins font-medium absolute transition-opacity duration-300 ${
-                      hoveredShade === shadeNames[index]
+                      hoveredShade === productStyle.shadeNames[index]
                         ? "opacity-100"
                         : "opacity-0"
                     }`}
                     style={{ left: index % 2 === 0 ? "-3rem" : "1.5rem" }}
                   >
                     {" "}
-                    {shadeNames[index]}{" "}
+                    {productStyle.shadeNames[index]}{" "}
                   </span>{" "}
                 </div>
               ))}{" "}
@@ -347,7 +339,8 @@ useEffect(() => {
               fontWeight="font-bold"
             >
               <p className="text-sm font-medium font-poppins text-gray-400">
-                {product.meta_data[4].value}
+                {product.meta_data.find((meta) => meta.key === "description")
+                  ?.value || "No description available."}
               </p>
             </Accordion>
             <Accordion
@@ -358,7 +351,8 @@ useEffect(() => {
               fontWeight="font-bold"
             >
               <p className="text-sm font-medium font-poppins text-gray-400">
-                {product.meta_data[5].value}
+                {product.meta_data.find((meta) => meta.key === "ingredients")
+                  ?.value || "No ingredients available."}
               </p>
             </Accordion>
             <Accordion
@@ -370,7 +364,8 @@ useEffect(() => {
               fontWeight="font-bold"
             >
               <p className="text-sm font-medium font-poppins text-gray-400">
-                {product.meta_data[6].value}
+                {product.meta_data.find((meta) => meta.key === "howtoapply")
+                  ?.value || "No how to apply available."}
               </p>
             </Accordion>
 

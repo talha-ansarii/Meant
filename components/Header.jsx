@@ -4,8 +4,6 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { FaRegHeart, FaShoppingCart, FaUser } from "react-icons/fa";
-import { useWishlist } from "/context/WishlistContext.js";
-import { useCart } from "@/context/CartContext";
 import Cart from "./Cart";
 import { SignedIn, SignedOut, UserButton, useUser } from "@clerk/nextjs";
 import { getCartProducts } from "@/utils/cartUtils";
@@ -20,7 +18,7 @@ const Header = () => {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [scrollDirection, setScrollDirection] = useState("up");
 
-  const { isSignedIn, user, isLoaded } = useUser();
+  const { user } = useUser();
   const [cartLength, setCartLength] = useState(0);
   const [wishlistLength, setWishlistLength] = useState(0);
   const [isClient, setIsClient] = useState(false);

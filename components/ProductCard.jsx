@@ -1,22 +1,26 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useWishlist } from "/context/WishlistContext.js";
-import { useCart } from "/context/CartContext.js";
 import { FaStar } from "react-icons/fa";
 import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
-import {addProductToCart} from "../utils/cartUtils";
-import { addProductToWishlist, getWishlistProducts, removeProductFromWishlist } from "@/utils/wishlistUtils";
+import { addProductToCart } from "../utils/cartUtils";
+import {
+  addProductToWishlist,
+  getWishlistProducts,
+  removeProductFromWishlist,
+} from "@/utils/wishlistUtils";
 
-const ProductCard = ({ product, quantity, onQuantityChange,setQuantities,quantities }) => {
-  const { addToWishlist, removeFromWishlist, wishlist } = useWishlist();
-  const { addToCart, cart } = useCart();
+const ProductCard = ({
+  product,
+  quantity,
+  onQuantityChange,
+  setQuantities,
+  quantities,
+}) => {
   const [wishlistFilled, setWishlistFilled] = useState(false);
-  const [inCart, setInCart] = useState(false);
-  const { isSignedIn, user, isLoaded } = useUser();
+  const { isSignedIn } = useUser();
   const router = useRouter();
-
 
   useEffect(() => {
     // Fetch products from API
@@ -25,8 +29,6 @@ const ProductCard = ({ product, quantity, onQuantityChange,setQuantities,quantit
         const response = await fetch("/api/get-products");
         const data = await response.json();
         // console.log("Fetched products:", data);
-
-      
       } catch (error) {
         console.error("Error fetching products:", error);
       }
@@ -35,45 +37,33 @@ const ProductCard = ({ product, quantity, onQuantityChange,setQuantities,quantit
     fetchProducts();
   }, []);
 
-
   useEffect(() => {
     const fetchWishlistProducts = async () => {
       const wishListproducts = await getWishlistProducts();
       // console.log(wishListproducts);
-      const contains = wishListproducts?.some(prod => 
-      {
+      const contains = wishListproducts?.some((prod) => {
         // console.log(prod.productId, product.id)
-        return prod.productId === product.id
-      }
-      );
+        return prod.productId === product.id;
+      });
       setWishlistFilled(contains);
     };
 
     fetchWishlistProducts();
-  }, []);
-
-  useEffect(() => {
-    setInCart(cart.some((item) => item.id === product.id));
-  }, [cart, product]);
+  });
 
   const handleWishlistClick = async (e) => {
     e.stopPropagation();
 
-   
-
     if (wishlistFilled) {
       removeProductFromWishlist(product.id);
-      removeFromWishlist(product.id);
     } else {
-      
-      const updatedWishlist = await addProductToWishlist(product.id); 
-      console.log(updatedWishlist)
-      addToWishlist(product);
+      const updatedWishlist = await addProductToWishlist(product.id);
+      console.log(updatedWishlist);
     }
     setWishlistFilled(!wishlistFilled);
   };
 
-  const handleCartClick =  async(e) => {
+  const handleCartClick = async (e) => {
     e.stopPropagation();
 
     if (!isSignedIn) {
@@ -82,28 +72,13 @@ const ProductCard = ({ product, quantity, onQuantityChange,setQuantities,quantit
     try {
       const data = await addProductToCart(product.id, quantity);
       setQuantities({ ...quantities, [product.id]: 1 });
-      console.log('Product added to cart:', data);
+      console.log("Product added to cart:", data);
     } catch (error) {
-      console.error('Error adding product to cart:', error);
+      console.error("Error adding product to cart:", error);
       return;
     }
-    const cartItem = cart.find((item) => item.id === product.id);
-
-    if (cartItem) {
-      const newQuantity = cartItem.quantity + quantity;
-      addToCart(product, newQuantity);
-     
-    } else {
-      addToCart(product, quantity);
-
-      
-    }
-   
-    setInCart(!inCart);
   };
 
-  
- 
   return (
     <div className="relative border rounded-lg overflow-hidden shadow-lg bg-white">
       <div className="relative">
@@ -157,7 +132,7 @@ const ProductCard = ({ product, quantity, onQuantityChange,setQuantities,quantit
             {product.name}
           </h3>
           <p className="text-lg font-playfair-display font-semibold text-black">
-            ${product.price}
+            ₹{product.price}
           </p>
         </div>
 

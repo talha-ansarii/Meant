@@ -2,26 +2,26 @@
 
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import { useCart } from "/context/CartContext.js";
 import { FaTrash } from "react-icons/fa";
 import Link from "next/link";
-import { useCheckout } from "/context/CheckoutContext";
-import { getAllProducts, getCartProducts, removeFromCart, updateCartQuantity } from "@/utils/cartUtils";
+import {
+  getAllProducts,
+  getCartProducts,
+  removeFromCart,
+  updateCartQuantity,
+} from "@/utils/cartUtils";
 import VideoLoader from "./VideoLoader";
 
 const Cart = () => {
-
-  const { setCheckoutItems } = useCheckout();
   const [cartProducts, setCartProducts] = useState([]);
   const [cartTotal, setCartTotal] = useState(0);
-  const [isClient, setIsClient] = useState(false)
+  const [isClient, setIsClient] = useState(false);
   const [loading, setLoading] = useState(true);
- 
-  useEffect(() => {
-    setIsClient(true)
-  }, [])
-  useEffect(() => {
 
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+  useEffect(() => {
     const fetchData = async () => {
       const cart = await getCartProducts();
       const products = await getAllProducts();
@@ -30,15 +30,15 @@ const Cart = () => {
       // console.log(products)
       if (cart && products) {
         // Filter products that are in the cart
-        const filteredProducts = products.filter(product =>
-          cart.some(cartItem => cartItem.productId === product.id)
+        const filteredProducts = products.filter((product) =>
+          cart.some((cartItem) => cartItem.productId === product.id)
         );
 
         let total = 0;
-        const productsWithQuantity = filteredProducts.map(product => {
-          const cartItem = cart.find(item => item.productId === product.id);
+        const productsWithQuantity = filteredProducts.map((product) => {
+          const cartItem = cart.find((item) => item.productId === product.id);
           total += product.price * cartItem.quantity;
-          
+
           return { ...product, quantity: cartItem?.quantity };
         });
 
@@ -48,12 +48,10 @@ const Cart = () => {
     };
 
     fetchData();
-    const intervalId = setInterval(fetchData, 1000); 
+    const intervalId = setInterval(fetchData, 1000);
 
-    return () => clearInterval(intervalId); 
-
+    return () => clearInterval(intervalId);
   }, []);
-
 
   const handleRemoveFromCart = async (productId) => {
     try {
@@ -62,30 +60,35 @@ const Cart = () => {
         setCartProducts((prevCartProducts) =>
           prevCartProducts.filter((product) => product.id !== productId)
         );
-        const removedProduct = cartProducts.find((product) => product.id === productId);
+        const removedProduct = cartProducts.find(
+          (product) => product.id === productId
+        );
         if (removedProduct) {
-          setCartTotal((prevTotal) => prevTotal - removedProduct.price * removedProduct.quantity);
+          setCartTotal(
+            (prevTotal) =>
+              prevTotal - removedProduct.price * removedProduct.quantity
+          );
         }
       }
     } catch (error) {
-      console.error('Error removing product from cart:', error);
+      console.error("Error removing product from cart:", error);
     }
   };
-
-
 
   const handleQuantityChange = async (productId, action) => {
     const updatedCart = await updateCartQuantity(productId, action);
     if (updatedCart) {
       // Update the cart products and total
       const products = await getAllProducts();
-      const filteredProducts = products.filter(product =>
-        updatedCart.some(cartItem => cartItem.productId === product.id)
+      const filteredProducts = products.filter((product) =>
+        updatedCart.some((cartItem) => cartItem.productId === product.id)
       );
 
       let total = 0;
-      const productsWithQuantity = filteredProducts.map(product => {
-        const cartItem = updatedCart.find(item => item.productId === product.id);
+      const productsWithQuantity = filteredProducts.map((product) => {
+        const cartItem = updatedCart.find(
+          (item) => item.productId === product.id
+        );
         total += product.price * cartItem.quantity;
         return { ...product, quantity: cartItem.quantity };
       });
@@ -95,10 +98,7 @@ const Cart = () => {
     }
   };
 
-
-
-
-  if(loading) return <>{isClient && <VideoLoader/> }</>
+  if (loading) return <>{isClient && <VideoLoader />}</>;
   return (
     <div className="w-full min-h-screen bg-white text-black px-4 md:px-8">
       <div className="max-h-[85vh] overflow-auto no-scrollbar">
@@ -138,12 +138,12 @@ const Cart = () => {
                         <FaTrash size={15} />
                       </button>
                     </div>
-                   
+
                     <div className="flex items-center justify-between mt-2 space-x-4">
                       <div className="flex items-center border border-black rounded-[3px]">
                         <button
                           onClick={() =>
-                            handleQuantityChange(item.id, 'decrease')
+                            handleQuantityChange(item.id, "decrease")
                           }
                           className="text-black py-1 px-3 rounded-l-lg"
                           disabled={item.quantity <= 1}
@@ -155,8 +155,7 @@ const Cart = () => {
                         </span>
                         <button
                           onClick={() =>
-                            handleQuantityChange(item.id, 'increase')
-
+                            handleQuantityChange(item.id, "increase")
                           }
                           className="text-black py-1 px-3 rounded-r-lg"
                         >
@@ -164,7 +163,7 @@ const Cart = () => {
                         </button>
                       </div>
                       <p className="text-lg font-bold font-merriweather">
-                        {item.price}
+                      ₹{item.price}
                       </p>
                     </div>
                   </div>
@@ -177,7 +176,7 @@ const Cart = () => {
                   Estimated Total:
                 </h2>
                 <h2 className="text-[30px] font-semibold font-playfair-display">
-                  ${cartTotal.toFixed(2)}
+                ₹{cartTotal.toFixed(2)}
                 </h2>
               </div>
               <p className="mt-2 text-[#827777] font-merriweather font-bold">
@@ -185,7 +184,6 @@ const Cart = () => {
               </p>
               <Link
                 href="/checkout"
-                
                 className="mt-8 text-[18px] font-playfair-display font-extrabold inline-block bg-black text-white py-2 px-8 rounded-[30px] text-center w-auto md:w-full"
               >
                 Checkout
@@ -194,7 +192,6 @@ const Cart = () => {
           </div>
         )}
       </div>
-
     </div>
   );
 };

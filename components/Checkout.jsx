@@ -1,23 +1,14 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { useCheckout } from "/context/CheckoutContext";
 import Image from "next/image";
-import Link from "next/link";
 import { getAllProducts, getCartProducts } from "@/utils/cartUtils";
-
-
-const parsePrice = (priceString) => {
-  const priceNumber = parseFloat(priceString.replace("$", ""));
-  return isNaN(priceNumber) ? 0 : priceNumber;
-};
 
 const Checkout = () => {
   const [cartProducts, setCartProducts] = useState([]);
   const [cartTotal, setCartTotal] = useState(0);
-  
-  useEffect(() => {
 
+  useEffect(() => {
     const fetchData = async () => {
       const cart = await getCartProducts();
       const products = await getAllProducts();
@@ -25,15 +16,15 @@ const Checkout = () => {
       // console.log(products)
       if (cart && products) {
         // Filter products that are in the cart
-        const filteredProducts = products.filter(product =>
-          cart.some(cartItem => cartItem.productId === product.id)
+        const filteredProducts = products.filter((product) =>
+          cart.some((cartItem) => cartItem.productId === product.id)
         );
 
         let total = 0;
-        const productsWithQuantity = filteredProducts.map(product => {
-          const cartItem = cart.find(item => item.productId === product.id);
+        const productsWithQuantity = filteredProducts.map((product) => {
+          const cartItem = cart.find((item) => item.productId === product.id);
           total += product.price * cartItem.quantity;
-          
+
           return { ...product, quantity: cartItem?.quantity };
         });
 
@@ -43,9 +34,7 @@ const Checkout = () => {
     };
 
     fetchData();
-
   }, []);
-
 
   return (
     <div className="flex flex-col pt-[100px] items-center justify-between min-h-screen bg-[#CDC8C8]/[40%] p-4">
@@ -89,7 +78,7 @@ const Checkout = () => {
                     </span>
                   </div>
                   <p className="text-lg text-black font-bold font-merriweather">
-                    {item.price}
+                    ₹{item.price}
                   </p>
                 </div>
               </div>
@@ -119,7 +108,7 @@ const Checkout = () => {
               Shipping & Handling:
             </p>
             <p className="text-[16px] font-poppins font-semibold text-[#827777]">
-              $0
+              ₹0
             </p>
           </div>
           <div className="flex justify-between items-center mb-2">
@@ -127,7 +116,7 @@ const Checkout = () => {
               Discount:
             </p>
             <p className="text-[16px] font-poppins font-semibold text-[#827777]">
-              -$0
+              -₹0
             </p>
           </div>
           <div className="w-full h-[1px] bg-[#CDC8C8]"></div>
@@ -136,11 +125,9 @@ const Checkout = () => {
               Estimated Total:
             </h2>
             <h2 className="text-[30px] text-black font-semibold font-playfair-display">
-              $
-              {cartTotal.toFixed(2)}
+              ₹{cartTotal.toFixed(2)}
             </h2>
           </div>
-         
         </div>
       </div>
     </div>
