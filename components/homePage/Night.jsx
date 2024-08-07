@@ -54,7 +54,7 @@ const Night = ({products}) => {
       const fetchWishlistProducts = async () => {
         const wishListproducts = await getWishlistProducts();
         console.log(wishListproducts);
-        const contains = wishListproducts.some(prod => 
+        const contains = wishListproducts?.some(prod => 
         {
           // console.log(prod.productId, product.id)
           return prod.productId === product.id

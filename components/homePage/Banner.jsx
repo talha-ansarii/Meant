@@ -27,7 +27,7 @@ const Banner = () => {
     <div className="w-full bg-black pb-[100px] ">
       <div className="w-[80%] h-[486px] m-auto flex ">
         <div className="w-[50%]  ">
-          <Image
+          <img
             width={100}
             height={100}
             src={images[index]}
@@ -36,7 +36,7 @@ const Banner = () => {
           />
         </div>
         <div className="w-[50%] relative ">
-          <Image
+          <img
             width={100}
             height={100}
             src={"/assets/images/meantForYou.jpeg"}
