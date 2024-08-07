@@ -23,7 +23,7 @@ const HeroSection = () => {
         >
           <Canvas className="absolute">
             <ambientLight intensity={1} />
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={null}>
               <CloseBoxComponent mouseIn={mouseIn} />
             </Suspense>
           </Canvas>

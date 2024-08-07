@@ -85,7 +85,7 @@ const product = products.find(p => p.name === productName);
   gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
   useGSAP(() => {
-    if (ref.current) {
+    if (ref.current && canvasref.current) {
       gsap.from(ref.current, {
         scale: 0,
         opacity: 0,
@@ -102,13 +102,29 @@ const product = products.find(p => p.name === productName);
       ScrollTrigger.create({
         trigger: canvasref.current,
         start: "top 100%",
-
+        end: "top top",
         // markers: true,
-        onEnter: () =>
+        onEnter: () => {
           gsap.to(window, {
             scrollTo: { y: ref.current, offsetY: 100 },
-            duration: 0.3,
-          }),
+            duration: 0.5,
+          });
+        },
+        onEnterBack: () => {
+          // This callback will fire when scrolling back up to the trigger element
+          gsap.to(window, {
+            scrollTo: { y: canvasref.current.offsetTop, offsetY: 0 },
+            duration: 0.5,
+            ease: "power3.inOut",
+            onComplete: () => {
+              // Prevent further momentum scrolling
+              gsap.set(window, { scrollTo: { y: canvasref.current.offsetTop } });
+            },
+          });
+        },
+        onLeave: () => {
+          // Optional: Add any additional behavior when the trigger leaves the viewport
+        },
       });
     }
   }, []);

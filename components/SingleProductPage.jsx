@@ -36,6 +36,12 @@ const SingleProductPage = ({ productId }) => {
   const [product, setProduct] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isClient, setIsClient] = useState(false)
+ 
+useEffect(() => {
+  setIsClient(true)
+}, [])
+
 
   useEffect(() => {
     async function fetchProduct() {
@@ -188,12 +194,7 @@ const SingleProductPage = ({ productId }) => {
     fetchWishlistProducts();
   }, [productId, wishlist]);
 
-  if (loading)
-    return (
-      <div className="w-[100vw] h-[100vh] flex justify-center items-center ">
-        <VideoLoader />
-      </div>
-    );
+  if(loading) return <>{isClient && <VideoLoader/> }</>
 
   return (
     <div className="bg-black text-white min-h-screen">

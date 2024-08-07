@@ -15,6 +15,7 @@ import {
   removeProductFromWishlist,
 } from "@/utils/wishlistUtils";
 import { set } from "mongoose";
+import VideoLoader from "./VideoLoader";
 
 const WishList = () => {
   // const { wishlist, removeFromWishlist } = useWishlist();
@@ -22,6 +23,12 @@ const WishList = () => {
   const { isSignedIn, user, isLoaded } = useUser();
   const router = useRouter();
   const [wishlistArray, setWishlistArray] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [isClient, setIsClient] = useState(false)
+ 
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
 
   const handleAddToCart = async (item) => {
     if (!isSignedIn) {
@@ -39,35 +46,53 @@ const WishList = () => {
     addToCart({ ...item, quantity: 1 });
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const wishlistt = await getWishlistProducts();
-      const products = await getAllProducts();
 
-      if (wishlistt && products) {
-        // Filter products that are in the wishlist
-        const filteredProducts = products.filter((product) =>
-          wishlistt.some(
-            (wishlistItem) => wishlistItem.productId === product.id
-          )
-        );
 
-        console.log(filteredProducts);
-        setWishlistArray(filteredProducts);
-      }
-    };
+useEffect(() => {
+
+  const fetchData = async () => {
+   try {
+
+    const wishlistt = await getWishlistProducts();
+    const products = await getAllProducts();
+   
+    if (wishlistt && products) {
+      
+      setLoading(false);
+      const filteredProducts = products.filter(product =>
+        wishlistt.some(wishlistItem => wishlistItem.productId === product.id)
+      );
+
+
+
+      console.log(filteredProducts)
+      setWishlistArray(filteredProducts);
+    }
+    
+    
+   } catch (error) {
+     console.error('Error fetching wishlist:', error);
+     setLoading(false);
+    
+   }
+    }
+
 
     fetchData();
   }, []);
 
-  const removeFromWishlist = async (productId) => {
-    removeProductFromWishlist(productId);
-    const updatedWishlist = wishlistArray.filter(
-      (item) => item.id !== productId
-    );
-    setWishlistArray(updatedWishlist);
-  };
+const removeFromWishlist = async (productId) => {
 
+  removeProductFromWishlist(productId);
+  const updatedWishlist = wishlistArray.filter((item) => item.id !== productId);
+  setWishlistArray(updatedWishlist);
+
+};
+
+
+ 
+  if(loading) return <>{isClient && <VideoLoader/> }</>
+  
   return (
     <div className="pb-4">
       <Header />

@@ -5,8 +5,10 @@ import { dark } from "@clerk/themes";
 
 export default function Page() {
   return (
-    <div className=" flex flex-col justify-center items-center">
-      <SignIn />
+    <div className=" flex flex-col h-[100vh] justify-center items-center">
+
+
+    <SignIn />
     </div>
   );
 }
