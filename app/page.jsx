@@ -36,8 +36,8 @@ export default function Home() {
   if (password !== '1234') {
     return <PasswordProtection password={password} setPassword={setPassword} />;
   }
-  return (
     
+  return (
     <div>
       <Suspense fallback={<div className="w-[100vw] h-[100vh] flex justify-center items-center  "><VideoLoader/></div>}>
         <Header />
