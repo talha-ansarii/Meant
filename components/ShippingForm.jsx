@@ -4,7 +4,7 @@ import Image from "next/image";
 import React, { useState } from "react";
 import { addAddress } from "@/utils/addressUtils";
 
-const ShippingForm = () => {
+const ShippingForm = ({add,setAdd,handlePayment}) => {
   // State variables for form inputs
   const [email, setEmail] = useState("");
   const [emailOffers, setEmailOffers] = useState(false);
@@ -31,7 +31,7 @@ const ShippingForm = () => {
 const handleSubmit = async (e) => {
   e.preventDefault();
   console.log("Form submitted");
-  const add ={
+  const addd ={
     email,
     emailOffers,
     firstName,
@@ -42,12 +42,13 @@ const handleSubmit = async (e) => {
     state,
     pincode,
     phone,
-    
-    
   }
-  console.log(add)
+  setAdd(addd)
+
+  // console.log(addd)
+  handlePayment()
  if(saveInfo){
-  const response = await addAddress(add)
+  const response = await addAddress(addd)
   console.log(response)
  }
 }
@@ -288,12 +289,12 @@ const handleSubmit = async (e) => {
             onClick={handleSubmit}
             >
 
-            <Link
-              href={"/order-confirm"}
+            <div
+              
               className="mt-4 flex justify-center items-center w-[205px] h-[40px] bg-black text-[14px] font-poppins font-[600] text-white rounded-[34px]"
             >
               <div>Continue to Shipping</div>
-            </Link>
+            </div>
             </button>
           </div>
         </form>

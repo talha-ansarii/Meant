@@ -26,8 +26,8 @@ const Cart = () => {
       const cart = await getCartProducts();
       const products = await getAllProducts();
       setLoading(false);
-      // console.log(cart)
-      // console.log(products)
+      console.log(cart)
+      console.log(products)
       if (cart && products) {
         // Filter products that are in the cart
         const filteredProducts = products.filter((product) =>
