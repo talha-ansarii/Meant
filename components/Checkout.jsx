@@ -1,17 +1,8 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import { getAllProducts, getCartProducts } from "@/utils/cartUtils";
-import axios from "axios";
-import { useRouter } from "next/navigation";
 
-
-
-
-const Checkout = ({cartProducts, setCartProducts,cartTotal,setCartTotal}) => {
-
-
+const Checkout = ({ cartProducts, cartTotal }) => {
   return (
     <div className="flex flex-col pt-[100px] items-center justify-between min-h-screen bg-[#CDC8C8]/[40%] p-4">
       <div className="w-full p-6">
@@ -104,8 +95,6 @@ const Checkout = ({cartProducts, setCartProducts,cartTotal,setCartTotal}) => {
               ₹{cartTotal.toFixed(2)}
             </h2>
           </div>
-
-         
         </div>
       </div>
     </div>

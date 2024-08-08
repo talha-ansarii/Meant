@@ -1,5 +1,4 @@
 'use client'
-import OrderItem from "./OrderItem";
 
 const orders = [
     {

@@ -1,10 +1,10 @@
-"use client"
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
 import React, { useState } from "react";
-import { addAddress } from "@/utils/addressUtils";
 
-const ShippingForm = ({add,setAdd,handlePayment}) => {
+const ShippingForm = ({ add, setAdd, handlePayment }) => {
   // State variables for form inputs
   const [email, setEmail] = useState("");
   const [emailOffers, setEmailOffers] = useState(false);
@@ -18,8 +18,6 @@ const ShippingForm = ({add,setAdd,handlePayment}) => {
   const [phone, setPhone] = useState("");
   const [saveInfo, setSaveInfo] = useState(false);
 
-  
-
   // Handle input changes
   const handleInputChange = (setter) => (e) => {
     setter(e.target.value);
@@ -28,10 +26,12 @@ const ShippingForm = ({add,setAdd,handlePayment}) => {
   const handleCheckboxChange = (setter) => (e) => {
     setter(e.target.checked);
   };
-const handleSubmit = async (e) => {
+
+  const handleSubmit = async (e) => {
   e.preventDefault();
-  console.log("Form submitted");
-  const addd ={
+  console.log("form Submitted");
+
+  const addr = {
     email,
     emailOffers,
     firstName,
@@ -42,16 +42,20 @@ const handleSubmit = async (e) => {
     state,
     pincode,
     phone,
-  }
-  setAdd(addd)
+  };
 
-  // console.log(addd)
-  handlePayment()
- if(saveInfo){
-  const response = await addAddress(addd)
-  console.log(response)
- }
-}
+  // Log to ensure values are correct before setting them
+  console.log("Submitting form with values:", addr);
+
+  setAdd(addr); // Update the state with the form data
+
+  handlePayment();
+  if (saveInfo) {
+    // Here you would handle saving the info (e.g., make an API call)
+    console.log("Saving address:", addr);
+  }
+};
+
   return (
     <div className="min-h-screen flex lg:mt-[80px] md:mt-[80px] flex-col items-center bg-white ray-50 py-10 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-4">
@@ -89,8 +93,7 @@ const handleSubmit = async (e) => {
         <div className="text-[32px] text-black font-[500] font-poppins">
           CONTACT
         </div>
-        <form 
-        className="space-y-2">
+        <form className="space-y-2" onSubmit={handleSubmit}>
           <div className="shadow-sm -space-y-px">
             <div>
               <label htmlFor="email-address" className="sr-only">
@@ -216,16 +219,14 @@ const handleSubmit = async (e) => {
                   State
                 </label>
                 <input
-                type="text"
+                  type="text"
                   id="state"
                   name="state"
                   required
                   value={state}
                   onChange={handleInputChange(setState)}
                   className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                >
-                  
-                </input>
+                ></input>
               </div>
               <div className="w-1/3">
                 <label htmlFor="pincode" className="sr-only">
@@ -284,17 +285,10 @@ const handleSubmit = async (e) => {
             >
               &lt; return to cart
             </a>
-            <button
-            type="submit"
-            onClick={handleSubmit}
-            >
-
-            <div
-              
-              className="mt-4 flex justify-center items-center w-[205px] h-[40px] bg-black text-[14px] font-poppins font-[600] text-white rounded-[34px]"
-            >
-              <div>Continue to Shipping</div>
-            </div>
+            <button type="submit">
+              <div className="mt-4 flex justify-center items-center w-[205px] h-[40px] bg-black text-[14px] font-poppins font-[600] text-white rounded-[34px]">
+                <div>Continue to Shipping</div>
+              </div>
             </button>
           </div>
         </form>

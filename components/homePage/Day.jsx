@@ -8,51 +8,44 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger, ScrollToPlugin } from "gsap/all";
 import { HoverBorderGradient } from "../ui/hover-border-gradient";
-import { useCart } from "/context/CartContext";
-import { useWishlist } from "/context/WishlistContext";
-// import products from "@/constants/products";
 import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { addProductToCart } from "@/utils/cartUtils";
-import { addProductToWishlist, getWishlistProducts, removeProductFromWishlist } from "@/utils/wishlistUtils";
+import {
+  addProductToWishlist,
+  getWishlistProducts,
+  removeProductFromWishlist,
+} from "@/utils/wishlistUtils";
 
-const Day = ({products}) => {
+const Day = ({ products }) => {
   const [mouseIn, setMouseIn] = useState(false);
   const [isInWishlist, setIsInWishlist] = useState(false);
   const [isInCart, setIsInCart] = useState(false);
-  const { isSignedIn, user, isLoaded } = useUser();
- 
+  const { isSignedIn } = useUser();
+
   const router = useRouter();
 
   const ref = useRef(null);
   const canvasref = useRef(null);
 
-  const { addToCart, cart } = useCart();
-
-
-
- 
-
-const productName = "Day Dazzle Lipstick";
-const product = products.find(p => p.name === productName);
+  const productName = "Day Dazzle Lipstick";
+  const product = products.find((p) => p.name === productName);
 
   useEffect(() => {
     if (product) {
       const fetchWishlistProducts = async () => {
         const wishListproducts = await getWishlistProducts();
         console.log(wishListproducts);
-        const contains = wishListproducts?.some(prod => 
-        {
+        const contains = wishListproducts?.some((prod) => {
           // console.log(prod.productId, product.id)
-          return prod.productId === product.id
-        }
-        );
+          return prod.productId === product.id;
+        });
         setIsInWishlist(contains);
       };
-  
+
       fetchWishlistProducts();
     }
-  }, [ isInWishlist ]);
+  }, [isInWishlist]);
 
   const handleAddToCart = async () => {
     if (!isSignedIn) {
@@ -61,12 +54,11 @@ const product = products.find(p => p.name === productName);
     if (product) {
       try {
         const data = await addProductToCart(product.id, 1);
-        console.log('Product added to cart:', data);
+        console.log("Product added to cart:", data);
       } catch (error) {
-        console.error('Error adding product to cart:', error);
+        console.error("Error adding product to cart:", error);
         return;
       }
-      addToCart(product, 1); 
       setIsInCart(true);
     }
   };
@@ -109,7 +101,7 @@ const product = products.find(p => p.name === productName);
             scrollTo: { y: ref.current, offsetY: 100 },
             duration: 0.5,
           });
-        }
+        },
       });
     }
   }, []);

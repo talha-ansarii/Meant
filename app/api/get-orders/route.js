@@ -1,6 +1,6 @@
-import Orders from '@/models/Order';
-import dbConnect from '../../../lib/mongodb';
-import { auth } from '@clerk/nextjs/server';
+import Orders from "@/models/Order";
+import dbConnect from "../../../lib/mongodb";
+import { auth } from "@clerk/nextjs/server";
 
 export async function GET(request) {
   await dbConnect();
@@ -12,5 +12,3 @@ export async function GET(request) {
   // Return the orders
   return new Response(JSON.stringify(orders), { status: 200 });
 }
-
-

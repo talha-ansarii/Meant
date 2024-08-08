@@ -9,29 +9,27 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
 import { HoverBorderGradient } from "../ui/hover-border-gradient";
-import { useCart } from "/context/CartContext";
-import { useWishlist } from "/context/WishlistContext";
 import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { addProductToCart } from "@/utils/cartUtils";
-import { addProductToWishlist, getWishlistProducts, removeProductFromWishlist } from "@/utils/wishlistUtils";
+import {
+  addProductToWishlist,
+  getWishlistProducts,
+  removeProductFromWishlist,
+} from "@/utils/wishlistUtils";
 
-const Night = ({products}) => {
+const Night = ({ products }) => {
   const [mouseIn, setMouseIn] = useState(false);
   const [isInWishlist, setIsInWishlist] = useState(false);
   const [isInCart, setIsInCart] = useState(false);
-  const { isSignedIn, user, isLoaded } = useUser();
+  const { isSignedIn } = useUser();
   const router = useRouter();
 
   const canvasref = useRef(null);
   const ref = useRef(null);
 
-  const { addToCart, cart } = useCart();
-
   const productName = "Night Muse Lipstick";
   const product = products.find((p) => p.name === productName);
-
-
 
   const handleAddToCart = async () => {
     if (!isSignedIn) {
@@ -40,12 +38,11 @@ const Night = ({products}) => {
     if (product) {
       try {
         const data = await addProductToCart(product.id, 1);
-        console.log('Product added to cart:', data);
+        console.log("Product added to cart:", data);
       } catch (error) {
-        console.error('Error adding product to cart:', error);
+        console.error("Error adding product to cart:", error);
         return;
       }
-      addToCart(product, 1); 
       setIsInCart(true);
     }
   };
@@ -54,18 +51,17 @@ const Night = ({products}) => {
       const fetchWishlistProducts = async () => {
         const wishListproducts = await getWishlistProducts();
         console.log(wishListproducts);
-        const contains = wishListproducts?.some(prod => 
-        {
+        const contains = wishListproducts?.some((prod) => {
           // console.log(prod.productId, product.id)
-          return prod.productId === product.id
-        }
-        );
+          return prod.productId === product.id;
+        });
         setIsInWishlist(contains);
       };
-  
+
       fetchWishlistProducts();
     }
-  }, [ isInWishlist ]);
+  }, [isInWishlist]);
+  
   const handleAddToWishlist = () => {
     if (product) {
       if (isInWishlist) {
@@ -109,7 +105,7 @@ const Night = ({products}) => {
     <div>
       <div className="w-full bg-black relative overflow-hidden">
         <div className="bg-black  w-[80%] h-[100vh]  overflow-hidden m-auto flex  ">
-          <Meteors  number={20} />
+          <Meteors number={20} />
 
           <div className="w-[50%] text-white z-20 flex flex-col gap-10 px-16 h-[850px] pt-[200px]">
             <din className="">
@@ -169,7 +165,6 @@ const Night = ({products}) => {
               </Canvas>
             </div>
           </div>
-
         </div>
       </div>
     </div>

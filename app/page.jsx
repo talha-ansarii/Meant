@@ -8,14 +8,11 @@ import HeroSection from "@/components/homePage/HeroSection";
 import Icons from "@/components/homePage/Icons";
 import Night from "@/components/homePage/Night";
 import Picture from "@/components/homePage/Picture";
-import Marquee from "@/components/Marquee";
-import PasswordProtection from "@/components/PasswordProtection";
 import VideoLoader from "@/components/VideoLoader";
 import { Suspense, useEffect, useState } from "react";
 
 export default function Home() {
   const [products, setProducts] = useState([]);
-  // const [password, setPassword] = useState('');
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -23,10 +20,8 @@ export default function Home() {
         const response = await fetch("/api/get-products");
         const data = await response.json();
         setProducts(data);
-  
+
         // console.log("Fetched products:", data);
-  
-      
       } catch (error) {
         console.error("Error fetching products:", error);
       }
@@ -34,11 +29,7 @@ export default function Home() {
 
     fetchProducts();
   }, []);
-  
-  // if (password !== '1234') {
-  //   return <PasswordProtection password={password} setPassword={setPassword} />;
-  // }
-    
+
   return (
     <div>
       <Suspense
