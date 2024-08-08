@@ -38,9 +38,9 @@ const Header = () => {
       setWishlistLength(wishlist?.length);
     };
     fetchData();
-    const intervalId = setInterval(fetchData, 500);
+    // const intervalId = setInterval(fetchData, 500);
 
-    return () => clearInterval(intervalId);
+    // return () => clearInterval(intervalId);
   }, []);
 
   useEffect(() => {

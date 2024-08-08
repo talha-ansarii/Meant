@@ -14,7 +14,7 @@ import { Suspense, useEffect, useState } from "react";
 
 export default function Home() {
   const [products, setProducts] = useState([]);
-  const [password, setPassword] = useState('');
+  // const [password, setPassword] = useState('');
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -33,9 +33,10 @@ export default function Home() {
   
     fetchProducts();
   }, []);
-  if (password !== '1234') {
-    return <PasswordProtection password={password} setPassword={setPassword} />;
-  }
+  
+  // if (password !== '1234') {
+  //   return <PasswordProtection password={password} setPassword={setPassword} />;
+  // }
     
   return (
     <div>
