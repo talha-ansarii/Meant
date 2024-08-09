@@ -9,72 +9,103 @@ gsap.registerPlugin(useGSAP, ScrollTrigger);
 
 function App() {
   const makeUpBox = useRef();
-  const makeuoBox2 = useRef();
+  const front = useRef();
 
   function onLoad(spline) {
-    const obj = spline.findObjectById("9b2dc0a9-b0bd-44d9-89e0-dd14cfcdaa2a");
-    const obj2 = spline.findObjectById("4e15a36f-f25a-4f2e-b727-c7bd9b38b7dd")
+    const obj = spline.findObjectByName("cubeMainn");
+    const obj1 = spline.findObjectByName("front");
+    console.log(obj1);
+    console.log(obj);
 
     // save it in a ref for later use
-    // makeUpBox.current = obj;
-    // console.log(makeUpBox.current);
-    // console.log(obj)
-    // console.log(obj2)
     makeUpBox.current = obj;
-    makeuoBox2.current = obj2;
-    
-  }
-
-  function triggerAnimation() {
-    makeUpBox.current.emitEvent("mouseHover");
-    // makeuoBox2.current.emitEvent("keyUp");
-    
+    front.current = obj1;
   }
 
   useGSAP(() => {
     // gsap code here...
-    gsap.set(".canvas", { x: 450, y: 0, });
+    gsap.set(".canvas", { x: 250, y: -120, scale: 1.3
+     });
 
     gsap
       .timeline({
         scrollTrigger: {
           trigger: "#part1",
-          start: "top 60%",
+          start: "top 100%",
+          end: "bottom bottom",
+          scrub: true,
+          markers: true,
+          onUpdate: (self) => {
+            const openRotation = self.progress * -100;
+            front.current.rotation.x = openRotation * (Math.PI / 180);
+          },
+          onLeave: () => {
+            // front.current.rotation.x = 150 * (Math.PI / 180);
+          },
+        },
+      })
+      .to(".canvas", { x: -350, y: 850, scale: 0.8 });
+
+    gsap
+      .timeline({
+        scrollTrigger: {
+          trigger: "#part2",
+          start: "top 120%",
           end: "bottom bottom",
           scrub: true,
           markers: true,
           onEnter: () => {
-            triggerAnimation();
+            // hello();
           },
+          onUpdate: (self) => {
+            const rotationAmount = self.progress * 360;
+            makeUpBox.current.rotation.y = rotationAmount * (Math.PI / 180);
+          },
+          // onLeave: () => {
+          //   makeUpBox.current.rotation.y = 360 * (Math.PI / 180);
+          // },
         },
       })
-      .to(".canvas", { y: 1200 });
-  }); // <-- scope for selector text (optional)
+      .to(".canvas", { x: 600, y: 2000, scale: 1 }); 
+
+    // gsap
+    //   .timeline({
+    //     scrollTrigger: {
+    //       trigger: "#part3",
+    //       start: "top 50%",
+    //       end: "bottom bottom",
+    //       scrub: true,
+    //       markers: true,
+    //       onUpdate: (self) => {
+    //         const rotationAmount = 180 + self.progress * 180;
+    //         makeUpBox.current.rotation.y = rotationAmount * (Math.PI / 180); // convert degrees to radians
+    //       },
+    //     },
+    //   })
+    //   .to(".canvas", { x: 500, y: 2900 });
+  });
 
   return (
-    <>
-      <div className="z-[1000]" style={{ height: "900px", display: "flex", justifyContent:"center", alignItems: "center" }}>
-      <Spline
-      onLoad={onLoad}
-      className="canvas"
+    <div className="overflow-x-hidden">
+      <div style={{ height: "900px" }}>
+        {/* <Spline
+          className="canvas"
+          scene="https://prod.spline.design/jL9G0UpjEWRmmfGt/scene.splinecode"
+          onLoad={onLoad}
+        /> */}
+          <Spline
         scene="https://prod.spline.design/pyUGcJz3VGorp4uk/scene.splinecode" 
-        width={1000}
-        height={1000}
+        onLoad={onLoad}
+        className="canvas"
+
         
       />
       </div>
-      <div id="part1" style={{ height: "900px" }}>
-        <div></div>
-        <div>
-          <h2>GOOD GAME WELL PLAYED.</h2>
-          <button type="button" onClick={triggerAnimation}>
-            Trigger Spline Animation
-          </button>
-        </div>
-      </div>
-    </>
+      <div id="part1" className="bg-yellow-300" style={{ height: "900px" }}></div>
+      <div id="part2" className="bg-white" style={{ height: "900px" }}></div>
+      <div id="part3" className="bg-red-300" style={{ height: "900px" }}></div>
+    </div>
   );
 }
 
 export default App;
-
