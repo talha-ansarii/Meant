@@ -33,6 +33,7 @@ export const getAllOrders = async () => {
       if (!response.ok) {
         throw new Error('Failed to fetch order');
       }
+      // console.log(response)
   
       const order = await response.json();
       return order;

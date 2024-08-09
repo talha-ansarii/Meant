@@ -264,7 +264,7 @@ const Header = () => {
               <AnimatePresence>
                 {isOpen && (
                   <motion.div
-                    className="fixed top-0 playfair md:hidden bg-black mt-[86px]   h-[100vh] lg:hidden inset-0 z-[200] justify-evenly pb-[80px] items-start pl-6 text-font-blue inter font-[700] text-[20px] flex flex-col gap-[32px]"
+                    className="fixed top-[-10px] playfair md:hidden bg-black mt-[80px]   h-[100vh] lg:hidden inset-0 z-[200] justify-evenly pb-[80px] items-start pl-6 text-font-blue inter font-[700] text-[20px] flex flex-col gap-[32px]"
                     initial="hidden"
                     animate="visible"
                     exit="hidden"

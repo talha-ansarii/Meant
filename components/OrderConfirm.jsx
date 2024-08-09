@@ -6,7 +6,19 @@ import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
-const shades = ["#A32C42", "#663024", "#AD5B55", "#995A60"];
+
+const productShades = [
+  
+    ["#A32C42", "#663024", "#AD5B55", "#995A60"],
+    
+  
+ 
+    ["#3B1A12", "#6B1227", "#A10303", "#963039"],
+    
+  
+];
+
+
 
 const OrderConfirm = () => {
   const [order, setOrder] = useState(null);
@@ -16,7 +28,7 @@ const OrderConfirm = () => {
   const searchParams = useSearchParams();
 
   const payment_id = searchParams.get("payment_id");
-  console.log(payment_id);
+  // console.log(payment_id);
 
   useEffect(() => {
     const handleGetOrder = async (razorpayPaymentId) => {
@@ -25,15 +37,15 @@ const OrderConfirm = () => {
           razorpayPaymentId
         );
         setOrder(fetchedOrder);
-        console.log(fetchedOrder);
+        // console.log(fetchedOrder);
       } catch (error) {
         console.log("Failed to fetch order", error);
       }
     };
     handleGetOrder(payment_id);
-  });
+  },[]);
 
-  console.log(order?.products);
+  // console.log(order);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -85,14 +97,11 @@ const OrderConfirm = () => {
       year: "numeric",
       month: "long",
       day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
-      timeZoneName: "short",
     };
 
     return date.toLocaleDateString("en-US", options);
   }
+
 
   return (
     <div className="bg-white   w-full mb-12">
@@ -123,7 +132,7 @@ const OrderConfirm = () => {
               EMAIL
             </div>
             <div className="font-merriweather font-[400] text-[12px] leading-[15px] text-[#827777]">
-              abc123@gmail.com
+              {order?.address?.email}
             </div>
           </div>
           <div className="w-[150px]">
@@ -131,15 +140,7 @@ const OrderConfirm = () => {
               Mode of Payment
             </div>
             <div className="font-merriweather font-[400] text-[12px] leading-[15px] text-[#827777]">
-              Razorpay
-            </div>
-          </div>
-          <div className="w-[150px]">
-            <div className="playfair font-[700] text-[16px] leading-[21px] text-left">
-              EMAIL
-            </div>
-            <div className="font-merriweather font-[400] text-[12px] leading-[15px] text-[#827777]">
-              UPI
+              Prepaid
             </div>
           </div>
           <div className="w-[150px]">
@@ -155,7 +156,7 @@ const OrderConfirm = () => {
               Contact Number
             </div>
             <div className="font-merriweather font-[400] text-[12px] leading-[15px] text-[#827777]">
-              +91 9274628364
+              {order?.address?.phone}
             </div>
           </div>
           <div className="w-[150px]">
@@ -171,7 +172,11 @@ const OrderConfirm = () => {
               Delivery Address
             </div>
             <div className="font-merriweather font-[400] text-[12px] leading-[15px] text-[#827777]">
-              {order?.address}
+             <div>{order?.address?.address}</div>
+             <div>{order?.address?.apartment}</div>
+             <div>{order?.address?.city}</div>
+             <div>{order?.address?.state}</div>
+             <div>{order?.address?.pincode}</div>
             </div>
           </div>
         </div>
@@ -207,13 +212,21 @@ const OrderConfirm = () => {
                   Shades
                 </div>
                 <div className="grid grid-cols-2  w-[26px]">
-                  {shades.map((shade, index) => (
+                  {item?.id == "58" ? (
+                    productShades[0].map((shade, index) => (
                     <span
                       key={index}
                       className="w-[13px] h-[13px] inline-block"
                       style={{ backgroundColor: shade }}
                     ></span>
-                  ))}
+                  ))) : ( productShades[1].map((shade, index) => (
+                    <span
+                      key={index}
+                      className="w-[13px] h-[13px] inline-block"
+                      style={{ backgroundColor: shade }}
+                    ></span>
+                  )))}
+                  
                 </div>
               </div>
               <div className="flex items-center justify-between  space-x-4">
