@@ -49,7 +49,7 @@ const ShippingForm = ({ add, setAdd, handlePayment }) => {
 
   setAdd(addr); // Update the state with the form data
 
-  handlePayment();
+  handlePayment(addr);
   if (saveInfo) {
     // Here you would handle saving the info (e.g., make an API call)
     console.log("Saving address:", addr);

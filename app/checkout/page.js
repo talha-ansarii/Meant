@@ -17,6 +17,8 @@ const Page = () => {
   const [orderId, setOrderId] = useState("");
   const key = process.env.NEXT_PUBLIC_RAZORPAY_KEY;
   const navigate = useRouter();
+  const [details, setDetails] = useState({});
+  const [oerderr, setOrder] = useState({});
 
   useEffect(() => {
     const fetchData = async () => {
@@ -43,7 +45,7 @@ const Page = () => {
     fetchData();
   }, []);
 
-  const createOrder = async () => {
+  const createOrder = async (address) => {
     try {
       const data = await fetch("/api/payment/order", {
         method: "POST",
@@ -57,7 +59,7 @@ const Page = () => {
             productId: product.id,
             quantity: product.quantity,
           })),
-          address: add,
+          address: address,
         }),
       });
 
@@ -81,34 +83,40 @@ const Page = () => {
       return;
     }
   };
+  console.log(add);
 
-  const createShiprocketOrder = async (paymentResponse) => {
-   
- try { 
+  function generateRandomFiveDigitNumber() {
+    // Generate a random number between 10000 and 99999
+    const min = 10000;
+    const max = 99999;
+    const randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
+    return randomNumber;
+  }
+
+  const createShiprocketOrder = async (paymentResponse, detail, id) => {
+    try {
       const shiprocketOrder = {
-        order_id: "ORD1215679",
-        order_date: "2024-08-08T10:00:00Z",
+        order_id: id,
+        order_date: new Date().toISOString(),
         pickup_location: "Primary",
-        billing_customer_name: "Abid",
-        billing_last_name: "Doe",
-        billing_address: "123 Elm Street",
-        billing_address_2: "Apt 4B",
-        billing_pincode: "560001",
-        billing_state: "Karnataka",
+        billing_customer_name: detail?.firstName,
+        billing_last_name: detail?.lastName,
+        billing_address: detail?.address,
+        billing_city: detail?.city,
+        billing_pincode: detail?.pincode,
+        billing_state: detail?.state,
         billing_country: "IN",
-        billing_email: "john.doe@example.com",
-        billing_phone: "9876543210",
+        billing_email: detail?.email,
+        billing_phone: detail?.phone,
         shipping_is_billing: true,
-        order_items: [
-          {
-            name: "Product 1",
-            sku: "PROD123",
-            units: 2,
-            selling_price: 500,
-          },
-        ],
+        order_items: cartProducts.map((product) => ({
+          name: product?.name,
+          sku: generateRandomFiveDigitNumber(),
+          units: product.quantity,
+          selling_price: product.price,
+        })),
         payment_method: "Prepaid",
-        sub_total: 2500,
+        sub_total: cartTotal,
         length: 10,
         breadth: 15,
         height: 20,
@@ -140,10 +148,11 @@ const Page = () => {
     }
   };
 
-  const handlePayment = async () => {
+  const handlePayment = async (address) => {
     try {
       // Create the Razorpay order
-      const order = await createOrder();
+      console.log(address)
+      const order = await createOrder(address);
       if (!order) {
         throw new Error("Failed to create order");
       }
@@ -158,14 +167,13 @@ const Page = () => {
         order_id: order.id,
         handler: async function (response) {
           // Handle successful payment
-          console.log(response);
-          await createShiprocketOrder(response); // Call Shiprocket order creation after successful payment
+          await createShiprocketOrder(response, address, order.id); // Call Shiprocket order creation after successful payment
           navigate.push(
             `/order-confirm?payment_id=${response.razorpay_payment_id}`
           );
         },
         notes: {
-          address: "Meant pvt ltd",
+          address: address,
         },
         theme: {
           color: "#3399cc",
