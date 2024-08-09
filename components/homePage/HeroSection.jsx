@@ -16,6 +16,7 @@ const HeroSection = () => {
           className="absolute -top-40 left-[200px] md:left-60 md:-top-20"
           fill="white"
         />
+        <dov className="absolute playfair top-0 right-[40px] text-2xl">Limited Edition Collection</dov>
         <div
           onMouseLeave={() => setMouseIn(false)}
           onMouseEnter={() => setMouseIn(true)}

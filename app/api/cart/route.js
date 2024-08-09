@@ -8,6 +8,8 @@ export async function POST(request) {
   const { userId } = await auth();
   const { productId, quantity } = await request.json();
 
+  // console.log(userId, productId, quantity);
+
   let user = await User.findOne({ userId });
   if (!user) {
     user = new User({
