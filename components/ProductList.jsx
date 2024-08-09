@@ -243,10 +243,10 @@ useEffect(() => {
         {/* Product count and sort by filter */}
         <div className="flex justify-between items-center mb-6">
           {/* Product count */}
-          <h2 className="text-white font-poppins font-semibold text-lg">
+          <h2 className="text-white font-poppins font-semibold lg:text-lg text-xs md:text-lg">
             {currentProducts.length} Products
           </h2>
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center  space-x-2">
             {/* Sort By Filter */}
             <CustomDropdown
               options={[

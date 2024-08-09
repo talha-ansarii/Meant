@@ -147,7 +147,7 @@ const SingleProductPage = ({ productId }) => {
       stars.push(
         <FaStar
           key={i}
-          className={`h-4 w-4 ${i < rating ? "text-white" : "text-gray-400"}`}
+          className={`lg:h-4 lg:w-4 w-[13px] h-[13px] ${i < rating ? "text-white" : "text-gray-400"}`}
         />
       );
     }
@@ -190,11 +190,11 @@ const SingleProductPage = ({ productId }) => {
       {/* Header Placeholder */}
       <Header />
       <div className="p-4 max-w-7xl mx-auto pt-[130px] ">
-        <div className="flex space-between">
+        <div className="flex  space-between">
           {/* Product Images and Main Image */}
-          <div className="flex space-x-4 w-3/4 ">
+          <div className="flex lg:space-x-4 w-3/4 ">
             <div className=" flex w-full h-[500px]">
-              <div className="w-20 space-y-2 mr-[1rem] ">
+              <div className="lg:w-20 w-[52px]  space-y-2 lg:mr-[1rem] ">
                 {[
                   product.images[0].src,
                   ...shades.map(
@@ -217,20 +217,20 @@ const SingleProductPage = ({ productId }) => {
                           alt={`Product image ${index + 1}`}
                           width={80}
                           height={80}
-                          className="w-[80px] h-[80px] rounded-md"
+                          className="lg:w-[80px] lg:h-[80px] w-[52px] h-[53px] rounded-md"
                         />
                       </div>
                     )
                 )}
               </div>
 
-              <div className="w-2/3 ">
+              <div className="lg:w-2/3 ">
                 <Image
                   src={selectedImage}
                   alt={product.name}
                   width={440}
                   height={440}
-                  className="w-[440px] h-[440px] rounded-xl ml-8"
+                  className="lg:w-[440px] lg:h-[440px] w-[296px] h-[296px] rounded-xl ml-8"
                 />
               </div>
             </div>
@@ -239,7 +239,7 @@ const SingleProductPage = ({ productId }) => {
           {/* Product Details */}
           <div className="w-2/3 space-y-4 ">
             <div className="flex items-center justify-between">
-              <h1 className="font-size-heading font-bold font-playfair-display">
+              <h1 className="lg:font-size-heading font-bold text-[28px] font-playfair-display">
                 {product.name}
               </h1>
               {wishlistFilled ? (
@@ -254,22 +254,22 @@ const SingleProductPage = ({ productId }) => {
                 />
               )}
             </div>
-            <p className="text-sm font-normal font-merriweather text-white mt-2">
+            <p className="lg:text-sm text-[10px] font-normal font-merriweather text-white mt-2">
               {product.meta_data.find((meta) => meta.key === "details")
                 ?.value || "No details available."}
             </p>
-            <p className="text-xl font-playfair-display font-bold mt-4">
+            <p className="lg:text-xl text-[17px] font-playfair-display font-bold mt-4">
               ₹{product.price}
             </p>
             <div className="flex items-center mt-2">
               {renderStars(product.average_rating)}
-              <span className="text-white font-poppins font-medium ml-2">
+              <span className="text-white text-[10px] lg:text-lg font-poppins font-medium ml-2">
                 ({product.rating_count} reviews)
               </span>
             </div>
             {/* Color Palette */}
-            <h3 className="text-lg font-bold font-merriweather mt-4">Shades</h3>
-            <div className="grid grid-cols-2 w-[48px] my-2">
+            <h3 className="lg:text-lg text-[10px] font-bold font-merriweather mt-4">Shades</h3>
+            <div className="grid grid-cols-2 w-[31px] lg:w-[48px] my-2">
               {" "}
               {productStyle.shades.map((shade, index) => (
                 <div
@@ -278,7 +278,7 @@ const SingleProductPage = ({ productId }) => {
                 >
                   {" "}
                   <div
-                    className="w-6 h-6"
+                    className="lg:w-6 lg:h-6 w-[16px] h-[16px] "
                     style={{ backgroundColor: shade }}
                     onMouseEnter={() =>
                       setHoveredShade(productStyle.shadeNames[index])

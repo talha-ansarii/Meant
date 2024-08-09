@@ -8,11 +8,11 @@ const Banner = () => {
   return (
     <div className="mx-auto my-4 max-w-[1085px] h-[300px] relative overflow-hidden">
       <Image
-        src={isMobile ? "/assets/images/mob-banner.webp" : "/assets/images/banner.webp"}
+        src={isMobile ? "/assets/images/mobileBanner.png" : "/assets/images/banner.webp"}
         alt="Banner"
         layout="fill"
-        objectFit="cover"
-        className={isMobile ? "" : "rounded-xl"} 
+        
+        className={isMobile ? "object-contain " : "rounded-xl object-cover"} 
       />
     </div>
   );
