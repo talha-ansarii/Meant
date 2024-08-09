@@ -15,9 +15,6 @@ const ProductPage = () => {
   
 
 
-
-
-
   return (
     <main>
       <SingleProductPage productId={id} />

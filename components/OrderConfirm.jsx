@@ -103,6 +103,8 @@ const OrderConfirm = () => {
   }
 
 
+
+
   return (
     <div className="bg-white   w-full mb-12">
       <div className="bg-white p-4 my-12 w-[312px] h-[353px] md:w-[745px] md:h-[407px] text-black flex flex-col justify-evenly items-center m-auto border-[2px] border-black">

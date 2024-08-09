@@ -98,7 +98,9 @@ const Cart = () => {
     }
   };
 
-  if (loading) return <>{isClient && <VideoLoader />}</>;
+  if (loading) return <>{isClient && <div className="w-[100vw] h-[100vh] ">
+ <VideoLoader />
+  </div>}</>;
   return (
     <div className="w-full min-h-screen bg-white text-black px-4 md:px-8">
       <div className="max-h-[85vh] overflow-auto no-scrollbar">

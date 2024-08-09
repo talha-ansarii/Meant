@@ -73,7 +73,9 @@ const WishList = () => {
     setWishlistArray(updatedWishlist);
   };
 
-  if (loading) return <>{isClient && <VideoLoader />}</>;
+  if (loading) return <>{isClient && <div className="w-[100vw] h-[100vh] ">
+    <VideoLoader />
+     </div>}</>;
 
   return (
     <div className="pb-4">

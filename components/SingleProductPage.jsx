@@ -183,7 +183,9 @@ const SingleProductPage = ({ productId }) => {
     fetchWishlistProducts();
   }, [productId]);
 
-  if (loading) return <>{isClient && <VideoLoader />}</>;
+  if (loading) return <>{isClient && <div className="w-[100vw] h-[100vh] ">
+    <VideoLoader />
+     </div>}</>;
 
   return (
     <div className="bg-black text-white min-h-screen">
