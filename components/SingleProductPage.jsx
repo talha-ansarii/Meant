@@ -491,7 +491,7 @@ const SingleProductPage = ({ productId }) => {
 
         {/* Render Reviews */}
         <div className="mt-8">
-          <h2 className="font-bold text-2xl">Customer Reviews</h2>
+          <h2 className="font-medium text-2xl font-playfair-display">Customer Reviews</h2>
           <div className="mt-8 mb-8 flex flex-row flex-wrap gap-4">
             {reviews.length > 0 ? (
               reviews.map((review) => (

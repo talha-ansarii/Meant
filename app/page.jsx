@@ -13,40 +13,41 @@ import { Suspense, useEffect, useState } from "react";
 import Animation from "./test/page";
 import { HoverBorderGradient } from "@/components/ui/hover-border-gradient";
 import { useUser } from "@clerk/nextjs";
-import { addProductToWishlist, getWishlistProducts, removeProductFromWishlist } from "@/utils/wishlistUtils";
+import {
+  addProductToWishlist,
+  getWishlistProducts,
+  removeProductFromWishlist,
+} from "@/utils/wishlistUtils";
 import { addProductToCart } from "@/utils/cartUtils";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { useMediaQuery } from "react-responsive";
+import { FaArrowDown } from "react-icons/fa";
 
 export default function Home() {
   const [products, setProducts] = useState([]);
-  const [show ,setShow] = useState(false);
+  const [show, setShow] = useState(false);
   const [isInWishlist1, setIsInWishlist1] = useState(false);
   const [isInCart1, setIsInCart1] = useState(false);
   const { isSignedIn } = useUser();
   const [isInWishlist, setIsInWishlist] = useState(false);
   const [isInCart, setIsInCart] = useState(false);
+  const [showArrow, setShowArrow] = useState(false);
 
   const router = useRouter();
-  const isMobile = useMediaQuery({ maxWidth: 480 });
 
-  const isTablet = useMediaQuery({ maxWidth: 1024 });
-  
-  
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         const response = await fetch("/api/get-products");
         const data = await response.json();
         setProducts(data);
-        
+
         // console.log("Fetched products:", data);
       } catch (error) {
         console.error("Error fetching products:", error);
       }
     };
-    
+
     fetchProducts();
   }, []);
   const productName = "Night Muse Lipstick";
@@ -70,7 +71,6 @@ export default function Home() {
     }
   };
 
-
   useEffect(() => {
     if (product) {
       const fetchWishlistProducts = async () => {
@@ -86,8 +86,6 @@ export default function Home() {
       fetchWishlistProducts();
     }
   }, [isInWishlist]);
-
-
 
   const handleAddToCart1 = async () => {
     if (!isSignedIn) {
@@ -115,7 +113,6 @@ export default function Home() {
     }
   };
 
-    
   const handleAddToWishlist = () => {
     if (product) {
       if (isInWishlist) {
@@ -126,7 +123,6 @@ export default function Home() {
       setIsInWishlist(!isInWishlist);
     }
   };
-  
 
   useEffect(() => {
     if (product1) {
@@ -144,6 +140,31 @@ export default function Home() {
     }
   }, [isInWishlist1]);
 
+  // Arrow button scroll logic
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 50) {
+        setShowArrow(true);
+      } else {
+        setShowArrow(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  const handleArrowClick = () => {
+    window.scrollTo({
+      top: document.body.scrollHeight,
+      behavior: "smooth",
+    });
+    setShowArrow(false);
+  };
+
   return (
     <div className="relative">
       <Suspense
@@ -151,32 +172,34 @@ export default function Home() {
           <div>Loading...</div>
         }
       >
-     
-        
         <div className="w-full bg-black">
-        <Header />
-
+          <Header />
         </div>
-<div className="absolute w-full">
-        <div className="pt-[100px] relative w-full pb-4">
-          <HeroSection />
-          
-          <Day products={products} />
-          {/* <div className="w-full bg-black h-[900px]"></div> */}
-          
-          <Night show={show} setShow={setShow} products={products} />
-          <div>
+        <div className="absolute w-full">
+          <div className="pt-[100px] relative w-full pb-4">
+            <HeroSection />
 
-          <Picture />
+            <Day products={products} />
+            {/* <div className="w-full bg-black h-[900px]"></div> */}
+
+            <Night show={show} setShow={setShow} products={products} />
+            <div>
+              <Picture />
+            </div>
+            <Icons />
+            <Banner />
+            <Footer />
           </div>
-          <Icons />
-          <Banner />
-          <Footer />
         </div>
-
-</div>
-
-
+        {/* Arrow Button */}
+        {showArrow && (
+          <div
+            onClick={handleArrowClick}
+            className="fixed bottom-10 right-10 cursor-pointer z-50 rounded-full"
+          >
+            <FaArrowDown size={30} color="#F7879A" />
+          </div>
+        )}
       </Suspense>
     </div>
   );
