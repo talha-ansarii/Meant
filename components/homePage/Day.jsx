@@ -151,7 +151,7 @@ const Day = ({ products }) => {
               <br />
               Available in four new lip adapting shades.
             </div>
-            <div className="flex lg:hidden mt-2 items-center md:hidden  z-[300]  gap-4">
+            <div className="flex l mt-2 items-center   z-[300]  gap-4">
               <svg
                 className="w-8 h-8 cursor-pointer"
                 fill={isInWishlist1 ? "#D76D8E" : "none"}
@@ -165,7 +165,7 @@ const Day = ({ products }) => {
               <HoverBorderGradient
                 containerClassName=" rounded-[34px]"
                 as="button"
-                className=" bg-black text-white w-[100px] h-[30px] flex items-center justify-center font-poppins space-x-2 text-[10px] font-[500] leading-[18px]"
+                className=" bg-black text-white w-[100px] h-[30px] md:w-[147px] lg:w-[147px] md:h-[45px] lg:h-[45px] md:text-[14px] lg:text-[14px] flex items-center justify-center cursor-pointer font-poppins space-x-2 text-[10px] font-[500] leading-[18px]"
                 onClick={handleAddToCart1}
                 disabled={isInCart1}
               >
@@ -175,7 +175,7 @@ const Day = ({ products }) => {
               <HoverBorderGradient
                 containerClassName=" rounded-[34px]"
                 as="button"
-                className=" bg-black text-white w-[100px] h-[30px] flex items-center justify-center font-poppins space-x-2 text-[10px] font-[500] leading-[18px]"
+                className=" bg-black text-white w-[100px] h-[30px] md:w-[147px] lg:w-[147px] md:h-[45px] lg:h-[45px] flex items-center justify-center font-poppins space-x-2 text-[10px] md:text-[14px] lg:text-[14px] font-[500] leading-[18px]"
               >
               <Link href={"/product/58"}>
               <span>ORDER NOW</span>
