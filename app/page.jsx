@@ -69,6 +69,8 @@ export default function Home() {
       setIsInCart(true);
     }
   };
+
+
   useEffect(() => {
     if (product) {
       const fetchWishlistProducts = async () => {
@@ -124,6 +126,7 @@ export default function Home() {
       setIsInWishlist(!isInWishlist);
     }
   };
+  
 
   useEffect(() => {
     if (product1) {

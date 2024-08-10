@@ -8,7 +8,7 @@ import Image from "next/image";
 const Picture = () => {
   const { ref, inView } = useInView({
     triggerOnce: true,
-    threshold: 0.1,
+    threshold: 0.01,
   });
 
   const containerVariantsLeft = {
@@ -56,7 +56,7 @@ const Picture = () => {
             animate={inView ? "visible" : "hidden"}
             variants={containerVariantsLeft}
             ref={ref}
-            className="lg:flex lg:justify-between grid grid-cols-2 gap-2  mb-12 md:grid md:grid-cols-2 md:gap-4"
+            className="lg:flex lg:justify-between grid grid-cols-2 gap-2  lg:mb-12 md:grid md:grid-cols-2 md:gap-4"
           >
             <Image
               width={261}
