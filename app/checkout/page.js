@@ -195,12 +195,17 @@ const Page = () => {
         <RedirectToSignIn />
       </SignedOut>
       <SignedIn>
+      <div className="bg-black md:hidden lg:hidden block w-full h-[100px]">
         <Header />
-        <div className="w-full flex bg-white ">
-          <div className="w-[50%]">
+
+      </div>
+      <Header />
+
+        <div className="w-full md:flex-row lg:flex-row flex-col flex bg-white ">
+          <div className="lg:w-[50%] md:w-[50%] w-full">
             <ShippingForm handlePayment={handlePayment} />
           </div>
-          <div className="w-[50%]">
+          <div className="lg:w-[50%] md:w-[50%] w-full">
             <Checkout
               cartProducts={cartProducts}
               setCartProducts={setCartProducts}

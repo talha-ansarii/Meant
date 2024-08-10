@@ -19,6 +19,7 @@ import {
   removeProductFromWishlist,
 } from "@/utils/wishlistUtils";
 import VideoLoader from "./VideoLoader";
+import { useUser } from "@clerk/nextjs";
 
 const shades = ["#A32C42", "#663024", "#AD5B55", "#995A60"];
 
@@ -37,6 +38,7 @@ const SingleProductPage = ({ productId }) => {
   const [isClient, setIsClient] = useState(false);
   const [showReviewForm, setShowReviewForm] = useState(false);
   const [reviews, setReviews] = useState([]);
+  const { isSignedIn } = useUser();
 
   useEffect(() => {
     setIsClient(true);
@@ -138,8 +140,13 @@ const SingleProductPage = ({ productId }) => {
 
   const handleCartClick = async (e) => {
     console.log("clicked");
+
+    if (!isSignedIn) {
+      return router.push("/sign-in");
+    }
+
     try {
-      const data = await addProductToCart(product.id, quantity);
+      const data = await addProductToCart(product?.id, quantity);
       setQuantity(1);
       console.log("Product added to cart:", data);
     } catch (error) {
@@ -228,10 +235,10 @@ const SingleProductPage = ({ productId }) => {
       {/* Header Placeholder */}
       <Header />
       <div className="p-4 max-w-7xl mx-auto pt-[130px] ">
-        <div className="flex  space-between">
+        <div className="flex md:flex-row lg:flex-row flex-col space-between">
           {/* Product Images and Main Image */}
-          <div className="flex lg:space-x-4 w-3/4 ">
-            <div className=" flex w-full h-[500px]">
+          <div className="flex lg:space-x-4 w-[90%] px-2 md:px-0 lg:px-0 lg:w-3/4 md:w-3/4 ">
+            <div className=" flex w-full md:h-[500px] lg:h-[500px]">
               <div className="lg:w-20 w-[52px]  space-y-2 lg:mr-[1rem] ">
                 {[
                   product.images[0].src,
@@ -275,7 +282,7 @@ const SingleProductPage = ({ productId }) => {
           </div>
 
           {/* Product Details */}
-          <div className="w-2/3 space-y-4 ">
+          <div className="md:w-2/3 mt-8 lg:mt-0 md:mt-0 lg:w-2/3 w-full lg:space-y-4 md:space-y-4 ">
             <div className="flex items-center justify-between">
               <h1 className="lg:font-size-heading font-bold text-[28px] font-playfair-display">
                 {product.name}
@@ -463,7 +470,7 @@ const SingleProductPage = ({ productId }) => {
 
         {/* You May Also Like Section */}
         <section className="mt-12">
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-6">
             {relatedProducts.map((p) => (
               <ProductCard
                 key={p.id}
@@ -502,7 +509,7 @@ const SingleProductPage = ({ productId }) => {
         </div>
 
         {/* Reviews Section */}
-        <div className="relative flex items-center justify-center space-x-12 mb-8">
+        <div className="relative flex md:flow-row lg:flex-row md:gap-0 lg:gap-0 gap-8 flex-col items-center justify-center space-x-12 mb-8">
           <div className="flex items-center space-x-12">
             <p className="text-white font-medium font-size-heading font-playfair-display">
               {averageRating} / 5
@@ -513,7 +520,7 @@ const SingleProductPage = ({ productId }) => {
               </span>
             </div>
           </div>
-          <div className="border-l border-white h-20 mx-12"></div>
+          <div className="border-l hidden lg:block md:block border-white h-20 mx-12"></div>
           <div className="flex flex-col">
             <p className="text-white font-merriweather text-lg font-bold mb-4">
               Write Us a Review !

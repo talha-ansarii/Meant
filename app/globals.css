@@ -108,6 +108,16 @@ canvas {
   pointer-events: none;
 }
 
+.limited{
+  color: white; /* Text color */
+  text-shadow:
+    -2px -2px 0 #D76D8E,  
+     2px -2px 0 #D76D8E,
+    -2px  2px 0 #D76D8E,
+     2px  2px 0 #D76D8E; /* Shadow color and spread */
+
+}
+
 .video-loader {
   display: flex;
   justify-content: center;

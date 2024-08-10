@@ -18,9 +18,9 @@ const HeroSection = () => {
 
   return (
     <div>
-      <div className="relative flex justify-center pt-[200px] items-center h-[300px] md:h-[800px] lg:h-[800px] bg-black w-full ">
+      <div className="relative flex justify-center pt-[200px] items-center h-[600px] md:h-[800px] lg:h-[800px] bg-black w-full ">
         
-        <div className="absolute playfair top-0 right-[40px] text-2xl">Limited Edition</div>
+        <div className="absolute font-merriweather left-[50px] top-[120px] lg:top-[130px] limited lg:left-[50%] translate-x-[150px] text-xl lg:text-3xl">Limited Edition</div>
         {
           isMobile && (
             <div

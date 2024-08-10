@@ -6,6 +6,11 @@ import PastOrders from "@/components/PastOrders";
 const PastOrdersPage = () => {
   return (
     <div>
+
+       <div className="bg-black md:hidden lg:hidden block w-full h-[100px]">
+        <Header />
+
+      </div>
       <Header />
       <main className="flex w-full m-auto lg:mt-[120px] md:mt-[120px] justify-center items-center">
         <PastOrders />
