@@ -5,12 +5,16 @@ export async function POST(request) {
   await dbConnect();
   console.log("webhook called");
   const body = await request.json();
+
   console.log(body);
   const secret = process.env.SR_WEBHOOK_SECRET;
+  console.log(secret)
   const requestHeaders = new Headers(request.headers);
   const webhookSignature = requestHeaders.get("x-api-key");
-  const { current_status, order_id } = body;
 
+  console.log(webhookSignature)
+  const { current_status, order_id } = body;
+  console.log(webhookSignature)
   if (webhookSignature === secret) {
     try {
       const updatedOrder = await Orders.findOneAndUpdate(
@@ -42,4 +46,5 @@ export async function POST(request) {
       { status: 400 }
     );
   }
+
 }
