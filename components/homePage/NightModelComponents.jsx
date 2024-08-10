@@ -3,12 +3,28 @@
 import ProductOpenNight from "@/public/models/ProductOpenNight";
 import { OrbitControls, PerspectiveCamera } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { useMediaQuery } from "react-responsive";
 
 const NightModelComponent = ({ mouseIn }) => {
+
+  const isMobile = useMediaQuery({ maxWidth: 480 });
+
+  const isTablet = useMediaQuery({ minWidth: 481, maxWidth: 1024 });
+  const [scale , setScale] = useState(1.2)
+
   const angleToRadians = (angleInDegrees) => {
     return (angleInDegrees * Math.PI) / 180;
   };
+
+  useEffect(() => {
+    if(isMobile){
+      setScale(0.8)
+    }
+    if(isTablet){
+      setScale(0.8)
+    }
+  }, [isMobile, isTablet, scale]);
 
   const orbitRef = useRef(null);
 
@@ -37,7 +53,7 @@ const NightModelComponent = ({ mouseIn }) => {
       <PerspectiveCamera makeDefault position={[0, 2, 10]} />
       <OrbitControls enableZoom={false} ref={orbitRef} />
 
-      <mesh position={[0, 0, 0]} scale={1.2} rotation={[0.2, 0, 0]}>
+      <mesh position={[0, 0, 0]} scale={scale} rotation={[0.2, 0, 0]}>
         <ProductOpenNight />
       </mesh>
 

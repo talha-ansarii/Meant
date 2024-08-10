@@ -104,6 +104,10 @@ body {
   height: 100vh;
 }
 
+canvas {
+  pointer-events: none;
+}
+
 .video-loader {
   display: flex;
   justify-content: center;

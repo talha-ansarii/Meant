@@ -3,6 +3,7 @@
 import { getAllProducts } from "@/utils/cartUtils";
 import { getOrderByRazorpayPaymentId } from "@/utils/OrdersUtils";
 import Image from "next/image";
+import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
@@ -119,7 +120,11 @@ const OrderConfirm = () => {
           View Order Confirmation
         </button>
         <div className="font-merriweather font-[400] text-[10px] md:text-[11px] leading-[12px] underline-offset-1">
-          Read about our refund policy
+          Read about our  
+          <Link className="underline-offset-1" href={"/refund-policy"}>
+          {" "}refund policy
+          </Link>
+          
         </div>
       </div>
       {/* ORDER DETAILS */}

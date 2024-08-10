@@ -16,110 +16,75 @@ import {
   getWishlistProducts,
   removeProductFromWishlist,
 } from "@/utils/wishlistUtils";
+import { useMediaQuery } from "react-responsive";
 
 const Day = ({ products }) => {
   const [mouseIn, setMouseIn] = useState(false);
-  const [isInWishlist, setIsInWishlist] = useState(false);
-  const [isInCart, setIsInCart] = useState(false);
-  const { isSignedIn } = useUser();
+  const isMobile = useMediaQuery({ maxWidth: 480 });
+
+  const isTablet = useMediaQuery({ minWidth: 481, maxWidth: 1024 });
+ 
 
   const router = useRouter();
 
   const ref = useRef(null);
   const canvasref = useRef(null);
 
-  const productName = "Day Dazzle Lipstick";
-  const product = products.find((p) => p.name === productName);
+  
 
-  useEffect(() => {
-    if (product) {
-      const fetchWishlistProducts = async () => {
-        const wishListproducts = await getWishlistProducts();
-        console.log(wishListproducts);
-        const contains = wishListproducts?.some((prod) => {
-          // console.log(prod.productId, product.id)
-          return prod.productId === product.id;
-        });
-        setIsInWishlist(contains);
-      };
 
-      fetchWishlistProducts();
-    }
-  }, [isInWishlist]);
 
-  const handleAddToCart = async () => {
-    if (!isSignedIn) {
-      return router.push("/sign-in");
-    }
-    if (product) {
-      try {
-        const data = await addProductToCart(product.id, 1);
-        console.log("Product added to cart:", data);
-      } catch (error) {
-        console.error("Error adding product to cart:", error);
-        return;
-      }
-      setIsInCart(true);
-    }
-  };
 
-  const handleAddToWishlist = () => {
-    if (product) {
-      if (isInWishlist) {
-        removeProductFromWishlist(product.id);
-      } else {
-        addProductToWishlist(product.id);
-      }
-      setIsInWishlist(!isInWishlist);
-    }
-  };
 
-  gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
-  useGSAP(() => {
-    if (ref.current && canvasref.current) {
-      gsap.from(ref.current, {
-        scale: 0,
-        opacity: 0,
-        duration: 2,
-        ease: "ease-in",
-        scrollTrigger: {
-          trigger: ref.current,
-          start: "top bottom",
-          end: "bottom top",
-          // markers: true,
-        },
-      });
 
-      ScrollTrigger.create({
-        trigger: canvasref.current,
-        start: "top 100%",
-        end: "top top",
-        // markers: true,
-        onEnter: () => {
-          gsap.to(window, {
-            scrollTo: { y: ref.current, offsetY: 100 },
-            duration: 0.5,
-          });
-        },
-      });
-    }
-  }, []);
+  // gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
+
+  // useGSAP(() => {
+  //   if (ref.current && canvasref.current) {
+  //     gsap.from(ref.current, {
+  //       scale: 0,
+  //       opacity: 0,
+  //       duration: 2,
+  //       ease: "ease-in",
+  //       scrollTrigger: {
+  //         trigger: ref.current,
+  //         start: "top bottom",
+  //         end: "bottom top",
+  //         // markers: true,
+  //       },
+  //     });
+
+  //     ScrollTrigger.create({
+  //       trigger: canvasref.current,
+  //       start: "top 100%",
+  //       end: "top top",
+  //       // markers: true,
+  //       onEnter: () => {
+  //         gsap.to(window, {
+  //           scrollTo: { y: ref.current, offsetY: 100 },
+  //           duration: 0.5,
+  //         });
+  //       },
+  //     });
+  //   }
+  // }, []);
 
   return (
     <div>
       <div className="w-full h-[110px] gradient1"></div>
-      <div className="w-full bg-white relative overflow-hidden flex  justify-center items-center">
+      <div className="w-full bg-white lg:h-[700px] md:h-[500px] relative overflow-hidden flex md:flex-row lg:flex-row flex-col  justify-center items-center ">
         <div
           ref={canvasref}
-          className="bg-white  h-[100vh] overflow-hidden w-[80%] m-auto flex"
+          className="bg-white  overflow-hidden md:w-[90%] lg:w-[80%]  md:flex-row lg:flex-row flex-col m-auto flex"
         >
-          <div className="w-[50%] ">
+          <div className="w-[90%] md:w-[50%] lg:w-[50%] ">
             {/* <div className="w-[1257px] absolute z-0 top-[-300px] left-[-200px] h-[1180px] radial-gradient"></div> */}
+           {isMobile && (
             <div
               onMouseLeave={() => setMouseIn(false)}
               onMouseEnter={() => setMouseIn(true)}
-              className="w-[100%] pt-[150px]  h-[850px] z-30"
+              className="w-[100%] h-[700px]  z-30"
             >
               <Canvas ref={ref}>
                 <Suspense fallback={null}>
@@ -127,50 +92,37 @@ const Day = ({ products }) => {
                 </Suspense>
               </Canvas>
             </div>
+           )}
+           {isTablet && (
+            <div
+              onMouseLeave={() => setMouseIn(false)}
+              onMouseEnter={() => setMouseIn(true)}
+              className="w-[100%]   h-[750px] z-30"
+            >
+              <Canvas ref={ref}>
+                <Suspense fallback={null}>
+                  <DayModelComponent mouseIn={mouseIn} />
+                </Suspense>
+              </Canvas>
+            </div>
+           )}
           </div>
-          <div className="w-[50%] z-20 flex flex-col gap-10 px-16 h-[850px] pt-[170px]">
+          <div className="w-[90%] mx-auto  md:w-[50%] lg:w-[50%] z-20 flex flex-col gap-10 lg:px-16 lg:h-[850px] md:h-[850px] md:pt-[170px] lg:pt-[170px]">
             <div className="">
               <Image
                 src="/HomePage/day/Day Dazzle Lipstick.svg"
                 alt="hero"
                 width={556}
                 height={75}
+                className="w-[556px] h-[75px]"
               />
             </div>
-            <div className="font-poppins font-[400] text-[26px] leading-[39px] text-black">
+            <div className="font-poppins font-[400] md:text-[20px] md:leading-[30px] lg:text-[26px] leading-[39px] text-black">
               Four stunning matte lipstick shades for your perfect day out!
               <br />
               Available in four new lip adapting shades.
             </div>
-            <div className="flex items-center gap-4">
-              <svg
-                className="w-8 h-8 cursor-pointer"
-                fill={isInWishlist ? "#D76D8E" : "none"}
-                stroke="#D76D8E"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-                onClick={handleAddToWishlist}
-              >
-                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-              </svg>
-              <HoverBorderGradient
-                containerClassName=" rounded-[34px]"
-                as="button"
-                className=" bg-black text-white w-[147px] h-[44px] flex items-center justify-center font-poppins space-x-2 text-[16px] font-[500] leading-[24px]"
-                onClick={handleAddToCart}
-                disabled={isInCart}
-              >
-                <span>ADD TO CART</span>
-              </HoverBorderGradient>
-
-              <HoverBorderGradient
-                containerClassName=" rounded-[34px]"
-                as="button"
-                className=" bg-black text-white w-[147px] h-[44px] flex items-center justify-center font-poppins space-x-2 text-[16px] font-[500] leading-[24px]"
-              >
-                <span>ORDER NOW</span>
-              </HoverBorderGradient>
-            </div>
+          
           </div>
         </div>
       </div>

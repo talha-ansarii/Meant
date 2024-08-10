@@ -1,11 +1,22 @@
+"use Client"
+
 import ProductClosed from "@/public/models/ProductClosed";
 import { OrbitControls, PerspectiveCamera } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
-import React, { use, useEffect, useRef } from "react";
+import React, { use, useEffect, useRef, useState } from "react";
+import { useMediaQuery } from "react-responsive";
 
 const CloseBoxComponent = ({ mouseIn }) => {
   const modelRef = useRef();
   const lightRef = useRef();
+  const isMobile = useMediaQuery({ maxWidth: 480 });
+  const [scale, setScale] = useState(2);
+
+  useEffect(() => {
+    if(isMobile){
+      setScale(1);
+    }
+  }, []);
 
   // useFrame(() => {
   //   if (modelRef.current && lightRef.current) {
@@ -46,7 +57,7 @@ const CloseBoxComponent = ({ mouseIn }) => {
         <PerspectiveCamera makeDefault position={[0, 2, 10]} />
         <OrbitControls enableZoom={false} ref={orbitRef} />
 
-        <mesh position={[0, 0, 0]} scale={2} rotation={[1, 0, 0]}>
+        <mesh position={[0, 0, 0]} scale={scale} rotation={[1, 0, 0]}>
           <ProductClosed />
         </mesh>
 

@@ -40,6 +40,8 @@ const OrderItem = ({ order }) => {
     fetchProductDetails();
   }, [order]);
 
+  
+
   if (loading) return <>{isClient && <div className=" ">
     <VideoLoader />
      </div>}</>;

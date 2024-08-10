@@ -25,14 +25,14 @@ const Banner = () => {
   }, [index]);
   return (
     <div className="w-full bg-black pb-[100px] ">
-      <div className="w-[80%] h-[486px] m-auto flex ">
+      <div className="w-[80%] lg:h-[486px] h-[200px] md:h-[300px] m-auto flex ">
         <div className="w-[50%]  ">
           <img
             width={100}
             height={100}
             src={images[index]}
             alt="banner"
-            className="object-cover w-[100%] h-[486px] rounded-l-[10px]"
+            className="object-cover w-[100%] lg:h-[486px] h-[200px] md:h-[300px] rounded-l-[10px]"
           />
         </div>
         <div className="w-[50%] relative ">
@@ -41,7 +41,7 @@ const Banner = () => {
             height={100}
             src={"/assets/images/meantForYou.jpeg"}
             alt="banner"
-            className="object-cover w-[100%] h-[486px] rounded-r-[10px]"
+            className="object-cover w-[100%] lg:h-[486px] h-[200px] md:h-[300px] rounded-r-[10px]"
           />
           <div className="absolute left-[50%] top-[63%] translate-x-[-50%] flex flex-col justify-center items-center translate-y-[-50%] ">
            

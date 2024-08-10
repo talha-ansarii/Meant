@@ -106,7 +106,7 @@ const Header = () => {
 
   return (
     <div
-      className={`w-full m-auto top-[30px] duration-200 left-[50%] translate-x-[-50%] px-[20px] absolute lg:fixed md:fixed z-50 transition-transform ${
+      className={`w-full m-auto top-[30px] duration-200 left-[50%] translate-x-[-50%] px-[20px] absolute lg:fixed md:fixed z-[300] transition-transform ${
         scrollDirection === "down" ? " translate-y-0 lg:-translate-y-[80px] md:-translate-y-[80px] " : " translate-y-0 "
       }`}
     >
