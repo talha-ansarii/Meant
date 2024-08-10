@@ -32,30 +32,30 @@ const CloseBoxComponent = ({ mouseIn }) => {
     return (angleInDegrees * Math.PI) / 180;
   };
 
-  const orbitRef = useRef(null);
-  useEffect(() => {
-    if (mouseIn === false) {
-      orbitRef.current.setAzimuthalAngle(0);
-      orbitRef.current.setPolarAngle(angleToRadians(80));
-      orbitRef.current.update();
-    }
-  }, [mouseIn]);
-  useFrame(
-    (state) => {
-      if (!!orbitRef.current && mouseIn === true) {
-        const { x, y } = state.pointer;
-        orbitRef.current.setAzimuthalAngle(x * angleToRadians(10));
-        orbitRef.current.setPolarAngle((y + 1) * angleToRadians(50));
-        orbitRef.current.update();
-      }
-    },
-    [mouseIn]
-  );
+  // const orbitRef = useRef(null);
+  // useEffect(() => {
+  //   if (mouseIn === false) {
+  //     orbitRef.current.setAzimuthalAngle(0);
+  //     orbitRef.current.setPolarAngle(angleToRadians(80));
+  //     orbitRef.current.update();
+  //   }
+  // }, [mouseIn]);
+  // useFrame(
+  //   (state) => {
+  //     if (!!orbitRef.current && mouseIn === true) {
+  //       const { x, y } = state.pointer;
+  //       orbitRef.current.setAzimuthalAngle(x * angleToRadians(10));
+  //       orbitRef.current.setPolarAngle((y + 1) * angleToRadians(50));
+  //       orbitRef.current.update();
+  //     }
+  //   },
+  //   [mouseIn]
+  // );
   return (
     <>
       <group ref={modelRef}>
         <PerspectiveCamera makeDefault position={[0, 2, 10]} />
-        <OrbitControls enableZoom={false} ref={orbitRef} />
+        {/* <OrbitControls enableZoom={false} ref={orbitRef} /> */}
 
         <mesh position={[0, 0, 0]} scale={scale} rotation={[1, 0, 0]}>
           <ProductClosed />
