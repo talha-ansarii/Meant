@@ -23,11 +23,13 @@ const Header = () => {
   const [wishlistLength, setWishlistLength] = useState(0);
   // const [isOpened, setIsOpened] = useState(false);
 
-  if (isOpen) {
-    document.body.style.overflow = "hidden";
-  } else {
-    document.body.style.overflow = "auto";
- }
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+  }, [isOpen]);
  
 
   // console.log(user)
