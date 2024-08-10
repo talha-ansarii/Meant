@@ -16,7 +16,7 @@ const ReviewCard = ({ username, comment, starRating }) => {
   };
 
   return (
-    <div className="bg-white font-merriweather border p-4 rounded-lg mb-4 w-full max-w-sm">
+    <div className="bg-white font-merriweather border p-4 rounded-lg mb-4 w-full max-w-sm md:max-w-md lg:max-w-lg">
       <p className="text-black font-semibold text-lg mb-2">{username}</p>
       <p className="text-black mb-2 overflow-wrap break-words">{comment}</p>
       <div className="flex items-center">{renderStars()}</div>
