@@ -6,7 +6,7 @@ import { FaThreads } from "react-icons/fa6";
 
 const Footer = () => {
   return (
-    <div className="w-full bg-black mt-16">
+    <div className="w-full pt-2 bg-black mt-[-5px] md:mt-16 lg:mt-16">
       <div className="md:w-[80%] w-full px-4 md:mx-auto m-auto ">
         <Link
           href={"/"}
