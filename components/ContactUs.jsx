@@ -2,6 +2,8 @@
 
 import React, { useState } from "react";
 import Footer from "./Footer";
+import Script from "next/script";
+import emailjs from "@emailjs/browser";
 
 const ContactUs = () => {
   const [fullname, setFullname] = useState("");
@@ -44,8 +46,6 @@ const ContactUs = () => {
     return isValid;
   };
 
-  //const [form, setForm] = useState(false);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -53,46 +53,49 @@ const ContactUs = () => {
 
     if (isValidForm) {
       setButtonText("Sending");
-      const res = await fetch("/api/sendgrid", {
-        body: JSON.stringify({
-          email: email,
-          fullname: fullname,
-          subject: subject,
-          message: message,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-        method: "POST",
-      });
 
-      const { error } = await res.json();
-      if (error) {
-        console.log(error);
-        setShowSuccessMessage(false);
-        setShowFailureMessage(true);
-        setButtonText("Send");
+      const templateParams = {
+        from_name: fullname,
+        email: email,
+        subject: subject,
+        message: message,
+        to_name: "Meant"
+      };
 
-        // Reset form fields
-        setFullname("");
-        setEmail("");
-        setMessage("");
-        setSubject("");
-        return;
-      }
-      setShowSuccessMessage(true);
-      setShowFailureMessage(false);
-      setButtonText("Send");
-      // Reset form fields
-      setFullname("");
-      setEmail("");
-      setMessage("");
-      setSubject("");
+      console.log(process.env.EMAIL_JS_SERVICE_ID, process.env.EMAIL_JS_TEMPLATE_ID, process.env.EMAIL_JS_PUBLIC_KEY);
+
+      emailjs
+        .send("service_xwvr00r", "template_m81ml9t", templateParams, "X9yN6aZNKROWL4rQI")
+        .then(
+          (response) => {
+            console.log("SUCCESS!", response.status, response.text);
+            setShowSuccessMessage(true);
+            setShowFailureMessage(false);
+            setButtonText("Send");
+
+            // Reset form fields
+            setFullname("");
+            setEmail("");
+            setMessage("");
+            setSubject("");
+          },
+          (error) => {
+            console.log("FAILED...", error);
+            setShowSuccessMessage(false);
+            setShowFailureMessage(true);
+            setButtonText("Send");
+          }
+        );
     }
     console.log(fullname, email, subject, message);
   };
+
   return (
     <div className="">
+      <Script
+        type="text/javascript"
+        src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"
+      ></Script>
       <main className=" bg-white">
         <header className="p-8 grid grid-cols-1 md:grid-cols-2 gap-4 pt-10 lg:px-40 bg-black dark:bg-blue-900 md:h-96">
           <div className="mx-auto mb-10 md:mt-20">
@@ -193,7 +196,7 @@ const ContactUs = () => {
             <div className="text-left">
               {showSuccessMessage && (
                 <p className="text-green-500 font-semibold text-sm my-2">
-                  Thankyou! Your Message has been delivered.
+                  Thank you! Your message has been delivered.
                 </p>
               )}
               {showFailureMessage && (
