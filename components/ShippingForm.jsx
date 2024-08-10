@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import React, { useState } from "react";
 
-const ShippingForm = ({ add, setAdd, handlePayment }) => {
+const ShippingForm = ({ handlePayment }) => {
   // State variables for form inputs
   const [email, setEmail] = useState("");
   const [emailOffers, setEmailOffers] = useState(false);
@@ -28,33 +28,31 @@ const ShippingForm = ({ add, setAdd, handlePayment }) => {
   };
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
-  console.log("form Submitted");
+    e.preventDefault();
+    console.log("form Submitted");
 
-  const addr = {
-    email,
-    emailOffers,
-    firstName,
-    lastName,
-    address,
-    apartment,
-    city,
-    state,
-    pincode,
-    phone,
+    const addr = {
+      email,
+      emailOffers,
+      firstName,
+      lastName,
+      address,
+      apartment,
+      city,
+      state,
+      pincode,
+      phone,
+    };
+
+    // Log to ensure values are correct before setting them
+    console.log("Submitting form with values:", addr);
+
+    handlePayment(addr);
+    if (saveInfo) {
+      // Here you would handle saving the info (e.g., make an API call)
+      console.log("Saving address:", addr);
+    }
   };
-
-  // Log to ensure values are correct before setting them
-  console.log("Submitting form with values:", addr);
-
-  setAdd(addr); // Update the state with the form data
-
-  handlePayment(addr);
-  if (saveInfo) {
-    // Here you would handle saving the info (e.g., make an API call)
-    console.log("Saving address:", addr);
-  }
-};
 
   return (
     <div className="min-h-screen flex lg:mt-[80px] md:mt-[80px] flex-col items-center bg-white ray-50 py-10 px-4 sm:px-6 lg:px-8">

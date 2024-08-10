@@ -248,7 +248,7 @@ useEffect(() => {
           <h2 className="text-white font-poppins font-semibold lg:text-lg text-xs md:text-lg">
             {currentProducts.length} Products
           </h2>
-          <div className="flex items-center  space-x-2">
+          <div className="flex items-center space-x-2">
             {/* Sort By Filter */}
             <CustomDropdown
               options={[

@@ -28,20 +28,20 @@ const ReturnRefundCancelPolicy = () => {
             return/exchange request within 5 days of its delivery.
           </p>
           <p className="text-base md:text-lg text-gray-500 leading-relaxed mb-4">
-            <strong>Step 1:</strong> Reach out to us with the issue on the mail
+            <strong className="text-white">Step 1:</strong> Reach out to us with the issue on the mail
             given in the contact us page.
             <br />- Via Email: Share an email to our Customer Support team at
             meantconnect@gmail.com within 5 days of receiving the order.
           </p>
           <p className="text-base md:text-lg text-gray-500 leading-relaxed mb-4">
-            <strong>Step 2:</strong> Once your request is received, based on the
+            <strong className="text-white">Step 2:</strong> Once your request is received, based on the
             outcome of the return raised, we will pick the item from you. We
             will initiate the refund or replacement process only if the products
             are received by us in their original packaging with the seals,
             labels, and bar-codes intact.
           </p>
           <p className="text-base md:text-lg text-gray-500 leading-relaxed mb-4">
-            <strong>Notes:</strong>
+            <strong className="text-white">Notes:</strong>
             <br />
             - If it is a case of replacement, it is subject to the availability
             of stock. In cases when a replacement may not be available; we will
@@ -159,7 +159,7 @@ const ReturnRefundCancelPolicy = () => {
             in your account.
           </p>
           <p className="text-base md:text-lg text-gray-500 leading-relaxed mb-4">
-            <strong>Notes:</strong>
+            <strong className="text-white">Notes:</strong>
             <br />
             - We do not offer wallet refunds for cancellations.
             <br />- Discount vouchers are intended for one-time use only and

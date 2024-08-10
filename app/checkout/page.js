@@ -11,14 +11,11 @@ import Script from "next/script";
 import React, { useEffect, useState } from "react";
 
 const Page = () => {
-  const [add, setAdd] = useState({});
   const [cartProducts, setCartProducts] = useState([]);
   const [cartTotal, setCartTotal] = useState(0);
   const [orderId, setOrderId] = useState("");
   const key = process.env.NEXT_PUBLIC_RAZORPAY_KEY;
   const navigate = useRouter();
-  const [details, setDetails] = useState({});
-  const [oerderr, setOrder] = useState({});
 
   useEffect(() => {
     const fetchData = async () => {
@@ -83,7 +80,6 @@ const Page = () => {
       return;
     }
   };
-  console.log(add);
 
   function generateRandomFiveDigitNumber() {
     // Generate a random number between 10000 and 99999
@@ -151,7 +147,7 @@ const Page = () => {
   const handlePayment = async (address) => {
     try {
       // Create the Razorpay order
-      console.log(address)
+      console.log(address);
       const order = await createOrder(address);
       if (!order) {
         throw new Error("Failed to create order");
@@ -202,11 +198,7 @@ const Page = () => {
         <Header />
         <div className="w-full flex bg-white ">
           <div className="w-[50%]">
-            <ShippingForm
-              setAdd={setAdd}
-              add={add}
-              handlePayment={handlePayment}
-            />
+            <ShippingForm handlePayment={handlePayment} />
           </div>
           <div className="w-[50%]">
             <Checkout
