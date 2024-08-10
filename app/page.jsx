@@ -155,7 +155,7 @@ export default function Home() {
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, []);
+  }, [show]);
 
   const handleArrowClick = () => {
     window.scrollTo({
