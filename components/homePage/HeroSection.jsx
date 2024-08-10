@@ -20,7 +20,7 @@ const HeroSection = () => {
     <div>
       <div className="relative flex justify-center pt-[200px] items-center h-[600px] md:h-[800px] lg:h-[800px] bg-black w-full ">
         
-        <div className="absolute font-poppins italiana left-[50px] top-[420px] lg:top-[130px] lg:left-[50%] translate-x-[150px] text-lg lg:text-3xl">Limited Edition</div>
+        <div className="absolute font-poppins italiana left-[80%] top-[420px] lg:top-[130px] lg:left-[50%] lg:translate-x-[150px] text-md lg:text-3xl">Limited Edition</div>
         {
           isMobile && (
             <div

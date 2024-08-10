@@ -240,8 +240,8 @@ const Header = () => {
                     src="/assets/images/logo.webp"
                     alt="logo"
                     width={100}
-                    height={50}
-                    className="w-[100px] h-[50px]"
+                    height={35}
+                    className="w-[100px] h-[35px]"
                   />
                 </Link>
               </div>
