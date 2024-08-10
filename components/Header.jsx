@@ -257,6 +257,10 @@ const Header = () => {
                   <FaShoppingCart className="w-[20px] cursor-pointer h-[22px] text-white" />
                  
                 </div>
+                <FaUser
+            onClick={() => setProfileOpen(!profileOpen)}
+            className="w-[21px] cursor-pointer h-[22px] text-white"
+          />
               </div>
             </div>
 
@@ -306,6 +310,34 @@ const Header = () => {
                   </motion.div>
                 )}
               </AnimatePresence>
+              {profileOpen && (
+            <div className="absolute  w-[170px]  rounded-[4px] shadow-md bg-white top-[60px] right-[100px] translate-x-[50%]">
+              <div className="w-[15px] h-[16px] absolute bg-white  top-[-8px] rotate-45 left-[92%] translate-x-[-50%]"></div>
+              <SignedIn>
+                <div className="flex text-[16px] font-[700] items-center justify-center playfair text-black flex-col gap-4 p-4">
+                  <div className="flex gap-2 justify-center items-center">
+                    <UserButton />
+                    <div>{user?.username}</div>
+                  </div>
+
+                  <Link className="cursor-pointer" href="/past-orders">
+                    Orders
+                  </Link>
+                </div>
+              </SignedIn>
+
+              <SignedOut>
+                <div className="flex text-[16px]  font-[700] justify-center items-center playfair text-black flex-col gap-4 p-4">
+                  <Link className="cursor-pointer" href="/sign-in">
+                    Sign in
+                  </Link>
+                  <Link className="cursor-pointer" href="/sign-up">
+                    Sign up
+                  </Link>
+                </div>
+              </SignedOut>
+            </div>
+          )}
             </div>
           </div>
         </div>
