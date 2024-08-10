@@ -92,7 +92,7 @@ const Picture = () => {
             animate={inView ? "visible" : "hidden"}
             variants={containerVariantsRight}
             ref={ref}
-            className="lg:flex lg:justify-between grid grid-cols-2 gap-2  mt-12 md:grid md:grid-cols-2 md:gap-4"
+            className="lg:flex lg:justify-between grid grid-cols-2 gap-2 mt-2  lg:mt-12 md:grid md:grid-cols-2 md:gap-4"
           >
             <Image
               width={261}

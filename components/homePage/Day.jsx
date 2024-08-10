@@ -129,34 +129,12 @@ const Day = ({ products }) => {
           ref={canvasref}
           className="bg-white  overflow-hidden md:w-[90%] lg:w-[80%]  md:flex-row lg:flex-row flex-col m-auto flex"
         >
-          <div className="w-[90%] md:w-[50%] lg:w-[50%] ">
+          <div className="w-[90%] h-full mx-auto flex justify-center items-center pt-[60px]  md:w-[50%] lg:w-[50%] ">
             {/* <div className="w-[1257px] absolute z-0 top-[-300px] left-[-200px] h-[1180px] radial-gradient"></div> */}
-           {isMobile && (
-            <div
-              onMouseLeave={() => setMouseIn(false)}
-              onMouseEnter={() => setMouseIn(true)}
-              className="w-[100%] h-[700px]  z-30"
-            >
-              <Canvas ref={ref}>
-                <Suspense fallback={null}>
-                  <DayModelComponent mouseIn={mouseIn} />
-                </Suspense>
-              </Canvas>
-            </div>
-           )}
-           {isTablet && (
-            <div
-              onMouseLeave={() => setMouseIn(false)}
-              onMouseEnter={() => setMouseIn(true)}
-              className="w-[100%]   h-[750px] z-30"
-            >
-              <Canvas ref={ref}>
-                <Suspense fallback={null}>
-                  <DayModelComponent mouseIn={mouseIn} />
-                </Suspense>
-              </Canvas>
-            </div>
-           )}
+           <Image 
+           width={556}
+           height={556}
+           src={"/assets/images/day.png"}/>
           </div>
           <div className="w-[90%] mx-auto  md:w-[50%] lg:w-[50%] z-20 flex flex-col lg:gap-10 lg:px-16 lg:h-[850px] md:h-[850px] md:pt-[170px] lg:pt-[170px]">
             <div className="">

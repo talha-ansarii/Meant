@@ -8,51 +8,22 @@ import VideoLoader from "../VideoLoader";
 import { useMediaQuery } from "react-responsive";
 
 const HeroSection = () => {
-  const [mouseIn, setMouseIn] = useState(false);
 
-  const isMobile = useMediaQuery({ maxWidth: 480 });
-
-  const isTablet = useMediaQuery({ minWidth: 481, maxWidth: 1024 });
 
   
 
   return (
     <div>
-      <div className="relative flex justify-center pt-[200px] items-center h-[600px] md:h-[800px] lg:h-[800px] bg-black w-full ">
+      <div className="relative flex justify-center  items-center h-[calc(100vh-100px)] md:h-[800px] lg:h-[800px] bg-black w-full ">
         
-        <div className="absolute font-poppins italiana left-[80%] top-[420px] lg:top-[130px] lg:left-[50%] lg:translate-x-[150px] text-md lg:text-3xl">Limited Edition</div>
-        {
-          isMobile && (
-            <div
-          onMouseLeave={() => setMouseIn(false)}
-          onMouseEnter={() => setMouseIn(true)}
-          className=" w-[900px] mt-[-600px]  h-[800px]  "
-        >
-          <Canvas className="absolute">
-            <ambientLight intensity={1} />
-            <Suspense fallback={null}>
-              <CloseBoxComponent mouseIn={mouseIn} />
-            </Suspense>
-          </Canvas>
-        </div>
-          )
-        }
-        {
-          isTablet && (
-            <div
-          onMouseLeave={() => setMouseIn(false)}
-          onMouseEnter={() => setMouseIn(true)}
-          className=" w-[900px] mt-[-200px]  h-[800px]  "
-        >
-          <Canvas className="absolute">
-            <ambientLight intensity={1} />
-            <Suspense fallback={null}>
-              <CloseBoxComponent mouseIn={mouseIn} />
-            </Suspense>
-          </Canvas>
-        </div>
-          )
-        }
+        <div className="absolute font-poppins italiana left-[70%] top-[390px] lg:top-[130px] lg:left-[50%] lg:translate-x-[150px] text-md lg:text-3xl">Limited Edition</div>
+       <img
+       src={"/assets/images/close.png"}
+        width={400}
+        height={400}
+        className="w-[500px]"
+        />
+       
       </div>
     </div>
   );
