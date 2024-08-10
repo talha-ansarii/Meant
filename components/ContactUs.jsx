@@ -204,7 +204,7 @@ const ContactUs = () => {
             </div>
           </form>
         </header>
-        <div className="w-full h-[200px]"></div>
+        <div className="w-full bg-white h-[0px] md:h-[200px] lg:h-[200px]"></div>
         <Footer />
       </main>
     </div>

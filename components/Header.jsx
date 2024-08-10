@@ -268,7 +268,7 @@ const Header = () => {
               <AnimatePresence>
                 {isOpen && (
                   <motion.div
-                    className="fixed top-[-10px] playfair md:hidden bg-black mt-[80px]   h-[100vh] lg:hidden inset-0 z-[200] justify-evenly pb-[80px] items-start pl-6 text-font-blue inter font-[700] text-[20px] flex flex-col gap-[32px]"
+                    className="fixed overflow-hidden top-[-10px] playfair md:hidden bg-black mt-[80px]   h-[100vh] lg:hidden inset-0 z-[200] justify-evenly pb-[80px] items-start pl-6 text-font-blue inter font-[700] text-[20px] flex flex-col gap-[32px]"
                     initial="hidden"
                     animate="visible"
                     exit="hidden"
@@ -276,7 +276,7 @@ const Header = () => {
                   >
                     <motion.div variants={linkVariants}>
                       <Link
-                        className="flex gap-3 text-[#FFFFFF] text-[40px] leading-[28.66px] text-center -10"
+                        className="flex gap-3 text-[#FFFFFF] text-[30px] leading-[28.66px] text-center -10"
                         href="/"
                       >
                         Home
@@ -284,7 +284,7 @@ const Header = () => {
                     </motion.div>
                     <motion.div variants={linkVariants}>
                       <Link
-                        className="flex gap-3 text-[#FFFFFF] text-[40px] leading-[28.66px] text-center -10"
+                        className="flex gap-3 text-[#FFFFFF] text-[30px] leading-[28.66px] text-center -10"
                         href="/products"
                       >
                         Products
@@ -293,7 +293,7 @@ const Header = () => {
 
                     <motion.div variants={linkVariants}>
                       <Link
-                        className="flex gap-3 text-[#FFFFFF] text-[40px] leading-[28.66px] text-center -10"
+                        className="flex gap-3 text-[#FFFFFF] text-[30px] leading-[28.66px] text-center -10"
                         href="/aboutus"
                       >
                         About Us
@@ -301,7 +301,7 @@ const Header = () => {
                     </motion.div>
                     <motion.div variants={linkVariants}>
                       <Link
-                        className="flex gap-3 text-[#FFFFFF] text-[40px] leading-[28.66px] text-center -10"
+                        className="flex gap-3 text-[#FFFFFF] text-[30px] leading-[28.66px] text-center -10"
                         href="/contactus"
                       >
                         Contact Us
