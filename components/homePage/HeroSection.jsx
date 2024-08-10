@@ -26,7 +26,7 @@ const HeroSection = () => {
             <div
           onMouseLeave={() => setMouseIn(false)}
           onMouseEnter={() => setMouseIn(true)}
-          className=" w-[900px] mt-[-200px]  h-[800px]  "
+          className=" w-[900px] mt-[-600px]  h-[800px]  "
         >
           <Canvas className="absolute">
             <ambientLight intensity={1} />
