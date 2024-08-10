@@ -91,7 +91,7 @@ const SingleProductPage = ({ productId }) => {
         // Filter products that belong to the same category
         const fetchedRelatedProducts = initialProducts
           .filter((p) =>
-            p.categories.some((cat) => cat.name === productCategoryName)
+            p.categories.some((cat) => cat.name != productCategoryName)
           )
           .sort(() => 0.5 - Math.random());
 
@@ -311,7 +311,7 @@ const SingleProductPage = ({ productId }) => {
             <h3 className="lg:text-lg text-[10px] font-bold font-merriweather mt-4">
               Shades
             </h3>
-            <div className="grid grid-cols-2 w-[31px] lg:w-[48px] my-2">
+            <div className="grid ml-[1.7rem] md:ml-0 lg:ml-0 grid-cols-2 w-[31px] lg:w-[48px] my-2">
               {" "}
               {productStyle.shades.map((shade, index) => (
                 <div
