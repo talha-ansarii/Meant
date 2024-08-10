@@ -5,6 +5,7 @@ import User from "../../../models/User";
 
 export async function POST(request) {
   await dbConnect();
+
   const { userId } = await auth();
   const { productId, quantity } = await request.json();
 

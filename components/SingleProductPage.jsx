@@ -5,10 +5,13 @@ import Image from "next/image";
 import { FaStar } from "react-icons/fa";
 import Accordion from "./Accordian";
 import ProductCard from "./ProductCard";
+import ReviewForm from "./ReviewForms";
+import ReviewCard from "./ReviewCard";
 import { FaRegHeart, FaHeart } from "react-icons/fa";
 import productShades from "@/constants/productShades";
 import Footer from "./Footer";
 import Header from "./Header";
+import Modal from "./Modal";
 import { addProductToCart } from "@/utils/cartUtils";
 import {
   addProductToWishlist,
@@ -32,6 +35,8 @@ const SingleProductPage = ({ productId }) => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isClient, setIsClient] = useState(false);
+  const [showReviewForm, setShowReviewForm] = useState(false);
+  const [reviews, setReviews] = useState([]);
 
   useEffect(() => {
     setIsClient(true);
@@ -95,6 +100,25 @@ const SingleProductPage = ({ productId }) => {
     }
   }, [product, initialProducts]);
 
+  useEffect(() => {
+    const fetchReviews = async () => {
+      try {
+        const response = await fetch(`/api/get-reviews/${productId}`);
+        if (!response.ok) {
+          throw new Error("Failed to fetch reviews");
+        }
+        const data = await response.json();
+        console.log(data);
+
+        setReviews(data.reviews);
+      } catch (error) {
+        console.error("Error fetching reviews:", error);
+      }
+    };
+
+    fetchReviews();
+  }, [productId]);
+
   const handleQuantityChange = (delta) => {
     setQuantity((prevQuantity) => {
       const newQuantity = prevQuantity + delta;
@@ -134,24 +158,17 @@ const SingleProductPage = ({ productId }) => {
       }
       // Re-fetch wishlist state after update
       const updatedWishlistProducts = await getWishlistProducts();
-      const contains = updatedWishlistProducts?.some((prod) => prod.productId == productId);
+      const contains = updatedWishlistProducts?.some(
+        (prod) => prod.productId == productId
+      );
       setWishlistFilled(contains);
     } catch (error) {
       console.error("Error updating wishlist:", error);
     }
   };
 
-  const renderStars = (rating) => {
-    const stars = [];
-    for (let i = 0; i < 5; i++) {
-      stars.push(
-        <FaStar
-          key={i}
-          className={`lg:h-4 lg:w-4 w-[13px] h-[13px] ${i < rating ? "text-white" : "text-gray-400"}`}
-        />
-      );
-    }
-    return stars;
+  const handleReviewFormClose = () => {
+    setShowReviewForm(false);
   };
 
   const handleToggleAccordion = (index) => {
@@ -183,9 +200,28 @@ const SingleProductPage = ({ productId }) => {
     fetchWishlistProducts();
   }, [productId]);
 
-  if (loading) return <>{isClient && <div className="w-[100vw] h-[100vh] ">
-    <VideoLoader />
-     </div>}</>;
+  const calculateAverageRating = () => {
+    if (reviews.length === 0) return 0;
+
+    const totalRating = reviews.reduce(
+      (acc, review) => acc + review.starRating,
+      0
+    );
+    return (totalRating / reviews.length).toFixed(1);
+  };
+
+  const averageRating = calculateAverageRating();
+
+  if (loading)
+    return (
+      <>
+        {isClient && (
+          <div className="w-[100vw] h-[100vh] ">
+            <VideoLoader />
+          </div>
+        )}
+      </>
+    );
 
   return (
     <div className="bg-black text-white min-h-screen">
@@ -263,14 +299,11 @@ const SingleProductPage = ({ productId }) => {
             <p className="lg:text-xl text-[17px] font-playfair-display font-bold mt-4">
               ₹{product.price}
             </p>
-            <div className="flex items-center mt-2">
-              {renderStars(product.average_rating)}
-              <span className="text-white text-[10px] lg:text-lg font-poppins font-medium ml-2">
-                ({product.rating_count} reviews)
-              </span>
-            </div>
+
             {/* Color Palette */}
-            <h3 className="lg:text-lg text-[10px] font-bold font-merriweather mt-4">Shades</h3>
+            <h3 className="lg:text-lg text-[10px] font-bold font-merriweather mt-4">
+              Shades
+            </h3>
             <div className="grid grid-cols-2 w-[31px] lg:w-[48px] my-2">
               {" "}
               {productStyle.shades.map((shade, index) => (
@@ -449,11 +482,30 @@ const SingleProductPage = ({ productId }) => {
           </h2>
         </div>
 
+        {/* Render Reviews */}
+        <div className="mt-8">
+          <h2 className="font-bold text-2xl">Customer Reviews</h2>
+          <div className="mt-8 mb-8 flex flex-row flex-wrap gap-4">
+            {reviews.length > 0 ? (
+              reviews.map((review) => (
+                <ReviewCard
+                  key={review._id}
+                  username={review.name}
+                  comment={review.comment}
+                  starRating={review.starRating}
+                />
+              ))
+            ) : (
+              <p className="text-gray-400">No reviews yet.</p>
+            )}
+          </div>
+        </div>
+
         {/* Reviews Section */}
         <div className="relative flex items-center justify-center space-x-12 mb-8">
           <div className="flex items-center space-x-12">
             <p className="text-white font-medium font-size-heading font-playfair-display">
-              0/5
+              {averageRating} / 5
             </p>
             <div className="flex flex-col items-center">
               <span className="text-white text-lg font-bold font-merriweather">
@@ -466,11 +518,19 @@ const SingleProductPage = ({ productId }) => {
             <p className="text-white font-merriweather text-lg font-bold mb-4">
               Write Us a Review !
             </p>
-            <button className="bg-black text-[#D9D9D9] border px-6 py-2 rounded font-merriweather font-bold">
+            <button
+              onClick={() => setShowReviewForm(true)}
+              className="bg-black text-[#D9D9D9] border px-6 py-2 rounded font-merriweather font-bold hover:bg-gray-600"
+            >
               Write Review
             </button>
           </div>
         </div>
+
+        {/* Review Form Popup */}
+        <Modal isOpen={showReviewForm} onClose={handleReviewFormClose}>
+          <ReviewForm productId={productId} onClose={handleReviewFormClose} />
+        </Modal>
 
         {/* Footer */}
         <Footer />

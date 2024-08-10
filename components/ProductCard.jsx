@@ -81,15 +81,14 @@ const ProductCard = ({
 
   return (
     <div className="relative border rounded-lg overflow-hidden shadow-lg bg-white">
-      <div className="relative">
+      <div className="relative h-[15rem]">
         {/* Link to the single product page */}
         <Link href={`/product/${product.id}`}>
           <Image
             src={product.images[0]?.src}
             alt={product.name}
-            width={400}
-            height={350}
-            className="w-full h-auto"
+            layout="fill"
+            className="object-cover"
           />
         </Link>
         {/* Wishlist heart icon */}
@@ -109,23 +108,6 @@ const ProductCard = ({
         </div>
       </div>
       <div className="p-4">
-        {/* Ratings section */}
-        <div className="flex items-center mb-2 font-poppins">
-          <span className="text-black mr-2 flex items-center">
-            {Array.from({ length: 5 }, (_, i) => (
-              <FaStar
-                key={i}
-                className={`w-4 h-4 ${
-                  i < product.average_rating ? "text-black" : "text-gray-300"
-                }`}
-              />
-            ))}
-          </span>
-          <span className="text-black font-poppins font-medium">
-            ({product.average_rating})
-          </span>
-        </div>
-
         {/* Product name and price */}
         <div className="flex justify-between items-center mb-2">
           <h3 className="text-xl font-playfair-display font-bold text-black">

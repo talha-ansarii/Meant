@@ -1,6 +1,5 @@
 import Orders from "@/models/Order";
 import dbConnect from "../../../lib/mongodb";
-import { auth } from "@clerk/nextjs/server";
 
 export async function GET(request) {
   await dbConnect();
