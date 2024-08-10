@@ -21,11 +21,7 @@ const Header = () => {
   const { user } = useUser();
   const [cartLength, setCartLength] = useState(0);
   const [wishlistLength, setWishlistLength] = useState(0);
-  const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
+ 
 
   // console.log(user)
   useEffect(() => {
