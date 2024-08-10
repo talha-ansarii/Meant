@@ -59,7 +59,7 @@ const PriceFilter = ({ priceRange, onPriceChange, onReset }) => {
                   : "text-gray-400"
               }`}
             >
-              {range === "0-50" ? "$0 - $50" : "$50 - $100"}
+              {range === "₹0-₹10" ? "₹0 - ₹50" : "₹50 - ₹100"}
             </label>
           </div>
         ))}
