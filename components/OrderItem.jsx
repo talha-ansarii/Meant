@@ -42,8 +42,8 @@ const OrderItem = ({ order }) => {
 
   
 
-  if (loading) return <>{isClient && <div className=" ">
-    <VideoLoader />
+  if (loading) return <>{isClient && <div className=" text-black">
+    loading...
      </div>}</>;
 
   return (

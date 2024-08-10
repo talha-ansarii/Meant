@@ -79,18 +79,19 @@ const Night = ({ products, setShow, show }) => {
   };
 
   return (
-    <div>
-      <div className=" h-[700px] overflow-x-hidden relative lg:h-[600px] bg-black over flex flex-col pt-[0px] md:flex-row lg:flex-row gap-6 w-[90%] m-auto ">
-      <div className="w-full">
-    <Meteors number={20} />
+    <div className="relative">
+      <div className=" h-[700px]  overflow-x-hidden relative lg:h-[700px] bg-black over flex flex-col pt-[0px] md:flex-row lg:flex-row gap-6 w-[90%] m-auto ">
+      <div className="absolute">
+    <Meteors  number={20} />
 
       </div>
+      
         <div className="pt-[100px] w-full md:w-[50%] lg:w-[50%]  md:p-0 lg:p-0">
           <Image
             src="/assets/images/night.png"
             width={600}
             height={600}
-            className="w-full relative z-[200]"
+            className="w-full relative  z-[200]"
           />
         </div>
         <div className="flex flex-col gap-4">

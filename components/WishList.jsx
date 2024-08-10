@@ -74,7 +74,7 @@ const WishList = () => {
   };
 
   if (loading) return <>{isClient && <div className="w-[100vw] h-[100vh] ">
-    <VideoLoader />
+    Loading...
      </div>}</>;
 
   return (

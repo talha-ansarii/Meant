@@ -148,9 +148,7 @@ export default function Home() {
     <div className="relative">
       <Suspense
         fallback={
-          <div className="w-[100vw] h-[100vh] flex justify-center items-center  ">
-            <VideoLoader />
-          </div>
+          <div>Loading...</div>
         }
       >
      
