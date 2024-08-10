@@ -38,9 +38,9 @@ const CustomDropdown = ({
   }, []);
 
   return (
-    <div className={`relative ${className}`} ref={dropdownRef}>
+    <div className={`relative w-[100px]  ${className}`} ref={dropdownRef}>
       <button
-        className="bg-black text-white border border-white rounded-md px-4 py-2 flex justify-between items-center"
+        className="bg-black text-white border px-2 py-1 border-white rounded-md md:px-4 md:py-2 lg:px-4 lg:py-2 flex justify-between items-center text-xs md:text-sm lg:text-sm w-full"
         onClick={toggleDropdown}
       >
         <span>

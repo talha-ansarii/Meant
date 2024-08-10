@@ -6,13 +6,17 @@ const Banner = () => {
   const isMobile = useMediaQuery({ maxWidth: 480 });
 
   return (
-    <div className="mx-auto my-4 max-w-[1085px] h-[300px] relative overflow-hidden">
+
+    <div
+      className={`relative overflow-hidden ${
+        isMobile ? "mx-4 max-w-full h-[200px] rounded-xl" : "mx-auto max-w-[1085px] h-[300px] rounded-xl"
+      }`}
+    >
       <Image
-        src={isMobile ? "/assets/images/mob-banner.webp" : "/assets/images/banner.webp"}
+        src={isMobile ? "/assets/images/mobileBanner.png" : "/assets/images/banner.webp"}
         alt="Banner"
         layout="fill"
-        objectFit="cover"
-        className={isMobile ? "" : "rounded-xl"} 
+        className={`object-cover ${isMobile ? "rounded-xl" : "rounded-xl"}`}
       />
     </div>
   );

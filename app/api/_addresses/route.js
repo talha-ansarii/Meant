@@ -1,11 +1,11 @@
-import dbConnect from '../../../lib/mongodb';
-import User from '../../../models/User';
-import { auth } from '@clerk/nextjs/server';
+import dbConnect from "../../../lib/mongodb";
+import User from "../../../models/User";
+import { auth } from "@clerk/nextjs/server";
 
 export async function POST(request) {
   await dbConnect();
   const { userId } = await auth();
-  const address  = await request.json();
+  const address = await request.json();
 
   let user = await User.findOne({ userId });
   if (!user) {
@@ -17,7 +17,6 @@ export async function POST(request) {
 
   return new Response(JSON.stringify(user.addresses), { status: 200 });
 }
-
 
 export async function GET(request) {
   await dbConnect();
@@ -39,12 +38,16 @@ export async function PUT(request) {
 
   const user = await User.findOne({ userId });
   if (!user) {
-    return new Response(JSON.stringify({ error: 'User not found' }), { status: 404 });
+    return new Response(JSON.stringify({ error: "User not found" }), {
+      status: 404,
+    });
   }
 
   const address = user.addresses.id(addressId);
   if (!address) {
-    return new Response(JSON.stringify({ error: 'Address not found' }), { status: 404 });
+    return new Response(JSON.stringify({ error: "Address not found" }), {
+      status: 404,
+    });
   }
 
   address.address = newAddress;

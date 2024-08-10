@@ -7,7 +7,7 @@ import { FaThreads } from "react-icons/fa6";
 const Footer = () => {
   return (
     <div className="w-full bg-black mt-16">
-      <div className="md:w-[80%] w-full m-auto ">
+      <div className="md:w-[80%] w-full px-4 md:mx-auto m-auto ">
         <Link
           href={"/"}
           className=" my-8 lg:hidden md:hidden w-full flex justify-center items-center"
@@ -47,10 +47,10 @@ const Footer = () => {
               />
             </Link>
           </div>
-          <div className="lg:w-[40%] md:w-[50%] pt-3 lg:pt-[50px] md:pt-[50px] grid md:grid-cols-3 grid-cols-2 lg:grid-cols-3  poppins-regular w-full text-white ">
-            <div className="flex  lg:justify-end ">
+          <div className="lg:w-[40%] md:w-[50%] pt-3 lg:pt-[50px] md:pt-[50px] grid md:grid-cols-3 grid-cols-2 lg:grid-cols-3  poppins-regular w-full text-white gap-[2rem] ">
+            <div className="flex  lg:justify-end">
               <div className="flex flex-col gap-2 lg:gap-4 md:gap-4">
-                <div className="text-[14px] leading-[26px] lg:text-[20px] md:text-[20px] md:leading-[26px] font-[500] lg:leading-[26px]">
+                <div className="text-[14px] leading-[26px] lg:text-[20px] md:text-[20px] md:leading-[26px] font-[500] lg:leading-[26px] whitespace-nowrap">
                   Discover Meant
                 </div>
                 <Link
@@ -60,24 +60,19 @@ const Footer = () => {
                   About
                 </Link>
                 <Link
-                  href={"/"}
+                  href={"/products"}
                   className="text-[11px] leading-[16px] md:text-[14px] md:leading-[21px]  lg:text-[14px] font-[400] lg:leading-[21px]"
                 >
-                  Production
+                  Products
                 </Link>
               </div>
             </div>
-            <div className="flex justify-end ">
+            <div className="flex justify-end">
               <div className="flex flex-col gap-2 lg:gap-4 md:gap-4">
                 <div className="text-[14px] leading-[26px] lg:text-[20px] md:text-[20px] md:leading-[26px] font-[500] lg:leading-[26px]">
                   Help
                 </div>
-                <Link
-                  href={"/"}
-                  className="text-[11px] leading-[16px] md:text-[14px] md:leading-[21px]  lg:text-[14px] font-[400] lg:leading-[21px]"
-                >
-                  FAQ
-                </Link>
+
                 <Link
                   href={"/contactus"}
                   className="text-[11px] leading-[16px] md:text-[14px] md:leading-[21px]  lg:text-[14px] font-[400] lg:leading-[21px]"
@@ -156,7 +151,6 @@ const Footer = () => {
             &nbsp;
             <Link href={"/privacy-policy"}>& Privacy Policy</Link>
           </div>
-          <div className="hidden md:block lg:block">With ‪‪❤︎‬ From INDIA</div>
           <div>Copyright © 2024 Meant IN</div>
         </div>
       </div>

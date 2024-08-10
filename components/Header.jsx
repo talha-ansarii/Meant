@@ -4,8 +4,6 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { FaRegHeart, FaShoppingCart, FaUser } from "react-icons/fa";
-import { useWishlist } from "/context/WishlistContext.js";
-import { useCart } from "@/context/CartContext";
 import Cart from "./Cart";
 import { SignedIn, SignedOut, UserButton, useUser } from "@clerk/nextjs";
 import { getCartProducts } from "@/utils/cartUtils";
@@ -20,7 +18,7 @@ const Header = () => {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [scrollDirection, setScrollDirection] = useState("up");
 
-  const { isSignedIn, user, isLoaded } = useUser();
+  const { user } = useUser();
   const [cartLength, setCartLength] = useState(0);
   const [wishlistLength, setWishlistLength] = useState(0);
   const [isClient, setIsClient] = useState(false);
@@ -38,9 +36,9 @@ const Header = () => {
       setWishlistLength(wishlist?.length);
     };
     fetchData();
-    const intervalId = setInterval(fetchData, 500);
+    // const intervalId = setInterval(fetchData, 500);
 
-    return () => clearInterval(intervalId);
+    // return () => clearInterval(intervalId);
   }, []);
 
   useEffect(() => {
@@ -108,7 +106,7 @@ const Header = () => {
 
   return (
     <div
-      className={`w-full m-auto top-[30px] duration-200 left-[50%] translate-x-[-50%] px-[20px] absolute lg:fixed md:fixed z-50 transition-transform ${
+      className={`w-full m-auto top-[30px] duration-200 left-[50%] translate-x-[-50%] px-[20px] absolute lg:fixed md:fixed z-[300] transition-transform ${
         scrollDirection === "down" ? " translate-y-0 lg:-translate-y-[80px] md:-translate-y-[80px] " : " translate-y-0 "
       }`}
     >
@@ -266,7 +264,7 @@ const Header = () => {
               <AnimatePresence>
                 {isOpen && (
                   <motion.div
-                    className="fixed top-0 playfair md:hidden bg-black mt-[86px]   h-[100vh] lg:hidden inset-0 z-[200] justify-evenly pb-[80px] items-start pl-6 text-font-blue inter font-[700] text-[20px] flex flex-col gap-[32px]"
+                    className="fixed top-[-10px] playfair md:hidden bg-black mt-[80px]   h-[100vh] lg:hidden inset-0 z-[200] justify-evenly pb-[80px] items-start pl-6 text-font-blue inter font-[700] text-[20px] flex flex-col gap-[32px]"
                     initial="hidden"
                     animate="visible"
                     exit="hidden"

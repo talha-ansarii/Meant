@@ -2,13 +2,12 @@ import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import Profile from "@/components/Profile";
 
-
 const ProfilePage = () => {
   return (
     <main className="">
-    <Header/>
+      <Header />
       <Profile />
-      <Footer/>
+      <Footer />
     </main>
   );
 };

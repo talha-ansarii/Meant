@@ -3,29 +3,27 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useWishlist } from "/context/WishlistContext.js";
-import { useCart } from "/context/CartContext.js";
 import Header from "./Header";
 import Footer from "./Footer";
 import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { addProductToCart, getAllProducts } from "@/utils/cartUtils";
-import { getWishlistProducts, removeProductFromWishlist } from "@/utils/wishlistUtils";
-import { set } from "mongoose";
+import {
+  getWishlistProducts,
+  removeProductFromWishlist,
+} from "@/utils/wishlistUtils";
 import VideoLoader from "./VideoLoader";
 
 const WishList = () => {
-  // const { wishlist, removeFromWishlist } = useWishlist();
-  const { addToCart } = useCart();
-  const { isSignedIn, user, isLoaded } = useUser();
   const router = useRouter();
+  const { isSignedIn } = useUser();
   const [wishlistArray, setWishlistArray] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [isClient, setIsClient] = useState(false)
- 
+  const [isClient, setIsClient] = useState(false);
+
   useEffect(() => {
-    setIsClient(true)
-  }, [])
+    setIsClient(true);
+  }, []);
 
   const handleAddToCart = async (item) => {
     if (!isSignedIn) {
@@ -34,64 +32,51 @@ const WishList = () => {
     try {
       const data = await addProductToCart(item.id, 1);
       removeFromWishlist(item.id);
-      console.log('Product added to cart:', data);
+      console.log("Product added to cart:", data);
     } catch (error) {
-      console.error('Error adding product to cart:', error);
+      console.error("Error adding product to cart:", error);
       return;
     }
-
-    addToCart({ ...item, quantity: 1 });
-    
   };
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const wishlist = await getWishlistProducts();
+        const products = await getAllProducts();
 
+        if (wishlist && products) {
+          setLoading(false);
+          const filteredProducts = products.filter((product) =>
+            wishlist.some(
+              (wishlistItem) => wishlistItem.productId === product.id
+            )
+          );
 
-useEffect(() => {
+          console.log(filteredProducts);
+          setWishlistArray(filteredProducts);
+        }
+      } catch (error) {
+        console.error("Error fetching wishlist:", error);
+        setLoading(false);
+      }
+    };
 
-  const fetchData = async () => {
-   try {
+    fetchData();
+  }, []);
 
-    const wishlistt = await getWishlistProducts();
-    const products = await getAllProducts();
-   
-    if (wishlistt && products) {
-      
-      setLoading(false);
-      const filteredProducts = products.filter(product =>
-        wishlistt.some(wishlistItem => wishlistItem.productId === product.id)
-      );
+  const removeFromWishlist = async (productId) => {
+    removeProductFromWishlist(productId);
+    const updatedWishlist = wishlistArray.filter(
+      (item) => item.id !== productId
+    );
+    setWishlistArray(updatedWishlist);
+  };
 
+  if (loading) return <>{isClient && <div className="w-[100vw] h-[100vh] ">
+    <VideoLoader />
+     </div>}</>;
 
-
-      console.log(filteredProducts)
-      setWishlistArray(filteredProducts);
-    }
-    
-    
-   } catch (error) {
-     console.error('Error fetching wishlist:', error);
-     setLoading(false);
-    
-   }
-    }
-
-
-  fetchData();
-
-}, []);
-
-const removeFromWishlist = async (productId) => {
-
-  removeProductFromWishlist(productId);
-  const updatedWishlist = wishlistArray.filter((item) => item.id !== productId);
-  setWishlistArray(updatedWishlist);
-
-};
-
-
- 
-  if(loading) return <>{isClient && <VideoLoader/> }</>
-  
   return (
     <div className="pb-4">
       <Header />
@@ -103,7 +88,6 @@ const removeFromWishlist = async (productId) => {
           Your wishlist is empty.{" "}
           <Link href="/products">Start adding some products!</Link>
         </p>
-        
       ) : (
         <div className="p-4 w-[82%] m-auto pt-[2rem] grid grid-cols-1 md:grid-cols-3 gap-8">
           {wishlistArray.map((item) => (
@@ -130,7 +114,7 @@ const removeFromWishlist = async (productId) => {
                     {item.name}
                   </h3>
                   <p className="text-lg font-playfair-display font-bold text-black">
-                    {item.price}
+                    ₹{item.price}
                   </p>
                 </div>
                 {/* Remove from wishlist button */}

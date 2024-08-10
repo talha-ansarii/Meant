@@ -5,17 +5,23 @@ import Image from "next/image";
 import { FaStar } from "react-icons/fa";
 import Accordion from "./Accordian";
 import ProductCard from "./ProductCard";
-import { useCart } from "/context/CartContext.js";
-import { useWishlist } from "/context/WishlistContext.js";
+import ReviewForm from "./ReviewForms";
+import ReviewCard from "./ReviewCard";
 import { FaRegHeart, FaHeart } from "react-icons/fa";
+import productShades from "@/constants/productShades";
 import Footer from "./Footer";
 import Header from "./Header";
+import Modal from "./Modal";
 import { addProductToCart } from "@/utils/cartUtils";
-import { addProductToWishlist, getWishlistProducts, removeProductFromWishlist } from "@/utils/wishlistUtils";
+import {
+  addProductToWishlist,
+  getWishlistProducts,
+  removeProductFromWishlist,
+} from "@/utils/wishlistUtils";
 import VideoLoader from "./VideoLoader";
+import { useUser } from "@clerk/nextjs";
 
 const shades = ["#A32C42", "#663024", "#AD5B55", "#995A60"];
-const shadeNames = ["Emily", "Grace", "Diva", "Veronica"];
 
 const SingleProductPage = ({ productId }) => {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -24,20 +30,19 @@ const SingleProductPage = ({ productId }) => {
   const [relatedProducts, setRelatedProducts] = useState([]);
   const [relatedQuantities, setRelatedQuantities] = useState({});
   const [hoveredShade, setHoveredShade] = useState(null);
-  const { addToWishlist, removeFromWishlist, wishlist } = useWishlist();
-  const { addToCart, cart } = useCart();
   const [wishlistFilled, setWishlistFilled] = useState(false);
-  const [inCart, setInCart] = useState(false);
   const [initialProducts, setInitialProducts] = useState([]);
   const [product, setProduct] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [isClient, setIsClient] = useState(false)
- 
-useEffect(() => {
-  setIsClient(true)
-}, [])
+  const [isClient, setIsClient] = useState(false);
+  const [showReviewForm, setShowReviewForm] = useState(false);
+  const [reviews, setReviews] = useState([]);
+  const { isSignedIn } = useUser();
 
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   useEffect(() => {
     async function fetchProduct() {
@@ -45,11 +50,10 @@ useEffect(() => {
         setLoading(true);
         const response = await fetch(`/api/get-product/${productId}`);
         if (!response.ok) {
-          throw new Error('Failed to fetch product');
+          throw new Error("Failed to fetch product");
         }
         const data = await response.json();
         setLoading(false);
-        console.log(data)
         setProduct(data);
         setSelectedImage(data.images[0].src);
       } catch (error) {
@@ -57,7 +61,7 @@ useEffect(() => {
         setLoading(false);
       }
     }
-  
+
     fetchProduct();
   }, [productId]);
 
@@ -67,7 +71,8 @@ useEffect(() => {
       try {
         const response = await fetch("/api/get-products");
         const data = await response.json();
-        // console.log("Fetched products:", data);
+
+        console.log(data);
 
         setInitialProducts(data);
       } catch (error) {
@@ -79,24 +84,42 @@ useEffect(() => {
   }, []);
 
   useEffect(() => {
-    // Fetch related products based on category
-    const fetchRelatedProducts = () => {
-      const fetchedRelatedProducts = initialProducts
-        .filter((p) => p.category === product.category)
-        .sort(() => 0.5 - Math.random());
-      setRelatedProducts(fetchedRelatedProducts);
-    };
+    if (product && product.categories && product.categories.length > 0) {
+      const fetchRelatedProducts = () => {
+        const productCategoryName = product.categories[0].name;
 
-    if (product) {
+        // Filter products that belong to the same category
+        const fetchedRelatedProducts = initialProducts
+          .filter((p) =>
+            p.categories.some((cat) => cat.name === productCategoryName)
+          )
+          .sort(() => 0.5 - Math.random());
+
+        setRelatedProducts(fetchedRelatedProducts);
+      };
+
       fetchRelatedProducts();
     }
-  }, [product, productId]);
-
-
+  }, [product, initialProducts]);
 
   useEffect(() => {
-    setInCart(cart.some((item) => item.id === product.id));
-  }, [cart, product]);
+    const fetchReviews = async () => {
+      try {
+        const response = await fetch(`/api/get-reviews/${productId}`);
+        if (!response.ok) {
+          throw new Error("Failed to fetch reviews");
+        }
+        const data = await response.json();
+        console.log(data);
+
+        setReviews(data.reviews);
+      } catch (error) {
+        console.error("Error fetching reviews:", error);
+      }
+    };
+
+    fetchReviews();
+  }, [productId]);
 
   const handleQuantityChange = (delta) => {
     setQuantity((prevQuantity) => {
@@ -116,56 +139,43 @@ useEffect(() => {
   };
 
   const handleCartClick = async (e) => {
-    console.log("clicked")
+    console.log("clicked");
+
+    if (!isSignedIn) {
+      return router.push("/sign-in");
+    }
+
     try {
-      const data = await addProductToCart(product.id, quantity);
+      const data = await addProductToCart(product?.id, quantity);
       setQuantity(1);
-      console.log('Product added to cart:', data);
+      console.log("Product added to cart:", data);
     } catch (error) {
-      console.error('Error adding product to cart:', error);
+      console.error("Error adding product to cart:", error);
       return;
     }
-
-
-    const cartItem = cart.find((item) => item.id === product.id);
-
-    if (cartItem) {
-      const newQuantity = cartItem.quantity + quantity;
-      addToCart(product, newQuantity);
-    } else {
-      addToCart(product, quantity);
-    }
-
-    setInCart(!inCart);
   };
 
   const handleWishlistClick = async (e) => {
     e.stopPropagation();
-    // console.log(wishlistFilled)
-    if (wishlistFilled) {
-    
-      removeProductFromWishlist(parseInt(productId));
-      removeFromWishlist(productId);
-
-    } else {
-      
-      const updatedWishlist = await addProductToWishlist(parseInt(productId)); 
-      console.log(updatedWishlist)
-      addToWishlist(productId);
+    try {
+      if (wishlistFilled) {
+        await removeProductFromWishlist(parseInt(productId));
+      } else {
+        await addProductToWishlist(parseInt(productId));
+      }
+      // Re-fetch wishlist state after update
+      const updatedWishlistProducts = await getWishlistProducts();
+      const contains = updatedWishlistProducts?.some(
+        (prod) => prod.productId == productId
+      );
+      setWishlistFilled(contains);
+    } catch (error) {
+      console.error("Error updating wishlist:", error);
     }
   };
 
-  const renderStars = (rating) => {
-    const stars = [];
-    for (let i = 0; i < 5; i++) {
-      stars.push(
-        <FaStar
-          key={i}
-          className={`h-4 w-4 ${i < rating ? "text-white" : "text-gray-400"}`}
-        />
-      );
-    }
-    return stars;
+  const handleReviewFormClose = () => {
+    setShowReviewForm(false);
   };
 
   const handleToggleAccordion = (index) => {
@@ -176,6 +186,11 @@ useEffect(() => {
     setSelectedImage(imgSrc);
   };
 
+  const productStyle = productShades[productId] || {
+    shades: [],
+    shadeNames: [],
+  };
+
   const handleShadeClick = (imgSrc) => {
     setSelectedImage(imgSrc);
   };
@@ -183,34 +198,48 @@ useEffect(() => {
   useEffect(() => {
     const fetchWishlistProducts = async () => {
       const wishListproducts = await getWishlistProducts();
-      console.log(wishListproducts);
-      const contains = wishListproducts?.some(prod => 
-      {
-        console.log(prod?.productId, productId)
-        return prod.productId == productId
-      }
-      );
-      console.log(contains)
+      const contains = wishListproducts?.some((prod) => {
+        return prod.productId == productId;
+      });
       setWishlistFilled(contains);
     };
 
     fetchWishlistProducts();
-  }, [wishlist]);
+  }, [productId]);
 
+  const calculateAverageRating = () => {
+    if (reviews.length === 0) return 0;
 
+    const totalRating = reviews.reduce(
+      (acc, review) => acc + review.starRating,
+      0
+    );
+    return (totalRating / reviews.length).toFixed(1);
+  };
 
-  if(loading) return <>{isClient && <VideoLoader/> }</>
+  const averageRating = calculateAverageRating();
+
+  if (loading)
+    return (
+      <>
+        {isClient && (
+          <div className="w-[100vw] h-[100vh] ">
+            <VideoLoader />
+          </div>
+        )}
+      </>
+    );
 
   return (
     <div className="bg-black text-white min-h-screen">
       {/* Header Placeholder */}
       <Header />
       <div className="p-4 max-w-7xl mx-auto pt-[130px] ">
-        <div className="flex space-between">
+        <div className="flex md:flex-row lg:flex-row flex-col space-between">
           {/* Product Images and Main Image */}
-          <div className="flex space-x-4 w-3/4 ">
-            <div className=" flex w-full h-[500px]">
-              <div className="w-20 space-y-2 mr-[1rem] ">
+          <div className="flex lg:space-x-4 w-[90%] px-2 md:px-0 lg:px-0 lg:w-3/4 md:w-3/4 ">
+            <div className=" flex w-full md:h-[500px] lg:h-[500px]">
+              <div className="lg:w-20 w-[52px]  space-y-2 lg:mr-[1rem] ">
                 {[
                   product.images[0].src,
                   ...shades.map(
@@ -233,29 +262,29 @@ useEffect(() => {
                           alt={`Product image ${index + 1}`}
                           width={80}
                           height={80}
-                          className="w-[80px]  h-[80px] rounded-md"
+                          className="lg:w-[80px] lg:h-[80px] w-[52px] h-[53px] rounded-md"
                         />
                       </div>
                     )
                 )}
               </div>
 
-              <div className="w-2/3 ">
+              <div className="lg:w-2/3 ">
                 <Image
                   src={selectedImage}
                   alt={product.name}
-                  width={400}
-                  height={400}
-                  className="w-[400px] h-[400px] rounded-xl"
+                  width={440}
+                  height={440}
+                  className="lg:w-[440px] lg:h-[440px] w-[296px] h-[296px] rounded-xl ml-8"
                 />
               </div>
             </div>
           </div>
 
           {/* Product Details */}
-          <div className="w-2/3 space-y-4 ">
+          <div className="md:w-2/3 mt-8 lg:mt-0 md:mt-0 lg:w-2/3 w-full lg:space-y-4 md:space-y-4 ">
             <div className="flex items-center justify-between">
-              <h1 className="font-size-heading font-bold font-playfair-display">
+              <h1 className="lg:font-size-heading font-bold text-[28px] font-playfair-display">
                 {product.name}
               </h1>
               {wishlistFilled ? (
@@ -270,47 +299,47 @@ useEffect(() => {
                 />
               )}
             </div>
-            <p className="text-sm font-normal font-merriweather text-white mt-2">
-              {product.details}
+            <p className="lg:text-sm text-[10px] font-normal font-merriweather text-white mt-2">
+              {product.meta_data.find((meta) => meta.key === "details")
+                ?.value || "No details available."}
             </p>
-            <p className="text-xl font-playfair-display font-bold mt-4">
-              {product.price}
+            <p className="lg:text-xl text-[17px] font-playfair-display font-bold mt-4">
+              ₹{product.price}
             </p>
-            <div className="flex items-center mt-2">
-              {renderStars(product.rating)}
-              <span className="text-white font-poppins font-medium ml-2">
-                ({product.reviews} reviews)
-              </span>
-            </div>
+
             {/* Color Palette */}
-            <h3 className="text-lg font-bold font-merriweather mt-4">Shades</h3>
-            <div className="grid grid-cols-2 w-[48px] my-2">
+            <h3 className="lg:text-lg text-[10px] font-bold font-merriweather mt-4">
+              Shades
+            </h3>
+            <div className="grid grid-cols-2 w-[31px] lg:w-[48px] my-2">
               {" "}
-              {shades.map((shade, index) => (
+              {productStyle.shades.map((shade, index) => (
                 <div
                   key={index}
                   className="flex items-center space-x-2 relative"
                 >
                   {" "}
                   <div
-                    className="w-6 h-6"
+                    className="lg:w-6 lg:h-6 w-[16px] h-[16px] "
                     style={{ backgroundColor: shade }}
                     onMouseEnter={() =>
-                      setHoveredShade(shadeNames[index])
+                      setHoveredShade(productStyle.shadeNames[index])
                     }
                     onMouseLeave={() => setHoveredShade(null)}
-                    onClick={() => handleShadeClick(product.images[index].src)}
+                    onClick={() =>
+                      handleShadeClick(product.images[index + 1].src)
+                    }
                   />{" "}
                   <span
                     className={`text-white text-xs font-poppins font-medium absolute transition-opacity duration-300 ${
-                      hoveredShade === shadeNames[index]
+                      hoveredShade === productStyle.shadeNames[index]
                         ? "opacity-100"
                         : "opacity-0"
                     }`}
                     style={{ left: index % 2 === 0 ? "-3rem" : "1.5rem" }}
                   >
                     {" "}
-                    {shadeNames[index]}{" "}
+                    {productStyle.shadeNames[index]}{" "}
                   </span>{" "}
                 </div>
               ))}{" "}
@@ -352,7 +381,8 @@ useEffect(() => {
               fontWeight="font-bold"
             >
               <p className="text-sm font-medium font-poppins text-gray-400">
-                {product.description}
+                {product.meta_data.find((meta) => meta.key === "description")
+                  ?.value || "No description available."}
               </p>
             </Accordion>
             <Accordion
@@ -363,7 +393,8 @@ useEffect(() => {
               fontWeight="font-bold"
             >
               <p className="text-sm font-medium font-poppins text-gray-400">
-                {product.ingredients}
+                {product.meta_data.find((meta) => meta.key === "ingredients")
+                  ?.value || "No ingredients available."}
               </p>
             </Accordion>
             <Accordion
@@ -375,7 +406,8 @@ useEffect(() => {
               fontWeight="font-bold"
             >
               <p className="text-sm font-medium font-poppins text-gray-400">
-                {product.howToUse}
+                {product.meta_data.find((meta) => meta.key === "howtoapply")
+                  ?.value || "No how to apply available."}
               </p>
             </Accordion>
 
@@ -438,7 +470,7 @@ useEffect(() => {
 
         {/* You May Also Like Section */}
         <section className="mt-12">
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-6">
             {relatedProducts.map((p) => (
               <ProductCard
                 key={p.id}
@@ -457,11 +489,30 @@ useEffect(() => {
           </h2>
         </div>
 
+        {/* Render Reviews */}
+        <div className="mt-8">
+          <h2 className="font-bold text-2xl">Customer Reviews</h2>
+          <div className="mt-8 mb-8 flex flex-row flex-wrap gap-4">
+            {reviews.length > 0 ? (
+              reviews.map((review) => (
+                <ReviewCard
+                  key={review._id}
+                  username={review.name}
+                  comment={review.comment}
+                  starRating={review.starRating}
+                />
+              ))
+            ) : (
+              <p className="text-gray-400">No reviews yet.</p>
+            )}
+          </div>
+        </div>
+
         {/* Reviews Section */}
-        <div className="relative flex items-center justify-center space-x-12 mb-8">
+        <div className="relative flex md:flow-row lg:flex-row md:gap-0 lg:gap-0 gap-8 flex-col items-center justify-center space-x-12 mb-8">
           <div className="flex items-center space-x-12">
             <p className="text-white font-medium font-size-heading font-playfair-display">
-              0/5
+              {averageRating} / 5
             </p>
             <div className="flex flex-col items-center">
               <span className="text-white text-lg font-bold font-merriweather">
@@ -469,16 +520,24 @@ useEffect(() => {
               </span>
             </div>
           </div>
-          <div className="border-l border-white h-20 mx-12"></div>
+          <div className="border-l hidden lg:block md:block border-white h-20 mx-12"></div>
           <div className="flex flex-col">
             <p className="text-white font-merriweather text-lg font-bold mb-4">
               Write Us a Review !
             </p>
-            <button className="bg-black text-[#D9D9D9] border px-6 py-2 rounded font-merriweather font-bold">
+            <button
+              onClick={() => setShowReviewForm(true)}
+              className="bg-black text-[#D9D9D9] border px-6 py-2 rounded font-merriweather font-bold hover:bg-gray-600"
+            >
               Write Review
             </button>
           </div>
         </div>
+
+        {/* Review Form Popup */}
+        <Modal isOpen={showReviewForm} onClose={handleReviewFormClose}>
+          <ReviewForm productId={productId} onClose={handleReviewFormClose} />
+        </Modal>
 
         {/* Footer */}
         <Footer />

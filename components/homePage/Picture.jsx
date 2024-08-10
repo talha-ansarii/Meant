@@ -50,40 +50,41 @@ const Picture = () => {
     <div className="w-full bg-black overflow-hidden">
       <div className="w-[75%] m-auto py-[50px] bg-black">
         <AnimatePresence>
+        
           <motion.div
             initial="hidden"
             animate={inView ? "visible" : "hidden"}
             variants={containerVariantsLeft}
             ref={ref}
-            className="flex justify-between mb-12"
+            className="lg:flex lg:justify-between grid grid-cols-2 gap-2  mb-12 md:grid md:grid-cols-2 md:gap-4"
           >
             <Image
               width={261}
               height={209}
               src={"/HomePage/pictures/1.jpeg"}
               alt="example"
-              className="w-[261px] h-[209px] object-cover object-top rounded-[15px] border mr-4"
+              className="w-[261px] h-[209px] object-cover object-top rounded-[15px] border lg:mr-4"
             />
             <Image
               width={261}
               height={209}
               src={"/HomePage/pictures/2.jpeg"}
               alt="example"
-              className="w-[261px] h-[209px] object-cover object-top  rounded-[15px] border mx-4"
+              className="w-[261px] h-[209px] object-cover object-top  rounded-[15px] border lg:mx-4"
             />
             <Image
               width={261}
               height={209}
               src={"/HomePage/pictures/3.jpeg"}
               alt="example"
-              className="w-[261px] h-[209px] object-cover object-top  rounded-[15px] border mx-4"
+              className="w-[261px] h-[209px] object-cover object-top  rounded-[15px] border lg:mx-4"
             />
             <Image
               width={261}
               height={209}
               src={"/HomePage/pictures/4.jpeg"}
               alt="example"
-              className="w-[261px] h-[209px] object-cover object-top  rounded-[15px] border ml-4"
+              className="w-[261px] h-[209px] object-cover object-top  rounded-[15px] border lg:ml-4"
             />
           </motion.div>
           <motion.div
@@ -91,35 +92,35 @@ const Picture = () => {
             animate={inView ? "visible" : "hidden"}
             variants={containerVariantsRight}
             ref={ref}
-            className="flex justify-between mt-12"
+            className="lg:flex lg:justify-between grid grid-cols-2 gap-2  mt-12 md:grid md:grid-cols-2 md:gap-4"
           >
             <Image
               width={261}
               height={209}
               src={"/HomePage/pictures/5.jpeg"}
               alt="example"
-              className="w-[261px] h-[209px] object-cover object-top  rounded-[15px] border mr-4"
+              className="w-[261px] h-[209px] object-cover object-top  rounded-[15px] border lg:mr-4"
             />
             <Image
               width={261}
               height={209}
               src={"/HomePage/pictures/6.jpeg"}
               alt="example"
-              className="w-[261px] h-[209px] object-cover object-top  rounded-[15px] border mx-4"
+              className="w-[261px] h-[209px] object-cover object-top  rounded-[15px] border lg:mx-4"
             />
             <Image
               width={261}
               height={209}
               src={"/HomePage/pictures/7.jpeg"}
               alt="example"
-              className="w-[261px] h-[209px] object-cover object-top  rounded-[15px] border mx-4"
+              className="w-[261px] h-[209px] object-cover object-top  rounded-[15px] border lg:mx-4"
             />
             <Image
               width={261}
               height={209}
               src={"/HomePage/pictures/8.jpeg"}
               alt="example"
-              className="w-[261px] h-[209px] object-cover object-top  rounded-[15px] border ml-4"
+              className="w-[261px] h-[209px] object-cover object-top  rounded-[15px] border lg:ml-4"
             />
           </motion.div>
         </AnimatePresence>

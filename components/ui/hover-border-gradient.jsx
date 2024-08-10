@@ -8,7 +8,7 @@ export function HoverBorderGradient({
   children,
   containerClassName,
   className,
-  as: Tag = "button",
+  as: Tag = "div",
   duration = 1,
   clockwise = true,
   ...props
@@ -26,11 +26,15 @@ export function HoverBorderGradient({
   };
 
   const movingMap = {
-    TOP: "radial-gradient(20.7% 50% at 50% 0%, hsl(240, 100%, 50%) 0%, hsl(330, 100%, 50%) 100%)",
-    LEFT: "radial-gradient(16.6% 43.1% at 0% 50%, hsl(240, 100%, 50%) 0%, hsl(330, 100%, 50%) 100%)",
-    BOTTOM: "radial-gradient(20.7% 50% at 50% 100%, hsl(240, 100%, 50%) 0%, hsl(330, 100%, 50%) 100%)",
-    RIGHT: "radial-gradient(16.2% 41.2% at 100% 50%, hsl(240, 100%, 50%) 0%, hsl(330, 100%, 50%) 100%)",
+    TOP: "radial-gradient(20.7% 50% at 50% 0%, hsl(220, 100%, 50%) 0%, hsl(330, 100%, 60%) 50%, hsl(240, 100%, 70%) 100%)",
+    LEFT: "radial-gradient(16.6% 43.1% at 0% 50%, hsl(220, 100%, 50%) 0%, hsl(330, 100%, 60%) 50%, hsl(240, 100%, 70%) 100%)",
+    BOTTOM: "radial-gradient(20.7% 50% at 50% 100%, hsl(220, 100%, 50%) 0%, hsl(330, 100%, 60%) 50%, hsl(240, 100%, 70%) 100%)",
+    RIGHT: "radial-gradient(16.2% 41.2% at 100% 50%, hsl(220, 100%, 50%) 0%, hsl(330, 100%, 60%) 50%, hsl(240, 100%, 70%) 100%)",
   };
+  
+  
+  
+  
   
 
   const highlight =

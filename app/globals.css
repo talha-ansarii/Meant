@@ -103,15 +103,31 @@ body {
   align-items: center;
   height: 100vh;
 }
+
+canvas {
+  pointer-events: none;
+}
+
+.limited{
+  color: white; /* Text color */
+  text-shadow:
+    -2px -2px 0 #D76D8E,  
+     2px -2px 0 #D76D8E,
+    -2px  2px 0 #D76D8E,
+     2px  2px 0 #D76D8E; /* Shadow color and spread */
+
+}
+
 .video-loader {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.8);
+  height: 100%;
+  /* background: rgb(0, 0, 0); */
 }
+
 video {
-  max-width: 20%;
+  max-width: 5%;
 }
 
 .main {
@@ -122,7 +138,6 @@ video {
   justify-content: center;
   align-items: center;
 }
-
 
 .footer {
   width: 100%;
