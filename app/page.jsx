@@ -167,7 +167,10 @@ export default function Home() {
           {/* <div className="w-full bg-black h-[900px]"></div> */}
           
           <Night show={show} setShow={setShow} products={products} />
+          <div>
+
           <Picture />
+          </div>
           <Icons />
           <Banner />
           <Footer />
