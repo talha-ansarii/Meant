@@ -100,8 +100,22 @@ const ContactUs = () => {
               CONTACT US
             </h1>
             <p className="text-[15px] font-[400] text-[white]/[80%]">
-              Have a question? Check out our FAQ page as your question may be
-              answered there. Still need help? Contact us.
+              Have a question? Contact us.
+            </p>
+            <p className="text-[15px] font-[400] text-[white]/[80%] mt-4">
+              Email:{" "}
+              <a
+                href="mailto:meantconnect@gmail.com"
+                className="text-white"
+              >
+                meantconnect@gmail.com
+              </a>
+            </p>
+            <p className="text-[15px] font-[400] text-[white]/[80%]">
+              Phone no:{" "}
+              <a href="tel:+919104604108" className="text-white">
+                +91 9104604108
+              </a>
             </p>
           </div>
           <form

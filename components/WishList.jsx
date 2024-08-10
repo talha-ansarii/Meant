@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
+import { Toaster, toast } from "sonner";
 import Link from "next/link";
 import Header from "./Header";
 import Footer from "./Footer";
@@ -30,7 +31,8 @@ const WishList = () => {
       return router.push("/sign-in");
     }
     try {
-      const data = await addProductToCart(item.id, 1);
+      await addProductToCart(item.id, 1);
+      toast.success("Added to cart");
       removeFromWishlist(item.id);
       console.log("Product added to cart:", data);
     } catch (error) {
@@ -67,18 +69,22 @@ const WishList = () => {
 
   const removeFromWishlist = async (productId) => {
     removeProductFromWishlist(productId);
+    toast.error("Removed from wishlist");
     const updatedWishlist = wishlistArray.filter(
       (item) => item.id !== productId
     );
     setWishlistArray(updatedWishlist);
   };
 
-  if (loading) return <>{isClient && <div className="w-[100vw] h-[100vh] ">
-    Loading...
-     </div>}</>;
+  if (loading)
+    return (
+      <>{isClient && <div className="w-[100vw] h-[100vh] ">Loading...</div>}</>
+    );
 
   return (
     <div className="pb-4">
+      <Toaster position="top-right" richColors />
+
       <Header />
       <h1 className="text-[40px] font-bold font-playfair-display mb-6 text-center pt-[8.5rem]">
         WISHLIST

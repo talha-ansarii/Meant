@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { FaStar } from "react-icons/fa";
+import { Toaster, toast } from "sonner";
 import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { addProductToCart } from "../utils/cartUtils";
@@ -55,10 +55,11 @@ const ProductCard = ({
     e.stopPropagation();
 
     if (wishlistFilled) {
-      removeProductFromWishlist(product.id);
+      await removeProductFromWishlist(product.id);
+      toast.error("Removed from wishlist");
     } else {
-      const updatedWishlist = await addProductToWishlist(product.id);
-      console.log(updatedWishlist);
+      await addProductToWishlist(product.id);
+      toast.success("Added to wishlist");
     }
     setWishlistFilled(!wishlistFilled);
   };
@@ -70,9 +71,9 @@ const ProductCard = ({
       return router.push("/sign-in");
     }
     try {
-      const data = await addProductToCart(product.id, quantity);
+      await addProductToCart(product.id, quantity);
+      toast.success("Added to cart");
       setQuantities({ ...quantities, [product.id]: 1 });
-      console.log("Product added to cart:", data);
     } catch (error) {
       console.error("Error adding product to cart:", error);
       return;
@@ -81,6 +82,7 @@ const ProductCard = ({
 
   return (
     <div className="relative border rounded-lg overflow-hidden shadow-lg bg-white">
+      <Toaster position="top-right" richColors />
       <div className="relative h-[15rem]">
         {/* Link to the single product page */}
         <Link href={`/product/${product.id}`}>

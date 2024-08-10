@@ -8,10 +8,7 @@ import HeroSection from "@/components/homePage/HeroSection";
 import Icons from "@/components/homePage/Icons";
 import Night from "@/components/homePage/Night";
 import Picture from "@/components/homePage/Picture";
-import VideoLoader from "@/components/VideoLoader";
 import { Suspense, useEffect, useState } from "react";
-import Animation from "./test/page";
-import { HoverBorderGradient } from "@/components/ui/hover-border-gradient";
 import { useUser } from "@clerk/nextjs";
 import {
   addProductToWishlist,
@@ -20,7 +17,6 @@ import {
 } from "@/utils/wishlistUtils";
 import { addProductToCart } from "@/utils/cartUtils";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 import { FaArrowDown } from "react-icons/fa";
 
 export default function Home() {
@@ -167,11 +163,7 @@ export default function Home() {
 
   return (
     <div className="relative">
-      <Suspense
-        fallback={
-          <div>Loading...</div>
-        }
-      >
+      <Suspense fallback={<div>Loading...</div>}>
         <div className="w-full bg-black">
           <Header />
         </div>

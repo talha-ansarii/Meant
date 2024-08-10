@@ -1,13 +1,9 @@
 "use client";
 
-import { Canvas } from "@react-three/fiber";
 import Image from "next/image";
-import React, { Suspense, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { Toaster, toast } from "sonner";
 import { Meteors } from "../ui/meteors";
-import NightModelComponent from "./NightModelComponents";
-import { useGSAP } from "@gsap/react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/all";
 import { HoverBorderGradient } from "../ui/hover-border-gradient";
 import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
@@ -17,18 +13,13 @@ import {
   getWishlistProducts,
   removeProductFromWishlist,
 } from "@/utils/wishlistUtils";
-import { useMediaQuery } from "react-responsive";
 import Link from "next/link";
 
 const Night = ({ products, setShow, show }) => {
-  const [mouseIn, setMouseIn] = useState(false);
   const [isInWishlist, setIsInWishlist] = useState(false);
   const [isInCart, setIsInCart] = useState(false);
   const { isSignedIn } = useUser();
   const router = useRouter();
-  const isMobile = useMediaQuery({ maxWidth: 480 });
-
-  const isTablet = useMediaQuery({ minWidth: 481, maxWidth: 1024 });
 
   const canvasref = useRef(null);
   const ref = useRef(null);
@@ -42,7 +33,8 @@ const Night = ({ products, setShow, show }) => {
     }
     if (product) {
       try {
-        const data = await addProductToCart(product.id, 1);
+        await addProductToCart(product.id, 1);
+        toast.success("Added to cart");
         console.log("Product added to cart:", data);
       } catch (error) {
         console.error("Error adding product to cart:", error);
@@ -71,8 +63,10 @@ const Night = ({ products, setShow, show }) => {
     if (product) {
       if (isInWishlist) {
         removeProductFromWishlist(product.id);
+        toast.error("Removed from wishlist");
       } else {
         addProductToWishlist(product.id);
+        toast.success("Added to wishlist");
       }
       setIsInWishlist(!isInWishlist);
     }
@@ -81,11 +75,12 @@ const Night = ({ products, setShow, show }) => {
   return (
     <div className="relative">
       <div className=" h-[700px]  overflow-x-hidden relative lg:h-[700px] bg-black over flex flex-col pt-[0px] md:flex-row lg:flex-row gap-6 w-[90%] m-auto ">
-      <div className="absolute">
-    <Meteors  number={20} />
+        <Toaster position="top-right" richColors />
 
-      </div>
-      
+        <div className="absolute">
+          <Meteors number={20} />
+        </div>
+
         <div className="pt-[100px] w-full md:w-[50%] lg:w-[50%]  md:p-0 lg:p-0">
           <Image
             src="/assets/images/night.png"
