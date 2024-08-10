@@ -7,7 +7,7 @@ import { FaThreads } from "react-icons/fa6";
 const Footer = () => {
   return (
     <div className="w-full bg-black mt-16">
-      <div className="md:w-[80%] w-full mx-4 md:mx-auto m-auto ">
+      <div className="md:w-[80%] w-full px-4 md:mx-auto m-auto ">
         <Link
           href={"/"}
           className=" my-8 lg:hidden md:hidden w-full flex justify-center items-center"

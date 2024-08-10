@@ -81,15 +81,14 @@ const ProductCard = ({
 
   return (
     <div className="relative border rounded-lg overflow-hidden shadow-lg bg-white">
-      <div className="relative">
+      <div className="relative h-[15rem]">
         {/* Link to the single product page */}
         <Link href={`/product/${product.id}`}>
           <Image
             src={product.images[0]?.src}
             alt={product.name}
-            width={400}
-            height={350}
-            className="w-full h-auto"
+            layout="fill"
+            className="object-cover"
           />
         </Link>
         {/* Wishlist heart icon */}
