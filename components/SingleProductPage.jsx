@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
-import { FaStar } from "react-icons/fa";
+import { Toaster, toast } from "sonner";
 import Accordion from "./Accordian";
 import ProductCard from "./ProductCard";
 import ReviewForm from "./ReviewForms";
@@ -146,7 +146,8 @@ const SingleProductPage = ({ productId }) => {
     }
 
     try {
-      const data = await addProductToCart(product?.id, quantity);
+      await addProductToCart(product?.id, quantity);
+      toast.success("Added to cart");
       setQuantity(1);
       console.log("Product added to cart:", data);
     } catch (error) {
@@ -160,8 +161,10 @@ const SingleProductPage = ({ productId }) => {
     try {
       if (wishlistFilled) {
         await removeProductFromWishlist(parseInt(productId));
+        toast.error("Removed from wishlist");
       } else {
         await addProductToWishlist(parseInt(productId));
+        toast.success("Added to wishlist");
       }
       // Re-fetch wishlist state after update
       const updatedWishlistProducts = await getWishlistProducts();
@@ -232,6 +235,7 @@ const SingleProductPage = ({ productId }) => {
 
   return (
     <div className="bg-black text-white min-h-screen">
+      <Toaster position="top-right" richColors />
       {/* Header Placeholder */}
       <Header />
       <div className="p-4 max-w-7xl mx-auto pt-[130px] ">
@@ -491,7 +495,9 @@ const SingleProductPage = ({ productId }) => {
 
         {/* Render Reviews */}
         <div className="mt-8">
-          <h2 className="font-medium text-2xl font-playfair-display">Customer Reviews</h2>
+          <h2 className="font-medium text-2xl font-playfair-display">
+            Customer Reviews
+          </h2>
           <div className="mt-8 mb-8 flex flex-row flex-wrap gap-4">
             {reviews.length > 0 ? (
               reviews.map((review) => (

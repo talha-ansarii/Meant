@@ -1,12 +1,8 @@
 "use client";
 
-import { Canvas } from "@react-three/fiber";
 import Image from "next/image";
-import React, { Suspense, useEffect, useRef, useState } from "react";
-import DayModelComponent from "./DayModelComponent";
-import { useGSAP } from "@gsap/react";
-import gsap from "gsap";
-import { ScrollTrigger, ScrollToPlugin } from "gsap/all";
+import { Toaster, toast } from "sonner";
+import React, { useEffect, useRef, useState } from "react";
 import { HoverBorderGradient } from "../ui/hover-border-gradient";
 import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
@@ -16,18 +12,12 @@ import {
   getWishlistProducts,
   removeProductFromWishlist,
 } from "@/utils/wishlistUtils";
-import { useMediaQuery } from "react-responsive";
 import Link from "next/link";
 
 const Day = ({ products }) => {
-  const [mouseIn, setMouseIn] = useState(false);
-  const isMobile = useMediaQuery({ maxWidth: 480 });
-
-  const isTablet = useMediaQuery({ minWidth: 481, maxWidth: 1024 });
   const [isInWishlist1, setIsInWishlist1] = useState(false);
   const [isInCart1, setIsInCart1] = useState(false);
   const { isSignedIn } = useUser();
- 
 
   const router = useRouter();
 
@@ -37,15 +27,14 @@ const Day = ({ products }) => {
   const productName1 = "Day Dazzle Lipstick";
   const product1 = products.find((p) => p.name === productName1);
 
-  
-
   const handleAddToCart1 = async () => {
     if (!isSignedIn) {
       return router.push("/sign-in");
     }
     if (product1) {
       try {
-        const data = await addProductToCart(product1.id, 1);
+        await addProductToCart(product1.id, 1);
+        toast.success("Added to cart");
         console.log("Product added to cart:", data);
       } catch (error) {
         console.error("Error adding product to cart:", error);
@@ -58,8 +47,10 @@ const Day = ({ products }) => {
     if (product1) {
       if (isInWishlist1) {
         removeProductFromWishlist(product1.id);
+        toast.error("Removed from wishlist");
       } else {
         addProductToWishlist(product1.id);
+        toast.success("Added to wishlist");
       }
       setIsInWishlist1(!isInWishlist1);
     }
@@ -80,14 +71,6 @@ const Day = ({ products }) => {
       fetchWishlistProducts();
     }
   }, [isInWishlist1]);
-
-  
-
-
-
-
-
-
 
   // gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
@@ -124,6 +107,7 @@ const Day = ({ products }) => {
   return (
     <div>
       <div className="w-full h-[110px] gradient1"></div>
+      <Toaster position="top-right" richColors />
       <div className="w-full bg-white lg:h-[700px] md:h-[500px] relative overflow-hidden flex md:flex-row lg:flex-row flex-col  justify-center items-center ">
         <div
           ref={canvasref}
@@ -131,10 +115,12 @@ const Day = ({ products }) => {
         >
           <div className="w-[90%] h-full mx-auto flex justify-center items-center pt-[60px]  md:w-[50%] lg:w-[50%] ">
             {/* <div className="w-[1257px] absolute z-0 top-[-300px] left-[-200px] h-[1180px] radial-gradient"></div> */}
-           <Image 
-           width={556}
-           height={556}
-           src={"/assets/images/day.png"}/>
+            <Image
+              width={556}
+              alt="day"
+              height={556}
+              src={"/assets/images/day.png"}
+            />
           </div>
           <div className="w-[90%] mx-auto  md:w-[50%] lg:w-[50%] z-20 flex flex-col lg:gap-10 lg:px-16 lg:h-[850px] md:h-[850px] md:pt-[170px] lg:pt-[170px]">
             <div className="">
@@ -177,13 +163,11 @@ const Day = ({ products }) => {
                 as="button"
                 className=" bg-black text-white w-[100px] h-[30px] md:w-[147px] lg:w-[147px] md:h-[45px] lg:h-[45px] flex items-center justify-center font-poppins space-x-2 text-[10px] md:text-[14px] lg:text-[14px] font-[500] leading-[18px]"
               >
-              <Link href={"/product/58"}>
-              <span>ORDER NOW</span>
-              </Link>
-                
+                <Link href={"/product/58"}>
+                  <span>ORDER NOW</span>
+                </Link>
               </HoverBorderGradient>
             </div>
-          
           </div>
         </div>
       </div>

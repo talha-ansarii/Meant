@@ -1,4 +1,5 @@
 "use client";
+
 import { motion, AnimatePresence, easeIn } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
@@ -84,7 +85,6 @@ const Header = () => {
     },
   };
 
-
   useEffect(() => {
     if (user) {
       setIsLogin(true);
@@ -112,7 +112,9 @@ const Header = () => {
   return (
     <div
       className={`w-full m-auto top-[30px] duration-200 left-[50%] translate-x-[-50%] px-[20px] absolute lg:fixed md:fixed z-[300] transition-transform ${
-        scrollDirection === "down" ? " translate-y-0 lg:-translate-y-[80px] md:-translate-y-[80px] " : " translate-y-0 "
+        scrollDirection === "down"
+          ? " translate-y-0 lg:-translate-y-[80px] md:-translate-y-[80px] "
+          : " translate-y-0 "
       }`}
     >
       <div className="lg:w-[892px] md:w-[741px] hidden z-50  px-[20px] m-auto h-[43px] rounded-[116px]  border md:flex lg:flex items-center justify-between bg-black  ">
@@ -253,19 +255,17 @@ const Header = () => {
               <div className="flex items-center gap-3">
                 <Link href="/wishlist">
                   <FaRegHeart className="w-[23px] cursor-pointer h-[19px] text-[#D76D8E]" />
-                  
                 </Link>
                 <div
                   className="relative flex  items-center"
                   onClick={() => setIsCartOpen(true)}
                 >
                   <FaShoppingCart className="w-[20px] cursor-pointer h-[22px] text-white" />
-                 
                 </div>
                 <FaUser
-            onClick={() => setProfileOpen(!profileOpen)}
-            className="w-[21px] cursor-pointer h-[22px] text-white"
-          />
+                  onClick={() => setProfileOpen(!profileOpen)}
+                  className="w-[21px] cursor-pointer h-[22px] text-white"
+                />
               </div>
             </div>
 
@@ -273,7 +273,7 @@ const Header = () => {
               <AnimatePresence>
                 {isOpen && (
                   <motion.div
-                    className="fixed overflow-hidden top-[-10px] playfair md:hidden bg-black mt-[80px]   h-[100vh] lg:hidden inset-0 z-[200] justify-evenly pb-[80px] items-start pl-6 text-font-blue inter font-[700] text-[20px] flex flex-col gap-[32px]"
+                    className="fixed overflow-hidden top-[-10px] playfair md:hidden bg-black mt-[110px]   h-[100vh] lg:hidden inset-0 z-[200] justify-start pb-[80px] items-start pl-8 text-font-blue inter font-[600] text-[20px] flex flex-col gap-[65px]"
                     initial="hidden"
                     animate="visible"
                     exit="hidden"
@@ -316,90 +316,86 @@ const Header = () => {
                 )}
               </AnimatePresence>
               {profileOpen && (
-            <div className="absolute  w-[170px]  rounded-[4px] shadow-md bg-white top-[60px] right-[100px] translate-x-[50%]">
-              <div className="w-[15px] h-[16px] absolute bg-white  top-[-8px] rotate-45 left-[92%] translate-x-[-50%]"></div>
-              <SignedIn>
-                <div className="flex text-[16px] font-[700] items-center justify-center playfair text-black flex-col gap-4 p-4">
-                  <div className="flex gap-2 justify-center items-center">
-                    <UserButton />
-                    <div>{user?.username}</div>
-                  </div>
+                <div className="absolute  w-[170px]  rounded-[4px] shadow-md bg-white top-[60px] right-[100px] translate-x-[50%]">
+                  <div className="w-[15px] h-[16px] absolute bg-white  top-[-8px] rotate-45 left-[92%] translate-x-[-50%]"></div>
+                  <SignedIn>
+                    <div className="flex text-[16px] font-[700] items-center justify-center playfair text-black flex-col gap-4 p-4">
+                      <div className="flex gap-2 justify-center items-center">
+                        <UserButton />
+                        <div>{user?.username}</div>
+                      </div>
 
-                  <Link className="cursor-pointer" href="/past-orders">
-                    Orders
-                  </Link>
-                </div>
-              </SignedIn>
+                      <Link className="cursor-pointer" href="/past-orders">
+                        Orders
+                      </Link>
+                    </div>
+                  </SignedIn>
 
-              <SignedOut>
-                <div className="flex text-[16px]  font-[700] justify-center items-center playfair text-black flex-col gap-4 p-4">
-                  <Link className="cursor-pointer" href="/sign-in">
-                    Sign in
-                  </Link>
-                  <Link className="cursor-pointer" href="/sign-up">
-                    Sign up
-                  </Link>
+                  <SignedOut>
+                    <div className="flex text-[16px]  font-[700] justify-center items-center playfair text-black flex-col gap-4 p-4">
+                      <Link className="cursor-pointer" href="/sign-in">
+                        Sign in
+                      </Link>
+                      <Link className="cursor-pointer" href="/sign-up">
+                        Sign up
+                      </Link>
+                    </div>
+                  </SignedOut>
                 </div>
-              </SignedOut>
-            </div>
-          )}
+              )}
             </div>
           </div>
         </div>
       </div>
 
-
-    <AnimatePresence>
-      {isCartOpen && 
-      (
-        <motion.div
-          className={`fixed top-[-120px] playfair bg-white mt-[86px] lg:hidden md:hidden  h-[100vh]  inset-0 z-[200] font-[700] text-[20px]  text-black 
+      <AnimatePresence>
+        {isCartOpen && (
+          <motion.div
+            className={`fixed top-[-120px] playfair bg-white mt-[86px] lg:hidden md:hidden  h-[100vh]  inset-0 z-[200] font-[700] text-[20px]  text-black 
           
             `}
-          initial="hidden"
-          animate="visible"
-          exit="hidden"
-          variants={containerVariants}
-        >
-          <div className="p-4 w-full bg-white flex justify-between items-center">
-            <h2 className="text-[30px] font-semibold font-playfair-display">
-              Cart
-            </h2>
-            <button
-              onClick={() => setIsCartOpen(false)}
-              className="text-xl text-[#CDC8C8]"
-            >
-              ✕
-            </button>
-          </div>
-          <Cart />
-        </motion.div>
-
-      )
-      }
-    </AnimatePresence>
-    <div
-          className={`fixed top-[-30px] duration-500 hidden lg:block md:block right-0 w-full md:w-1/3 bg-white text-black h-[100vh] transition-transform transform z-50
+            initial="hidden"
+            animate="visible"
+            exit="hidden"
+            variants={containerVariants}
+          >
+            <div className="p-4 w-full bg-white flex justify-between items-center">
+              <h2 className="text-[30px] font-semibold font-playfair-display">
+                Cart
+              </h2>
+              <button
+                onClick={() => setIsCartOpen(false)}
+                className="text-xl text-[#CDC8C8]"
+              >
+                ✕
+              </button>
+            </div>
+            <Cart />
+          </motion.div>
+        )}
+      </AnimatePresence>
+      <div
+        className={`fixed top-[-30px] duration-500 hidden lg:block md:block right-0 w-full md:w-1/3 bg-white text-black h-[100vh] transition-transform transform z-50
             ${isCartOpen ? "translate-x-0" : "translate-x-full"}
             `}
-          initial="hidden"
-          animate="visible"
-          exit="hidden"
-          variants={containerVariants}
-        >
-          <div className="p-4 bg-white flex justify-between items-center">
-            <h2 className="text-[30px] font-semibold font-playfair-display">
-              Cart
-            </h2>
-            <button
-              onClick={() => setIsCartOpen(false)}
-              className="text-xl text-[#CDC8C8]"
-            >
-              ✕
-            </button>
-          </div>
-          <Cart />
+        initial="hidden"
+        animate="visible"
+        exit="hidden"
+        variants={containerVariants}
+      >
+        <div className="p-4 bg-white flex justify-between items-center">
+          <h2 className="text-[30px] font-semibold font-playfair-display">
+            Cart
+          </h2>
+          <button
+            onClick={() => setIsCartOpen(false)}
+            className="text-xl text-[#CDC8C8]"
+          >
+            ✕
+          </button>
         </div>
+        <Cart />
+      </div>
     </div>
   );
 };

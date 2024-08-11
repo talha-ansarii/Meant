@@ -28,7 +28,7 @@ const Footer = () => {
           <Link href={"https://www.facebook.com/people/Mymeant/61558952124973/"}>
             <FaFacebook className="w-[31px] h-[31px]" />
           </Link>
-          <Link href={"@mymeants"}>
+          <Link href={"@meant_official"}>
             <FaThreads className="w-[31px] h-[31px]" />
           </Link>
           <Link href={"https://www.instagram.com/meant_official/"}>
@@ -136,7 +136,7 @@ const Footer = () => {
                   </Link>
                 </div>
                 <div className="text-[14px] font-[400] leading-[21px]">
-                  <Link href={"@mymeant"} className="flex gap-2 items-center">
+                  <Link href={"@meant_official"} className="flex gap-2 items-center">
                     <FaThreads className="w-[16px] h-[16px]" />
                     <div>Threads</div>
                   </Link>
