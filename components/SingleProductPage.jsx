@@ -20,6 +20,7 @@ import {
 } from "@/utils/wishlistUtils";
 import VideoLoader from "./VideoLoader";
 import { useUser } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
 
 const shades = ["#A32C42", "#663024", "#AD5B55", "#995A60"];
 
@@ -39,6 +40,8 @@ const SingleProductPage = ({ productId }) => {
   const [showReviewForm, setShowReviewForm] = useState(false);
   const [reviews, setReviews] = useState([]);
   const { isSignedIn } = useUser();
+
+  const router = useRouter();
 
   useEffect(() => {
     setIsClient(true);
@@ -158,6 +161,9 @@ const SingleProductPage = ({ productId }) => {
 
   const handleWishlistClick = async (e) => {
     e.stopPropagation();
+    if (!isSignedIn) {
+      return router.push("/sign-in");
+    }
     try {
       if (wishlistFilled) {
         await removeProductFromWishlist(parseInt(productId));
@@ -227,7 +233,7 @@ const SingleProductPage = ({ productId }) => {
       <>
         {isClient && (
           <div className="w-[100vw] h-[100vh] ">
-            <VideoLoader />
+           Loading...
           </div>
         )}
       </>

@@ -24,7 +24,10 @@ const WishList = () => {
 
   useEffect(() => {
     setIsClient(true);
-  }, []);
+    if (!isSignedIn) {
+      router.push("/sign-in");
+    }
+  }, [isSignedIn]);
 
   const handleAddToCart = async (item) => {
     if (!isSignedIn) {
