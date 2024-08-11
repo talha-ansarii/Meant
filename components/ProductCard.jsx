@@ -53,6 +53,9 @@ const ProductCard = ({
 
   const handleWishlistClick = async (e) => {
     e.stopPropagation();
+    if (!isSignedIn) {
+      return router.push("/sign-in");
+    }
 
     if (wishlistFilled) {
       await removeProductFromWishlist(product.id);

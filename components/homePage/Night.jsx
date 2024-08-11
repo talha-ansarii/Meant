@@ -60,6 +60,9 @@ const Night = ({ products, setShow, show }) => {
   }, [isInWishlist]);
 
   const handleAddToWishlist = () => {
+    if (!isSignedIn) {
+      return router.push("/sign-in");
+    }
     if (product) {
       if (isInWishlist) {
         removeProductFromWishlist(product.id);

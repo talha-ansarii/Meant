@@ -44,6 +44,9 @@ const Day = ({ products }) => {
     }
   };
   const handleAddToWishlist1 = () => {
+    if (!isSignedIn) {
+      return router.push("/sign-in");
+    }
     if (product1) {
       if (isInWishlist1) {
         removeProductFromWishlist(product1.id);
