@@ -11,13 +11,14 @@ import {
   updateCartQuantity,
 } from "@/utils/cartUtils";
 import VideoLoader from "./VideoLoader";
+import { useUser } from "@clerk/nextjs";
 
 const Cart = () => {
   const [cartProducts, setCartProducts] = useState([]);
   const [cartTotal, setCartTotal] = useState(0);
   const [loading, setLoading] = useState(true);
   const [isClient, setIsClient] = useState(false);
-
+const { isSignedIn } = useUser();
   useEffect(() => {
     setIsClient(true);
 }, []);
@@ -28,8 +29,8 @@ const Cart = () => {
       const cart = await getCartProducts();
       const products = await getAllProducts();
       setLoading(false);
-      console.log(cart)
-      console.log(products)
+      // console.log(cart)
+      // console.log(products)
       if (cart && products) {
         // Filter products that are in the cart
         const filteredProducts = products.filter((product) =>
@@ -99,6 +100,19 @@ const Cart = () => {
       setCartTotal(total);
     }
   };
+
+  if (!isSignedIn) {
+    return (
+      <div className="overflow-x-hidden">
+      <div className="w-[100%] playfair h-[100%] flex justify-center items-center">
+        <p className="text-xl font-medium">Please sign in to view your Cart</p>
+      </div>
+
+      </div>
+    );
+  }
+
+
 
   if (loading) return <>{isClient && <div className="w-[100vw] text-black h-[100vh] ">
   Loading...

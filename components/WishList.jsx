@@ -24,10 +24,10 @@ const WishList = () => {
 
   useEffect(() => {
     setIsClient(true);
-    if (!isSignedIn) {
-      router.push("/sign-in");
-    }
-  }, [isSignedIn]);
+   
+  }, []);
+
+
 
   const handleAddToCart = async (item) => {
     if (!isSignedIn) {
@@ -50,6 +50,8 @@ const WishList = () => {
         const wishlist = await getWishlistProducts();
         const products = await getAllProducts();
 
+        
+        
         if (wishlist && products) {
           setLoading(false);
           const filteredProducts = products.filter((product) =>
@@ -57,6 +59,8 @@ const WishList = () => {
               (wishlistItem) => wishlistItem.productId === product.id
             )
           );
+
+          
 
           console.log(filteredProducts);
           setWishlistArray(filteredProducts);
@@ -78,11 +82,24 @@ const WishList = () => {
     );
     setWishlistArray(updatedWishlist);
   };
+  
+  if (!isSignedIn) {
+    return (
+      <div className="overflow-x-hidden">
+      <div className="w-[100vw] playfair h-[100vh] flex justify-center items-center">
+        <Header />
+        <p className="text-2xl font-medium">Please sign in to view your wishlist</p>
+      </div>
+        <Footer/>
 
+      </div>
+    );
+  }
   if (loading)
     return (
       <>{isClient && <div className="w-[100vw] h-[100vh] ">Loading...</div>}</>
     );
+
 
   return (
     <div className="pb-4">
