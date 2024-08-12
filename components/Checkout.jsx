@@ -19,7 +19,7 @@ const Checkout = ({ cartProducts, cartTotal }) => {
                   width={100}
                   height={100}
                   className="w-[120px] h-[120px] object-cover rounded-[10px]"
-                />
+                />  
               </div>
               <div className="ml-4 flex-1">
                 <div className="flex justify-between items-center">
