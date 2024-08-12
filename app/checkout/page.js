@@ -18,7 +18,6 @@ const Page = () => {
   const navigate = useRouter();
 
   useEffect(() => {
-    handleConfetti()
     const fetchData = async () => {
       const cart = await getCartProducts();
       const products = await getAllProducts();
@@ -189,19 +188,7 @@ const Page = () => {
     }
   };
 
-  const handleConfetti = () => {
-    confetti({
-      particleCount: 300,
-      spread: 90,
-      origin: { x: 1, y: 0.9 },
-    });
 
-    confetti({
-      particleCount: 300,
-      spread: 90,
-      origin: { x: 0, y: 0.9 },
-    });
-  };
 
   return (
     <div>
@@ -220,7 +207,7 @@ const Page = () => {
           <div className="lg:w-[50%] md:w-[50%] w-full">
             <ShippingForm handlePayment={handlePayment} />
           </div>
-          <div className="lg:w-[50%] md:w-[50%] w-full">
+          <div className="lg:w-[50%] md:w-[50%] bg-[#CDC8C8] w-full">
             <Checkout
               cartProducts={cartProducts}
               setCartProducts={setCartProducts}

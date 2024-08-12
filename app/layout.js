@@ -3,6 +3,7 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 import { ClerkProvider } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
+import { Analytics } from "@vercel/analytics/react"
 
 export const metadata = {
   title: "MEANT",
@@ -21,7 +22,9 @@ export default function RootLayout({ children }) {
       }}
     >
       <html lang="en">
-        <body className={inter.className}>{children}</body>
+        <body className={inter.className}>{children}
+        <Analytics />
+        </body>
       </html>
     </ClerkProvider>
   );

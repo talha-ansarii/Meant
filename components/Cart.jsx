@@ -121,9 +121,9 @@ const { isSignedIn } = useUser();
 
 
   return (
-    <div className="w-full min-h-screen bg-white text-black px-4 md:px-8">
-      <div className="max-h-[85vh] overflow-auto no-scrollbar">
-        <div className="flex justify-between items-center mb-4">
+    <div className="w-full min-h-screen  bg-white text-black px-4 md:px-8">
+      <div className="max-h-[100vh] overflow-auto no-scrollbar">
+        <div className="flex justify-between items-center pb-4">
           <span className="text-[16px] font-poppins font-semibold text-[#827777]">
             {cartProducts.length} items
           </span>
@@ -131,8 +131,8 @@ const { isSignedIn } = useUser();
         {cartProducts.length === 0 ? (
           <div className="text-center text-lg">Your cart is empty.</div>
         ) : (
-          <div>
-            <ul className="space-y-6">
+          <div className="flex flex-col h-[calc(100vh-130px)] justify-between ">
+            <ul className="space-y-6 ">
               {cartProducts.map((item) => (
                 <li
                   key={item.id}
@@ -193,19 +193,19 @@ const { isSignedIn } = useUser();
             </ul>
             <div className="border-t border-[#CDC8C8] mt-8 pt-4">
               <div className="flex justify-between items-center">
-                <h2 className="text-[30px] font-semibold font-playfair-display">
+                <h2 className="lg:text-[30px] md:text-[30px] text-[25px] font-semibold font-playfair-display">
                   Estimated Total:
                 </h2>
-                <h2 className="text-[30px] font-semibold font-playfair-display">
+                <h2 className="lg:text-[30px] md:text-[30px] text-[25px] font-semibold font-playfair-display">
                 ₹{cartTotal.toFixed(2)}
                 </h2>
               </div>
-              <p className="mt-2 text-[#827777] font-merriweather font-bold">
-                Shipping & Discounts calculated at checkout
+              <p className="mt-2 text-[#827777] font-merriweather font-semibold text-xs ">
+                {"("}Shipping & Discounts calculated at checkout{")"}
               </p>
               <Link
                 href="/checkout"
-                className="mt-8 text-[18px] font-playfair-display font-extrabold inline-block bg-black text-white py-2 px-8 rounded-[30px] text-center w-auto md:w-full"
+                className="mt-8 text-[18px] w-full font-playfair-display font-extrabold inline-block bg-black text-white py-2 px-8 rounded-[30px] text-center  md:w-full"
               >
                 Checkout
               </Link>
