@@ -10,6 +10,7 @@ import {
   getWishlistProducts,
   removeProductFromWishlist,
 } from "@/utils/wishlistUtils";
+import LikeButton from "./likeButton/LikeButton";
 
 const ProductCard = ({
   product,
@@ -21,6 +22,8 @@ const ProductCard = ({
   const [wishlistFilled, setWishlistFilled] = useState(false);
   const { isSignedIn } = useUser();
   const router = useRouter();
+
+
 
   useEffect(() => {
     // Fetch products from API
@@ -39,49 +42,111 @@ const ProductCard = ({
 
   useEffect(() => {
     const fetchWishlistProducts = async () => {
-      const wishListproducts = await getWishlistProducts();
-      // console.log(wishListproducts);
-      const contains = wishListproducts?.some((prod) => {
-        // console.log(prod.productId, product.id)
-        return prod.productId === product.id;
-      });
+      let wishListproducts = [];
+
+      if (isSignedIn) {
+        // Fetch wishlist products from the database
+        try {
+          wishListproducts = await getWishlistProducts();
+        } catch (error) {
+          console.error("Error fetching wishlist products", error);
+        }
+      } else {
+        // Fetch wishlist products from localStorage
+        const localWishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+        wishListproducts = localWishlist.map(id => ({ productId: id }));
+      }
+
+      // Check if the product is in the wishlist
+      const contains = wishListproducts.some(prod => prod.productId === product.id);
       setWishlistFilled(contains);
     };
 
     fetchWishlistProducts();
-  });
+  }, [product.id, isSignedIn]);
 
   const handleWishlistClick = async (e) => {
     e.stopPropagation();
+    const wishlistKey = 'wishlist';
+    
+    // Initialize the wishlist from localStorage or an empty array
+    let wishlist = JSON.parse(localStorage.getItem(wishlistKey)) || [];
+  
     if (!isSignedIn) {
-      return router.push("/sign-in");
-    }
-
-    if (wishlistFilled) {
-      await removeProductFromWishlist(product.id);
-      toast.error("Removed from wishlist");
+      if (wishlistFilled) {
+        wishlist = wishlist.filter((item) => item !== product.id);
+        toast.error("Removed from wishlist");
+      } else {
+        if (!wishlist.includes(product.id)) {
+          wishlist.push(product.id);
+        }
+        toast.success("Added to wishlist");
+      }
+      localStorage.setItem(wishlistKey, JSON.stringify(wishlist));
     } else {
-      await addProductToWishlist(product.id);
-      toast.success("Added to wishlist");
+      try {
+        if (wishlistFilled) {
+          await removeProductFromWishlist(product.id);
+          toast.error("Removed from wishlist");
+        } else {
+          await addProductToWishlist(product.id);
+          toast.success("Added to wishlist");
+        }
+  
+        // Update local storage
+        if (!wishlist.includes(product.id)) {
+          wishlist.push(product.id);
+        } else {
+          wishlist = wishlist.filter((item) => item !== product.id);
+        }
+        localStorage.setItem(wishlistKey, JSON.stringify(wishlist));
+      } catch (error) {
+        console.error("Error updating wishlist in the database", error);
+        toast.error("Error updating wishlist");
+      }
     }
+  
     setWishlistFilled(!wishlistFilled);
   };
+  
+  
 
   const handleCartClick = async (e) => {
     e.stopPropagation();
-
+  
     if (!isSignedIn) {
       return router.push("/sign-in");
     }
+  
     try {
       await addProductToCart(product.id, quantity);
       toast.success("Added to cart");
+  
+      // Update quantities state
       setQuantities({ ...quantities, [product.id]: 1 });
+  
+      // Retrieve existing cart items from local storage
+      const cartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
+  
+      // Check if the product is already in the cart
+      const existingCartItemIndex = cartItems.findIndex(item => item.id === product.id);
+  
+      if (existingCartItemIndex !== -1) {
+        // If product exists, update its quantity
+        cartItems[existingCartItemIndex].quantity += quantity;
+      } else {
+        // If product doesn't exist, add it to the cart
+        const newCartItem = { id: product.id, quantity };
+        cartItems.push(newCartItem);
+      }
+  
+      // Save the updated cart items to local storage
+      localStorage.setItem("cartItems", JSON.stringify(cartItems));
     } catch (error) {
       console.error("Error adding product to cart:", error);
-      return;
     }
   };
+  
 
   return (
     <div className="relative border rounded-lg overflow-hidden shadow-lg bg-white">
@@ -98,18 +163,14 @@ const ProductCard = ({
         </Link>
         {/* Wishlist heart icon */}
         <div
-          className="absolute top-4 right-2 cursor-pointer"
+          className="absolute top-6 right-2 cursor-pointer"
           onClick={handleWishlistClick}
         >
-          <svg
-            className="w-8 h-8"
-            fill={wishlistFilled ? "#D76D8E" : "none"}
-            stroke="#D76D8E"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-          </svg>
+          <div
+               className="relative mr-[20px]">
+              <LikeButton wishlistFilled={wishlistFilled} />
+
+              </div>
         </div>
       </div>
       <div className="p-4">

@@ -10,7 +10,8 @@ import { SignedIn, SignedOut, UserButton, useUser } from "@clerk/nextjs";
 import { getCartProducts } from "@/utils/cartUtils";
 import { getWishlistProducts } from "@/utils/wishlistUtils";
 import { Loader } from "lucide-react";
-
+import "./header.css";
+import Script from "next/script";
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isLogin, setIsLogin] = useState(true);
@@ -23,7 +24,7 @@ const Header = () => {
   const [cartLength, setCartLength] = useState(0);
   const [wishlistLength, setWishlistLength] = useState(0);
   // const [isOpened, setIsOpened] = useState(false);
-
+  const { isSignedIn } = useUser();
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
@@ -31,21 +32,70 @@ const Header = () => {
       document.body.style.overflow = "auto";
     }
   }, [isOpen]);
- 
 
   // console.log(user)
   useEffect(() => {
     const fetchData = async () => {
-      const cart = await getCartProducts();
-      const wishlist = await getWishlistProducts();
-      setCartLength(cart?.length);
-      setWishlistLength(wishlist?.length);
-    };
-    fetchData();
-    // const intervalId = setInterval(fetchData, 500);
+      try {
+        let dbWishlist = [];
+        let localWishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
 
-    // return () => clearInterval(intervalId);
-  }, []);
+        if (isSignedIn) {
+          // Fetch wishlist products from the database
+          dbWishlist = await getWishlistProducts();
+          // Extract productIds from dbWishlist
+          const dbWishlistIds = dbWishlist.map((item) => item.productId);
+
+          // Merge and deduplicate the wishlists
+          const mergedWishlist = [
+            ...new Set([...localWishlist, ...dbWishlistIds]),
+          ];
+
+          // Sync the merged wishlist back to the database and localStorage
+          await syncWishlistToDatabase(mergedWishlist);
+          localStorage.setItem("wishlist", JSON.stringify(mergedWishlist));
+
+          // Set the wishlist length
+          setWishlistLength(mergedWishlist.length);
+        } else {
+          // Set the wishlist length from local storage
+          setWishlistLength(localWishlist.length);
+        }
+      } catch (error) {
+        console.error("Error fetching wishlist:", error);
+      }
+    };
+
+    fetchData();
+
+  }, [isSignedIn]);
+
+  useEffect(() => {
+    const setwishLength = async () => {
+      let localCart = JSON.parse(localStorage.getItem("cartItems")) || [];
+      let localWishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+      setCartLength(localCart.length);
+      setWishlistLength(localWishlist.length);
+    }
+
+    const inter = setInterval(() => {
+      setwishLength();
+    }, 500);
+
+    return () => {
+      clearInterval(inter);
+    }
+
+  }, [wishlistLength]);
+
+  const syncWishlistToDatabase = async (wishlist) => {
+    // Assume this function sends the merged wishlist to the server to update the database
+    try {
+      await updateWishlistInDatabase(wishlist); // Replace with your actual API call
+    } catch (error) {
+      console.error("Error syncing wishlist to database:", error);
+    }
+  };
 
   useEffect(() => {
     let lastScrollY = window.scrollY;
@@ -70,14 +120,14 @@ const Header = () => {
 
   const containerVariants = {
     hidden: {
-      x: "100%",
+      x: "-100%",
       transition: {
         duration: 0.5,
       },
     },
     visible: {
       opacity: 1,
-      x: 0,
+      x: -5,
       transition: {
         duration: 0.5,
         staggerChildren: 0.2,
@@ -95,7 +145,7 @@ const Header = () => {
   const linkVariants = {
     hidden: {
       opacity: 0,
-      x: 50,
+      x: -50,
       transition: {
         duration: 0.3,
       },
@@ -111,12 +161,14 @@ const Header = () => {
 
   return (
     <div
-      className={`w-full m-auto top-[30px] duration-200 left-[50%] translate-x-[-50%] px-[20px] absolute lg:fixed md:fixed z-[300] transition-transform ${
+      className={`w-full m-auto top-[20px] md:top-[30px] lg:top-[30px] duration-200 left-[50%] translate-x-[-50%] px-[20px] absolute lg:fixed md:fixed z-[100] transition-transform ${
         scrollDirection === "down"
           ? " translate-y-0 lg:-translate-y-[80px] md:-translate-y-[80px] "
           : " translate-y-0 "
       }`}
     >
+
+
       <div className="lg:w-[892px] md:w-[741px] hidden z-50  px-[20px] m-auto h-[43px] rounded-[116px]  border md:flex lg:flex items-center justify-between bg-black  ">
         <div>
           <Link href={"/"}>
@@ -195,76 +247,54 @@ const Header = () => {
           <div className="flex w-full ">
             <div className="flex justify-between w-full  ">
               <div>
-                {!isOpen ? (
-                  <button
-                    onClick={() => {
-                      setIsOpen(true);
-                    }}
-                  >
-                    <svg
-                      className="block h-6 w-6 rotate-180"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="white"
-                      aria-hidden="true"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M4 6h16M4 12h16m-7 6h7"
-                      />
-                    </svg>
-                  </button>
-                ) : (
-                  <button
-                    onClick={() => {
-                      setIsOpen(false);
-                    }}
-                  >
-                    <svg
-                      className="block h-6 w-6"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="white"
-                      aria-hidden="true"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M6 18L18 6M6 6l12 12"
-                      />
-                    </svg>
-                  </button>
-                )}
+                
+                <div
+      id="nav-icon2"
+      className={`relative mt-[5px] w-[30px] h-[15px] ${isOpen ? 'open' : ''}`}
+      onClick={() => setIsOpen(!isOpen)}
+    >
+      <span className="block absolute h-1.5 w-1/3 bg-white opacity-100 transition-transform duration-300 ease-in-out"></span>
+      <span className="block absolute h-1.5 w-1/3 bg-white opacity-100 transition-transform duration-300 ease-in-out"></span>
+      <span className="block absolute h-1.5 w-1/3 bg-white opacity-100 transition-transform duration-300 ease-in-out"></span>
+      <span className="block absolute h-1.5 w-1/3 bg-white opacity-100 transition-transform duration-300 ease-in-out"></span>
+      <span className="block absolute h-1.5 w-1/3 bg-white opacity-100 transition-transform duration-300 ease-in-out"></span>
+      <span className="block absolute h-1.5 w-1/3 bg-white opacity-100 transition-transform duration-300 ease-in-out"></span>
+    </div>
               </div>
               <div className="">
                 <Link href={"/"}>
                   <Image
                     src="/assets/images/logo.webp"
                     alt="logo"
-                    width={100}
-                    height={35}
-                    className="w-[100px] h-[35px]"
+                    width={90}
+                    height={30}
+                    className="w-[90px] h-[30px]"
                   />
                 </Link>
               </div>
-              <div className="flex items-center gap-3">
+              <div className="flex relative items-center gap-[6px]">
                 <Link href="/wishlist">
-                  <FaRegHeart className="w-[23px] cursor-pointer h-[19px] text-[#D76D8E]" />
+                  <FaRegHeart className="w-[30px] cursor-pointer h-[23px] text-[#D76D8E]" />
+                  {wishlistLength > 0 && (
+              <span className="absolute top-[-2px] left-[18px] bg-white text-black rounded-full text-[9px] w-3 h-3  flex items-center justify-center">
+                {wishlistLength}
+              </span>
+            )}
                 </Link>
                 <div
                   className="relative flex  items-center"
                   onClick={() => setIsCartOpen(true)}
                 >
-                  <FaShoppingCart className="w-[20px] cursor-pointer h-[22px] text-white" />
+                  <FaShoppingCart className="w-[25px] cursor-pointer h-[23px] text-white" />
+                  {cartLength > 0 && (
+              <span className="absolute bottom-[0.8rem] left-[1rem] bg-black text-white rounded-full text-[9px] w-4 h-4  flex items-center justify-center">
+               {cartLength}
+              </span>
+            )}
                 </div>
                 <FaUser
                   onClick={() => setProfileOpen(!profileOpen)}
-                  className="w-[21px] cursor-pointer h-[22px] text-white"
+                  className="w-[25px] cursor-pointer h-[23px] text-white"
                 />
               </div>
             </div>
@@ -273,7 +303,7 @@ const Header = () => {
               <AnimatePresence>
                 {isOpen && (
                   <motion.div
-                    className="fixed overflow-hidden top-[-10px] playfair md:hidden bg-black mt-[110px]   h-[100vh] lg:hidden inset-0 z-[200] justify-start pb-[80px] items-start pl-8 text-font-blue inter font-[600] text-[20px] flex flex-col gap-[65px]"
+                    className="fixed overflow-hidden top-[45px] pt-[70px] playfair md:hidden bg-black h-[calc(100vh)] lg:hidden w-[calc(100vw+10px)] inset-[0] z-[200] justify-start pb-[80px] items-end pr-8 text-font-blue inter font-[600] text-[20px] flex flex-col gap-[65px]"
                     initial="hidden"
                     animate="visible"
                     exit="hidden"
@@ -351,7 +381,7 @@ const Header = () => {
       <AnimatePresence>
         {isCartOpen && (
           <motion.div
-            className={`fixed top-[-120px] playfair bg-white mt-[86px] lg:hidden md:hidden  h-[100vh]  inset-0 z-[200] font-[700] text-[20px]  text-black 
+            className={`fixed top-[-120px] playfair bg-white mt-[86px] lg:hidden md:hidden  h-[100vh]  inset-0 w-[calc(100vw+10px)] z-[200] font-[700] text-[20px]  text-black 
           
             `}
             initial="hidden"

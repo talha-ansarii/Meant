@@ -7,17 +7,20 @@ import { HoverBorderGradient } from "../ui/hover-border-gradient";
 import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { addProductToCart } from "@/utils/cartUtils";
+
 import {
   addProductToWishlist,
   getWishlistProducts,
   removeProductFromWishlist,
 } from "@/utils/wishlistUtils";
 import Link from "next/link";
+import LikeButton from "../likeButton/LikeButton";
 
 const Day = ({ products }) => {
   const [isInWishlist1, setIsInWishlist1] = useState(false);
   const [isInCart1, setIsInCart1] = useState(false);
   const { isSignedIn } = useUser();
+  const [wishlistFilled, setWishlistFilled] = useState(false);
 
   const router = useRouter();
 
@@ -27,85 +30,117 @@ const Day = ({ products }) => {
   const productName1 = "Day Dazzle Lipstick";
   const product1 = products.find((p) => p.name === productName1);
 
-  const handleAddToCart1 = async () => {
+  const handleCartClick = async (e) => {
+    e.stopPropagation();
+  
     if (!isSignedIn) {
       return router.push("/sign-in");
     }
-    if (product1) {
-      try {
-        await addProductToCart(product1.id, 1);
-        toast.success("Added to cart");
-        console.log("Product added to cart:", data);
-      } catch (error) {
-        console.error("Error adding product to cart:", error);
-        return;
+  
+    try {
+      await addProductToCart(product1.id, 1);
+      toast.success("Added to cart");
+  
+      
+  
+      // Retrieve existing cart items from local storage
+      const cartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
+  
+      // Check if the product is already in the cart
+      const existingCartItemIndex = cartItems.findIndex(item => item.id === product1.id);
+  
+      if (existingCartItemIndex !== -1) {
+        // If product exists, update its quantity
+        cartItems[existingCartItemIndex].quantity += 1;
+      } else {
+        // If product doesn't exist, add it to the cart
+        const newCartItem = { id: product1.id, quantity: 1 };
+        cartItems.push(newCartItem);
       }
-      setIsInCart1(true);
+  
+      // Save the updated cart items to local storage
+      localStorage.setItem("cartItems", JSON.stringify(cartItems));
+    } catch (error) {
+      console.error("Error adding product to cart:", error);
     }
   };
-  const handleAddToWishlist1 = () => {
+
+
+
+
+  const handleWishlistClick = async (e, product1) => {
+    e.stopPropagation();
+    const wishlistKey = 'wishlist';
+    
+    // Initialize the wishlist from localStorage or an empty array
+    let wishlist = JSON.parse(localStorage.getItem(wishlistKey)) || [];
+  
     if (!isSignedIn) {
-      return router.push("/sign-in");
-    }
-    if (product1) {
-      if (isInWishlist1) {
-        removeProductFromWishlist(product1.id);
+      if (wishlistFilled) {
+        wishlist = wishlist.filter((item) => item !== product1.id);
         toast.error("Removed from wishlist");
       } else {
-        addProductToWishlist(product1.id);
+        if (!wishlist.includes(product1.id)) {
+          wishlist.push(product1.id);
+        }
         toast.success("Added to wishlist");
       }
-      setIsInWishlist1(!isInWishlist1);
+      localStorage.setItem(wishlistKey, JSON.stringify(wishlist));
+    } else {
+      try {
+        if (wishlistFilled) {
+          await removeProductFromWishlist(product1.id);
+          toast.error("Removed from wishlist");
+        } else {
+          await addProductToWishlist(product1.id);
+          toast.success("Added to wishlist");
+        }
+  
+        // Update local storage
+        if (!wishlist.includes(product1.id)) {
+          wishlist.push(product1.id);
+        } else {
+          wishlist = wishlist.filter((item) => item !== product1.id);
+        }
+        localStorage.setItem(wishlistKey, JSON.stringify(wishlist));
+      } catch (error) {
+        console.error("Error updating wishlist in the database", error);
+        toast.error("Error updating wishlist");
+      }
     }
+  
+    setWishlistFilled(!wishlistFilled);
   };
-
   useEffect(() => {
-    if (product1) {
+
+    if(product1){
       const fetchWishlistProducts = async () => {
-        const wishListproducts = await getWishlistProducts();
-        console.log(wishListproducts);
-        const contains = wishListproducts?.some((prod) => {
-          // console.log(prod.productId, product.id)
-          return prod.productId === product1.id;
-        });
-        setIsInWishlist1(contains);
+        let wishListproducts = [];
+  
+        if (isSignedIn) {
+          // Fetch wishlist products from the database
+          try {
+            wishListproducts = await getWishlistProducts();
+          } catch (error) {
+            console.error("Error fetching wishlist products", error);
+          }
+        } else {
+          // Fetch wishlist products from localStorage
+          const localWishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+          wishListproducts = localWishlist.map(id => ({ productId: id }));
+        }
+  
+        // Check if the product is in the wishlist
+        const contains = wishListproducts.some(prod => prod.productId === product1.id);
+        setWishlistFilled(contains);
       };
-
+  
       fetchWishlistProducts();
+
     }
-  }, [isInWishlist1]);
+  }, [product1, isSignedIn]);
 
-  // gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
-
-  // useGSAP(() => {
-  //   if (ref.current && canvasref.current) {
-  //     gsap.from(ref.current, {
-  //       scale: 0,
-  //       opacity: 0,
-  //       duration: 2,
-  //       ease: "ease-in",
-  //       scrollTrigger: {
-  //         trigger: ref.current,
-  //         start: "top bottom",
-  //         end: "bottom top",
-  //         // markers: true,
-  //       },
-  //     });
-
-  //     ScrollTrigger.create({
-  //       trigger: canvasref.current,
-  //       start: "top 100%",
-  //       end: "top top",
-  //       // markers: true,
-  //       onEnter: () => {
-  //         gsap.to(window, {
-  //           scrollTo: { y: ref.current, offsetY: 100 },
-  //           duration: 0.5,
-  //         });
-  //       },
-  //     });
-  //   }
-  // }, []);
+  
 
   return (
     <div>
@@ -116,13 +151,14 @@ const Day = ({ products }) => {
           ref={canvasref}
           className="bg-white  overflow-hidden md:w-[90%] lg:w-[80%]  md:flex-row lg:flex-row flex-col m-auto flex"
         >
-          <div className="w-[90%] h-full mx-auto flex justify-center items-center pt-[60px]  md:w-[50%] lg:w-[50%] ">
+          <div className="w-[90%] md:mt-[80px] h-full mx-auto flex justify-center items-center pt-[60px]  md:w-[50%] lg:w-[50%] ">
             {/* <div className="w-[1257px] absolute z-0 top-[-300px] left-[-200px] h-[1180px] radial-gradient"></div> */}
             <Image
               width={556}
               alt="day"
               height={556}
               src={"/assets/images/day.png"}
+              className=""
             />
           </div>
           <div className="w-[90%] mx-auto  md:w-[50%] lg:w-[50%] z-20 flex flex-col lg:gap-10 lg:px-16 lg:h-[850px] md:h-[850px] md:pt-[170px] lg:pt-[170px]">
@@ -141,21 +177,27 @@ const Day = ({ products }) => {
               Available in four new lip adapting shades.
             </div>
             <div className="flex l mt-2 items-center   z-[300]  gap-4">
-              <svg
+              {/* <svg
                 className="w-8 h-8 cursor-pointer"
-                fill={isInWishlist1 ? "#D76D8E" : "none"}
+                fill={wishlistFilled ? "#D76D8E" : "none"}
                 stroke="#D76D8E"
                 viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg"
-                onClick={handleAddToWishlist1}
+                onClick={(e) => handleWishlistClick(e, product1)}
               >
                 <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-              </svg>
+              </svg> */}
+              <div
+              onClick={(e) => handleWishlistClick(e, product1)}
+               className="relative mr-[20px]">
+              <LikeButton wishlistFilled={wishlistFilled} />
+
+              </div>
               <HoverBorderGradient
                 containerClassName=" rounded-[34px]"
                 as="button"
                 className=" bg-black text-white w-[100px] h-[30px] md:w-[147px] lg:w-[147px] md:h-[45px] lg:h-[45px] md:text-[14px] lg:text-[14px] flex items-center justify-center cursor-pointer font-poppins space-x-2 text-[10px] font-[500] leading-[18px]"
-                onClick={handleAddToCart1}
+                onClick={handleCartClick}
                 disabled={isInCart1}
               >
                 <span>ADD TO CART</span>
