@@ -180,7 +180,7 @@ const WishList = () => {
         
           
           <Link
-                href="/checkout"
+                href="/products"
                 className="mt-8 text-[18px] w-full font-playfair-display font-extrabold inline-block bg-white text-black md:w-[400px] py-2 px-8 rounded-[30px] text-center  lg:w-[500px]"
               >
                 Start adding some products...
