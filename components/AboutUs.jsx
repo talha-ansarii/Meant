@@ -77,18 +77,18 @@ const AboutUs = () => {
           </div>
         </div>
 
-        <div className="lg:mb-[200px] md:w-[650px] m-auto md:h-[321px] lg:w-[80%] mx-auto mt-12 rounded-md lg:h-[537px] w-[309px] h-[162px] gap-2 md:gap-4 lg:gap-4 flex justify-center items-center">
-          <div className="lg:w-[50%] lg:h-[537px] md:w-[510px] md:h-[321px] w-[162px] h-[162px] rounded-md overflow-hidden border-r-[10px] border-l-[10px] border-black">
+        <div className="lg:mb-[200px] md:w-[650px] m-auto md:h-[321px] lg:w-[80%] mx-auto mt-12 rounded-md lg:h-[537px] w-[80%] h-[162px] gap-2 md:gap-4 lg:gap-4 flex justify-center items-center">
+          <div className="lg:w-[50%] lg:h-[537px] md:w-[510px] md:h-[321px] w-[50%] h-[162px] rounded-md overflow-hidden   border-black">
             <Image
               src="/assets/images/vision.jpeg"
               alt="Our Vision Banner"
               width={510}
               height={537}
-              className="md:w-[510px] md:h-[321px] lg:h-[537px] w-[162px] h-[162px] overflow-hidden rounded-md object-cover"
+              className="md:w-[510px] md:h-[321px] lg:h-[537px] w-[100%] h-[162px] overflow-hidden rounded-md object-cover"
             />
           </div>
           <div className="flex justify-center items-center w-1/2">
-            <div className="text-black w-[154px] md:w-[309px] md:h-[321px] h-[162px] lg:h-[537px] bg-white rounded-md playfair flex flex-col text-center justify-center items-center lg:w-[567px] m-auto p-2 lg:p-4 gap-1 lg:gap-6">
+            <div className="text-black w-[100%] md:w-[309px] md:h-[321px] h-[162px] lg:h-[537px] bg-white rounded-md playfair flex flex-col text-center justify-center items-center lg:w-[567px] m-auto p-2 lg:p-4 gap-1 lg:gap-6">
               <div className="lg:text-[48px] font-bold lg:leading-[63px] md:text-[36px] text-[20px]">
                 Our Vision
               </div>

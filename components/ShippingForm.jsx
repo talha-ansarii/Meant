@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import confetti from "@tsparticles/confetti"; 
 import Image from "next/image";
 import React, { useState } from "react";
 
@@ -55,9 +56,9 @@ const ShippingForm = ({ handlePayment }) => {
   };
 
   return (
-    <div className="min-h-screen flex lg:mt-[80px] md:mt-[80px] flex-col items-center bg-white ray-50 py-10 px-4 sm:px-6 lg:px-8">
+    <div className="md:min-h-screen lg:min-h-screen flex lg:mt-[80px] md:mt-[80px] flex-col items-center bg-white ray-50 py-10 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-4">
-        <div>
+        <div className="hidden md:block lg:block">
           <div className="w-full flex justify-center items-center">
             <Image
               src="/logoBlack.svg"

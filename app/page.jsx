@@ -27,7 +27,6 @@ export default function Home() {
   const { isSignedIn } = useUser();
   const [isInWishlist, setIsInWishlist] = useState(false);
   const [isInCart, setIsInCart] = useState(false);
-  const [showArrow, setShowArrow] = useState(false);
 
   const router = useRouter();
 
@@ -136,30 +135,9 @@ export default function Home() {
     }
   }, [isInWishlist1]);
 
-  // Arrow button scroll logic
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 50) {
-        setShowArrow(true);
-      } else {
-        setShowArrow(false);
-      }
-    };
 
-    window.addEventListener("scroll", handleScroll);
 
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, [show]);
-
-  const handleArrowClick = () => {
-    window.scrollTo({
-      top: document.body.scrollHeight,
-      behavior: "smooth",
-    });
-    setShowArrow(false);
-  };
+ 
 
   return (
     <div className="relative">
@@ -183,15 +161,7 @@ export default function Home() {
             <Footer />
           </div>
         </div>
-        {/* Arrow Button */}
-        {showArrow && (
-          <div
-            onClick={handleArrowClick}
-            className="fixed bottom-10 right-10 cursor-pointer z-50 rounded-full"
-          >
-            <FaArrowDown size={30} color="#F7879A" />
-          </div>
-        )}
+        
       </Suspense>
     </div>
   );

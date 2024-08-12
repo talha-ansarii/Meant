@@ -75,8 +75,8 @@ const Checkout = ({ cartProducts, cartTotal }) => {
               Shipping & Handling:
             </p>
             <p className="text-[16px] font-poppins font-semibold text-[#827777]">
-              ₹0
-            </p>
+  <span className="line-through">₹99</span> Free
+</p>
           </div>
           <div className="flex justify-between items-center mb-2">
             <p className="text-[16px] font-poppins font-semibold text-[#827777]">
@@ -88,10 +88,10 @@ const Checkout = ({ cartProducts, cartTotal }) => {
           </div>
           <div className="w-full h-[1px] bg-[#CDC8C8]"></div>
           <div className="flex justify-between items-center mt-4">
-            <h2 className="text-[30px] text-black font-semibold font-playfair-display">
+            <h2 className="lg:text-[30px] md:text-[30px] text-[20px] text-black font-semibold font-playfair-display">
               Estimated Total:
             </h2>
-            <h2 className="text-[30px] text-black font-semibold font-playfair-display">
+            <h2 className="lg:text-[30px] md:text-[30px] text-[20px]  text-black font-semibold font-playfair-display">
               ₹{cartTotal.toFixed(2)}
             </h2>
           </div>

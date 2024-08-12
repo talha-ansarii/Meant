@@ -18,6 +18,7 @@ const Page = () => {
   const navigate = useRouter();
 
   useEffect(() => {
+    handleConfetti()
     const fetchData = async () => {
       const cart = await getCartProducts();
       const products = await getAllProducts();
@@ -188,6 +189,20 @@ const Page = () => {
     }
   };
 
+  const handleConfetti = () => {
+    confetti({
+      particleCount: 300,
+      spread: 90,
+      origin: { x: 1, y: 0.9 },
+    });
+
+    confetti({
+      particleCount: 300,
+      spread: 90,
+      origin: { x: 0, y: 0.9 },
+    });
+  };
+
   return (
     <div>
       <Script src="https://checkout.razorpay.com/v1/checkout.js" />
@@ -195,7 +210,7 @@ const Page = () => {
         <RedirectToSignIn />
       </SignedOut>
       <SignedIn>
-      <div className="bg-black md:hidden lg:hidden block w-full h-[100px]">
+      <div className="bg-black md:hidden lg:hidden block w-full h-[70px]">
         <Header />
 
       </div>

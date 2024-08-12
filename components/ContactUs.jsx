@@ -114,7 +114,16 @@ const ContactUs = () => {
                 meantconnect@gmail.com
               </a>
             </p>
-            <p className="text-[15px] font-[400] text-[white]/[80%]">
+            <p className="text-[15px] font-[400] text-[white]/[80%] mt-4">
+              Address:{" "}
+              <a
+                href="mailto:meantconnect@gmail.com"
+                className="text-white"
+              >
+                D-10, Hare Krishna Estate, Nr. Asopalav Hotel, Narol Sarkhej Highway, Narol, Ahmedabad, Gujarat - 382405
+              </a>
+            </p>
+            <p className="text-[15px] mt-4 font-[400] text-[white]/[80%]">
               Phone no:{" "}
               <a href="tel:+919104604108" className="text-white">
                 +91 9104604108

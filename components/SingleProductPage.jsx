@@ -21,6 +21,7 @@ import {
 import VideoLoader from "./VideoLoader";
 import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
+import LikeButton from "./likeButton/LikeButton";
 
 const shades = ["#A32C42", "#663024", "#AD5B55", "#995A60"];
 
@@ -352,17 +353,12 @@ const SingleProductPage = ({ productId }) => {
               <h1 className="lg:font-size-heading font-bold text-[28px] font-playfair-display">
                 {product.name}
               </h1>
-              {wishlistFilled ? (
-                <FaHeart
-                  onClick={handleWishlistClick}
-                  className="w-8 h-8 text-[#D76D8E] cursor-pointer"
-                />
-              ) : (
-                <FaRegHeart
-                  onClick={handleWishlistClick}
-                  className="w-8 h-8 text-[#D76D8E] cursor-pointer"
-                />
-              )}
+              <div
+              onClick={handleWishlistClick}
+               className="relative mr-[20px]">
+              <LikeButton wishlistFilled={wishlistFilled} />
+
+              </div>
             </div>
             <p className="lg:text-sm text-[10px] font-normal font-merriweather text-white mt-2">
               {product.meta_data.find((meta) => meta.key === "details")

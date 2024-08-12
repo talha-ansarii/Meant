@@ -17,7 +17,7 @@ const CategoryFilter = ({
   onReset,
 }) => {
   return (
-    <div>
+    <div className="relative z-[200]">
       <ul className="grid grid-cols-2 gap-2">
         {categories.map((category) => (
           <li key={category} className="flex items-center">
@@ -265,7 +265,7 @@ useEffect(() => {
             {/* Filter button */}
             <button
               onClick={toggleFilter}
-              className="bg-black text-white border border-white rounded-md pl-[.7rem] pr-[.83rem] py-2"
+              className="bg-black text-white text-xs md:text-sm lg:text-sm  border border-white rounded-md  py-1 px-2 md:px-4 md:py-2 lg:px-4 lg:py-2"
             >
               Filter
             </button>
@@ -274,7 +274,7 @@ useEffect(() => {
 
         {/* Filter Popup */}
         <div
-          className={`fixed inset-0 flex items-start justify-end bg-black bg-opacity-50 z-50 transition-transform duration-700 ${
+          className={`fixed inset-0 flex items-start justify-end bg-black bg-opacity-50 z-[200] transition-transform duration-700 ${
             filterOpen ? "translate-x-0" : "translate-x-full"
           }`}
           onClick={() => setFilterOpen(false)}
