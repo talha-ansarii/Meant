@@ -407,27 +407,27 @@ const SingleProductPage = ({ productId }) => {
             </div>
 
             <div className="flex items-center mt-4">
-              <div className="flex items-center border border-white bg-black rounded-md mr-6">
+              <div className="flex items-center justify-center h-[40px] w-[150px] border border-white bg-black rounded-md mr-6">
                 <button
                   onClick={() => handleQuantityChange(-1)}
-                  className="w-6 h-6 text-white font-poppins font-medium border-white rounded-l-md flex items-center justify-center"
+                  className="w-1/3 h-6 text-white font-poppins font-medium border-white rounded-l-md flex items-center justify-center"
                 >
-                  -
+                  <p>-</p>
                 </button>
-                <span className="w-8 h-8 text-white font-poppins font-medium border-r border-l border-white flex items-center justify-center">
-                  {quantity}
+                <span className="w-1/3 h-8 text-white font-poppins font-medium border-r border-l border-white flex items-center justify-center">
+                  <p>{quantity}</p>
                 </span>
                 <button
                   onClick={() => handleQuantityChange(1)}
-                  className="w-8 h-8 text-white font-poppins font-medium rounded-r-md flex items-center justify-center"
+                  className="w-1/3 h-8  text-white font-poppins font-medium rounded-r-md flex items-center justify-center"
                 >
-                  +
+                  <p>+</p>
                 </button>
               </div>
 
               <button
                 onClick={handleCartClick}
-                className="bg-white text-black border border-black px-6 py-2 rounded-md font-merriweather font-bold w-full max-w-xs hover:bg-gray-300"
+                className="bg-white w-[150px] h-[40px] text-black border border-black px-6 py-2 rounded-md font-merriweather font-bold max-w-xs hover:bg-gray-300"
               >
                 Add to Cart
               </button>
@@ -477,7 +477,7 @@ const SingleProductPage = ({ productId }) => {
               <div className="flex flex-col items-center">
                 <div className="flex items-center justify-center w-16 h-16 border border-white rounded-full bg-black">
                   <Image
-                    src="/assets/images/paraben-free.webp"
+                    src="/assets/images/leaf.svg"
                     alt="Paraben Free"
                     width={32}
                     height={32}
@@ -492,7 +492,7 @@ const SingleProductPage = ({ productId }) => {
               <div className="flex flex-col items-center">
                 <div className="flex items-center justify-center w-16 h-16 border border-white rounded-full bg-black">
                   <Image
-                    src="/assets/images/vegan.webp"
+                    src="/assets/images/vegan.svg"
                     alt="Vegan"
                     width={32}
                     height={32}
@@ -507,7 +507,7 @@ const SingleProductPage = ({ productId }) => {
               <div className="flex flex-col items-center">
                 <div className="flex items-center justify-center w-16 h-16 border border-white rounded-full bg-black">
                   <Image
-                    src="/assets/images/cruelty-free.webp"
+                    src="/assets/images/dog.svg"
                     alt="Cruelty Free"
                     width={32}
                     height={32}
@@ -524,7 +524,7 @@ const SingleProductPage = ({ productId }) => {
 
         {/* You May Also Like Seprator */}
         <div className="flex items-center my-12">
-          <h2 className="font-size-heading font-medium font-playfair-display flex-shrink-0">
+          <h2 className="md:text-5xl lg:text-5xl text-3xl font-medium font-playfair-display flex-shrink-0">
             You May Also Like
           </h2>
         </div>
@@ -572,7 +572,7 @@ const SingleProductPage = ({ productId }) => {
         </div>
 
         {/* Reviews Section */}
-        <div className="relative flex md:flow-row lg:flex-row md:gap-0 lg:gap-0 gap-8 flex-col items-center justify-center space-x-12 mb-8">
+        <div className="relative flex md:flow-row lg:flex-row md:gap-0 lg:gap-0 gap-y-8 flex-col items-center justify-center md:space-x-12 lg:space-x-12 mb-8">
           <div className="flex items-center space-x-12">
             <p className="text-white font-medium font-size-heading font-playfair-display">
               {averageRating} / 5

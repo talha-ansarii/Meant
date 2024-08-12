@@ -187,7 +187,7 @@ const ProductCard = ({
         {/* Quantity and Add to Cart */}
         <div className="flex items-center justify-between mt-4">
           {/* Quantity controls */}
-          <div className="flex items-center border border-black bg-white rounded-md">
+          <div className="flex items-center justify-center w-[125px] h-[40px] border border-black bg-white rounded-md">
             <button
               onClick={() => onQuantityChange(product.id, -1)}
               className="w-6 h-6 text-black font-poppins font-medium border-black rounded-l-md flex items-center justify-center"
@@ -207,7 +207,7 @@ const ProductCard = ({
           {/* Add to Cart button */}
           <button
             onClick={handleCartClick}
-            className="bg-white text-black border border-black px-4 py-1.5 rounded-md font-merriweather font-bold hover:bg-gray-300"
+            className="bg-white text-black w-[125px] h-[40px] border border-black px-4 py-1.5 rounded-md font-merriweather font-bold hover:bg-gray-300"
           >
             Add to Cart
           </button>

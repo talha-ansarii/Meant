@@ -4,9 +4,9 @@ import Image from "next/image";
 
 const Checkout = ({ cartProducts, cartTotal }) => {
   return (
-    <div className="flex flex-col pt-[100px] items-center justify-between min-h-screen bg-[#CDC8C8]/[40%] p-4">
+    <div className="flex flex-col  lg:pt-[100px] md:pt-[100px] items-center justify-between md:min-h-full lg:min-h-full bg-[#CDC8C8]/[40%] p-4">
       <div className="w-full p-6">
-        <div className="h-[calc(100vh-40%)] overflow-auto no-scrollbar">
+        <div className=" overflow-auto no-scrollbar">
           {cartProducts.map((item) => (
             <div
               key={item.id}
