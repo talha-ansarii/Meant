@@ -10,9 +10,7 @@ import { useEffect } from "react";
 
 const PastOrdersPage = () => {
 
-  useEffect(() => {
-    handleConfetti();
-  }, []);
+
   return (
     <div>
 
