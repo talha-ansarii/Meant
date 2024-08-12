@@ -12,6 +12,7 @@ import {
 } from "@/utils/cartUtils";
 import VideoLoader from "./VideoLoader";
 import { useUser } from "@clerk/nextjs";
+import Loader from "./Loader";
 
 const Cart = () => {
   const [cartProducts, setCartProducts] = useState([]);
