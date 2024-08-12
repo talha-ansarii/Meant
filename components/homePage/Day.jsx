@@ -151,7 +151,7 @@ const Day = ({ products }) => {
           ref={canvasref}
           className="bg-white  overflow-hidden md:w-[90%] lg:w-[80%]  md:flex-row lg:flex-row flex-col m-auto flex"
         >
-          <div className="w-[90%] md:mt-[80px] h-[500px] mx-auto flex justify-center items-center pt-[60px]  md:w-[50%] lg:w-[50%] ">
+          <div className="w-[90%]  h-[500px] mx-auto flex justify-center items-center pt-[60px]  md:w-[50%] lg:w-[50%] ">
             {/* <div className="w-[1257px] absolute z-0 top-[-300px] left-[-200px] h-[1180px] radial-gradient"></div> */}
             {/* <Image
               width={556}
@@ -161,7 +161,7 @@ const Day = ({ products }) => {
               className=""
             /> */}
           </div>
-          <div className="w-[90%] mx-auto  md:w-[50%] lg:w-[50%] z-20 flex flex-col lg:gap-10 lg:px-16 lg:h-[850px] md:h-[850px] md:pt-[170px] lg:pt-[170px]">
+          <div className="w-[90%] mx-auto  md:w-[50%] lg:w-[50%] z-20 flex flex-col lg:gap-10 lg:px-16 lg:h-[850px]  md:pt-[170px] lg:pt-[170px]">
             <div className="">
               <Image
                 src="/HomePage/day/Day Dazzle Lipstick.svg"

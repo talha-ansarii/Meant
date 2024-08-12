@@ -27,7 +27,7 @@ function Tab({ show, setShow }) {
     if (!isClient) return;
 
     let previousProgress = 0;
-    gsap.set(".canvas", { x: "100%", y: "-100%", scale: 2 });
+    gsap.set(".canvas", { x: "80%", y: "-100%", scale: 2 });
 
     gsap.timeline({
       ease: "ease-in",

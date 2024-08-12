@@ -41,7 +41,7 @@ function Mobile({ show, setShow }) {
           if (front.current) {
             const openRotation = self.progress * -100;
             front.current.rotation.x = openRotation * (Math.PI / 180);
-            if (self.progress < 0.04) {
+            if (self.progress < 0.1) {
               front.current.rotation.x = 90 * (Math.PI / 180);
             }
           }
