@@ -175,7 +175,7 @@ const Night = ({ products, setShow, show }) => {
             </div>
             <div className="ml-[20px] mt-8 flex items-center gap-4">
             <div
-              onClick={(e) => handleWishlistClick(e, product1)}
+              onClick={(e) => handleWishlistClick(e, product)}
                className="relative mr-[16px]">
               <LikeButton wishlistFilled={wishlistFilled} />
 
