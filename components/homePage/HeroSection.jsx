@@ -3,11 +3,11 @@ import FlipWords from "@/components/ui/flip-words";
 import Image from "next/image";
 
 const HeroSection = () => {
-  const limited = [ "Limited"];
+  const limited = [ "Limited, Collection"];
   const collection = [ "Collection"];
   return (
     <div>
-      <div className="relative flex justify-center items-center h-[calc(100vh-100px)] md:h-[800px] lg:h-[800px] bg-black w-full">
+      <div className="relative flex justify-center items-center h-[950px] md:h-[800px] lg:h-[800px] bg-black w-full">
         <div className="absolute luxurious italiana left-[50%] translate-x-[-50%] top-[100px] lg:top-[150px] lg:left-[50%] lg:translate-x-[-50%] text-xl lg:text-3xl">
         
           <FlipWords
@@ -15,19 +15,19 @@ const HeroSection = () => {
             duration={3000}
             className="inline-block text-white"
           />
-          <FlipWords
+          {/* <FlipWords
             words={collection}
             duration={3000}
             className="inline-block text-white"
-          />
+          /> */}
         </div>
-        <Image
+        {/* <Image
           src={"/assets/images/close.png"}
           alt="close"
           width={400}
           height={400}
           className="w-[500px] md:w-[750px]"
-        />
+        /> */}
       </div>
     </div>
   );

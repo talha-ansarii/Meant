@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import React, { useEffect, useRef, useState } from "react";
+import React, { Suspense, useEffect, useRef, useState } from "react";
 import { Toaster, toast } from "sonner";
 import { Meteors } from "../ui/meteors";
 import { HoverBorderGradient } from "../ui/hover-border-gradient";
@@ -15,6 +15,9 @@ import {
 } from "@/utils/wishlistUtils";
 import Link from "next/link";
 import LikeButton from "../likeButton/LikeButton";
+import NightModelComponent from "./NightModelComponents";
+import { Canvas } from "@react-three/fiber";
+import { useMediaQuery } from "react-responsive";
 
 const Night = ({ products, setShow, show }) => {
   const [isInWishlist, setIsInWishlist] = useState(false);
@@ -22,6 +25,7 @@ const Night = ({ products, setShow, show }) => {
   const { isSignedIn } = useUser();
   const [wishlistFilled, setWishlistFilled] = useState(false);
   const router = useRouter();
+  const isMobile = useMediaQuery({ maxWidth: 480 });
 
   const canvasref = useRef(null);
   const ref = useRef(null);
@@ -140,22 +144,35 @@ const Night = ({ products, setShow, show }) => {
     setWishlistFilled(!wishlistFilled);
   };
 
+  // console.log(isMobile)
+
   return (
     <div className="relative">
-      <div className=" h-[800px] md:h-[500px] overflow-x-hidden relative lg:h-[700px] bg-black over flex flex-col pt-[0px] md:flex-row lg:flex-row gap-6 w-[90%] m-auto ">
+      <div className=" h-[1100px] md:h-[500px] overflow-x-hidden relative lg:h-[700px] bg-black over flex flex-col pt-[0px] md:flex-row lg:flex-row gap-6 w-[90%] m-auto ">
         <Toaster position="top-right" richColors />
 
         <div className="absolute">
           <Meteors number={20} />
         </div>
 
-        <div className="pt-[100px] w-full md:pt-[180px] lg:w-[50%] md:w-[50%]  md:p-0 lg:p-0">
-          <Image
+        <div className=" w-full overflow-visible   md:pt-[180px] lg:w-[50%] md:w-[50%]  md:p-0 lg:p-0">
+          {/* <Image
             src="/assets/images/night.png"
             width={600}
             height={600}
             className="w-full relative  z-[200]"
-          />
+          /> */}
+          {isMobile && (
+            <div
+              className=" w-[100%]  lg:pt-[150px]  md:pt-[150px] h-[850px] relative z-[300] "
+            >
+              <Canvas >
+                <Suspense fallback={null}>
+                  <NightModelComponent  />
+                </Suspense>
+              </Canvas>
+            </div>
+          )}
         </div>
         <div className="flex w-full lg:w-[50%] md:w-[50%] flex-col gap-4">
           <din className="">

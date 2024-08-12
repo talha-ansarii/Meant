@@ -98,7 +98,7 @@ const ContactUs = () => {
       ></Script>
       <main className=" bg-white">
         <header className="p-8 grid grid-cols-1 md:grid-cols-2 gap-4 pt-10 lg:px-40 bg-black dark:bg-blue-900 md:h-96">
-          <div className="mx-auto mb-10 md:mt-20">
+          <div className="mx-auto pb-10 md:mt-20">
             <h1 className="text-[48px] font-[700] mt-4  text-white playfair ">
               CONTACT US
             </h1>
@@ -230,7 +230,7 @@ const ContactUs = () => {
             </div>
           </form>
         </header>
-        <div className="w-full bg-white h-[0px] md:h-[200px] lg:h-[200px]"></div>
+        <div className="w-full bg-black h-[0px] md:h-[200px] lg:h-[200px]"></div>
         <Footer />
       </main>
     </div>

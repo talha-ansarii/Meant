@@ -18,6 +18,9 @@ import {
 import { addProductToCart } from "@/utils/cartUtils";
 import { useRouter } from "next/navigation";
 import { FaArrowDown } from "react-icons/fa";
+import Mobile from "@/components/animations/Mobile";
+import { useMediaQuery } from "react-responsive";
+import Tab from "@/components/animations/Tab";
 
 export default function Home() {
   const [products, setProducts] = useState([]);
@@ -27,6 +30,8 @@ export default function Home() {
   const { isSignedIn } = useUser();
   const [isInWishlist, setIsInWishlist] = useState(false);
   const [isInCart, setIsInCart] = useState(false);
+  const isMobile = useMediaQuery({ maxWidth: 480 });
+  const isTablet = useMediaQuery({ minWidth: 481, maxWidth: 1024 });
 
   const router = useRouter();
 
@@ -136,11 +141,21 @@ export default function Home() {
   }, [isInWishlist1]);
 
 
-
+  // console.log(isMobile)
  
 
   return (
     <div className="relative">
+        {isMobile && (
+          <div className="absolute z-[200] top-0 left-0 w-full h-full">
+            <Mobile />
+          </div>
+        )}
+        {isTablet && (
+          <div className="absolute z-[200] top-0 left-0 w-full h-full">
+            <Tab />
+          </div>
+        )}
       <Suspense fallback={<div>Loading...</div>}>
         <div className="w-full bg-black">
           <Header />

@@ -202,7 +202,6 @@ const Page = () => {
 
       </div>
       <Header />
-
         <div className="w-full md:flex-row lg:flex-row flex-col flex bg-white ">
           <div className="lg:w-[50%] md:w-[50%] w-full">
             <ShippingForm handlePayment={handlePayment} />
