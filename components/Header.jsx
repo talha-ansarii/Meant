@@ -23,7 +23,7 @@ const Header = () => {
   const [cartLength, setCartLength] = useState(0);
   const [wishlistLength, setWishlistLength] = useState(0);
   // const [isOpened, setIsOpened] = useState(false);
-
+  const { isSignedIn } = useUser();
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
@@ -31,21 +31,70 @@ const Header = () => {
       document.body.style.overflow = "auto";
     }
   }, [isOpen]);
- 
 
   // console.log(user)
   useEffect(() => {
     const fetchData = async () => {
-      const cart = await getCartProducts();
-      const wishlist = await getWishlistProducts();
-      setCartLength(cart?.length);
-      setWishlistLength(wishlist?.length);
-    };
-    fetchData();
-    // const intervalId = setInterval(fetchData, 500);
+      try {
+        let dbWishlist = [];
+        let localWishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
 
-    // return () => clearInterval(intervalId);
-  }, []);
+        if (isSignedIn) {
+          // Fetch wishlist products from the database
+          dbWishlist = await getWishlistProducts();
+          // Extract productIds from dbWishlist
+          const dbWishlistIds = dbWishlist.map((item) => item.productId);
+
+          // Merge and deduplicate the wishlists
+          const mergedWishlist = [
+            ...new Set([...localWishlist, ...dbWishlistIds]),
+          ];
+
+          // Sync the merged wishlist back to the database and localStorage
+          await syncWishlistToDatabase(mergedWishlist);
+          localStorage.setItem("wishlist", JSON.stringify(mergedWishlist));
+
+          // Set the wishlist length
+          setWishlistLength(mergedWishlist.length);
+        } else {
+          // Set the wishlist length from local storage
+          setWishlistLength(localWishlist.length);
+        }
+      } catch (error) {
+        console.error("Error fetching wishlist:", error);
+      }
+    };
+
+    fetchData();
+
+  }, [isSignedIn]);
+
+  useEffect(() => {
+    const setwishLength = async () => {
+      let localCart = JSON.parse(localStorage.getItem("cartItems")) || [];
+      let localWishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+      setCartLength(localCart.length);
+      setWishlistLength(localWishlist.length);
+    }
+
+    const inter = setInterval(() => {
+      setwishLength();
+    }, 500);
+
+    return () => {
+      clearInterval(inter);
+    }
+
+  }, [wishlistLength]);
+
+  const syncWishlistToDatabase = async (wishlist) => {
+    // Assume this function sends the merged wishlist to the server to update the database
+    try {
+      await updateWishlistInDatabase(wishlist); // Replace with your actual API call
+    } catch (error) {
+      console.error("Error syncing wishlist to database:", error);
+    }
+  };
 
   useEffect(() => {
     let lastScrollY = window.scrollY;

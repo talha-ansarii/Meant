@@ -142,45 +142,85 @@ const SingleProductPage = ({ productId }) => {
   };
 
   const handleCartClick = async (e) => {
-    console.log("clicked");
-
+    e.stopPropagation();
+  
     if (!isSignedIn) {
       return router.push("/sign-in");
     }
-
+  
     try {
-      await addProductToCart(product?.id, quantity);
+      await addProductToCart(product.id, quantity);
       toast.success("Added to cart");
+  
+      // Update quantities state
       setQuantity(1);
-      console.log("Product added to cart:", data);
+  
+      // Retrieve existing cart items from local storage
+      const cartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
+  
+      // Check if the product is already in the cart
+      const existingCartItemIndex = cartItems.findIndex(item => item.id === product.id);
+  
+      if (existingCartItemIndex !== -1) {
+        // If product exists, update its quantity
+        cartItems[existingCartItemIndex].quantity += quantity;
+      } else {
+        // If product doesn't exist, add it to the cart
+        const newCartItem = { id: product.id, quantity };
+        cartItems.push(newCartItem);
+      }
+  
+      // Save the updated cart items to local storage
+      localStorage.setItem("cartItems", JSON.stringify(cartItems));
     } catch (error) {
       console.error("Error adding product to cart:", error);
-      return;
     }
   };
 
   const handleWishlistClick = async (e) => {
     e.stopPropagation();
+    const wishlistKey = 'wishlist';
+
+    const product_id = parseInt(productId);
+    
+    // Initialize the wishlist from localStorage or an empty array
+    let wishlist = JSON.parse(localStorage.getItem(wishlistKey)) || [];
+  
     if (!isSignedIn) {
-      return router.push("/sign-in");
-    }
-    try {
       if (wishlistFilled) {
-        await removeProductFromWishlist(parseInt(productId));
+        wishlist = wishlist.filter((item) => item !== product_id);
         toast.error("Removed from wishlist");
       } else {
-        await addProductToWishlist(parseInt(productId));
+        if (!wishlist.includes(product_id)) {
+          wishlist.push(product_id);
+        }
         toast.success("Added to wishlist");
       }
-      // Re-fetch wishlist state after update
-      const updatedWishlistProducts = await getWishlistProducts();
-      const contains = updatedWishlistProducts?.some(
-        (prod) => prod.productId == productId
-      );
-      setWishlistFilled(contains);
-    } catch (error) {
-      console.error("Error updating wishlist:", error);
+      localStorage.setItem(wishlistKey, JSON.stringify(wishlist));
+    } else {
+      try {
+        if (wishlistFilled) {
+          await removeProductFromWishlist(product_id);
+          toast.error("Removed from wishlist");
+        } else {
+          await addProductToWishlist(product_id);
+          toast.success("Added to wishlist");
+        }
+  
+        // Update local storage
+        if (!wishlist.includes(product_id)) {
+          wishlist.push(product_id);
+        } else {
+          wishlist = wishlist.filter((item) => item !== product_id);
+        }
+        localStorage.setItem(wishlistKey, JSON.stringify(wishlist));
+      } catch (error) {
+        console.error("Error updating wishlist in the database", error);
+        toast.error("Error updating wishlist");
+      }
     }
+  
+    setWishlistFilled(!wishlistFilled);
   };
 
   const handleReviewFormClose = () => {
@@ -205,16 +245,31 @@ const SingleProductPage = ({ productId }) => {
   };
 
   useEffect(() => {
+
+    const product_id = parseInt(productId);
     const fetchWishlistProducts = async () => {
-      const wishListproducts = await getWishlistProducts();
-      const contains = wishListproducts?.some((prod) => {
-        return prod.productId == productId;
-      });
+      let wishListproducts = [];
+
+      if (isSignedIn) {
+        // Fetch wishlist products from the database
+        try {
+          wishListproducts = await getWishlistProducts();
+        } catch (error) {
+          console.error("Error fetching wishlist products", error);
+        }
+      } else {
+        // Fetch wishlist products from localStorage
+        const localWishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+        wishListproducts = localWishlist.map(id => ({ productId: id }));
+      }
+
+      // Check if the product is in the wishlist
+      const contains = wishListproducts.some(prod => prod.productId === product_id);
       setWishlistFilled(contains);
     };
 
     fetchWishlistProducts();
-  }, [productId]);
+  }, [productId, isSignedIn]);
 
   const calculateAverageRating = () => {
     if (reviews.length === 0) return 0;

@@ -10,6 +10,7 @@ import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { addProductToCart, getAllProducts } from "@/utils/cartUtils";
 import {
+  addProductToWishlist,
   getWishlistProducts,
   removeProductFromWishlist,
 } from "@/utils/wishlistUtils";
@@ -29,72 +30,133 @@ const WishList = () => {
 
 
 
-  const handleAddToCart = async (item) => {
-    if (!isSignedIn) {
-      return router.push("/sign-in");
-    }
-    try {
-      await addProductToCart(item.id, 1);
-      toast.success("Added to cart");
-      removeFromWishlist(item.id);
-      console.log("Product added to cart:", data);
-    } catch (error) {
-      console.error("Error adding product to cart:", error);
-      return;
-    }
-  };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const wishlist = await getWishlistProducts();
+        let dbWishlist = [];
+        let localWishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+
+        if (isSignedIn) {
+          // Fetch wishlist products from the database
+          dbWishlist = await getWishlistProducts();
+          // Extract productIds from dbWishlist
+          const dbWishlistIds = dbWishlist.map(item => item.productId);
+
+          // Merge and deduplicate the wishlists
+          const mergedWishlist = [...new Set([...localWishlist, ...dbWishlistIds])];
+
+          // Sync the merged wishlist back to the database and localStorage
+          await syncWishlistToDatabase(mergedWishlist);
+          localStorage.setItem('wishlist', JSON.stringify(mergedWishlist));
+
+          // Set the wishlist for filtering
+          dbWishlist = mergedWishlist.map(id => ({ productId: id }));
+        } else {
+          // Map localWishlist to match the structure of dbWishlist
+          dbWishlist = localWishlist.map(id => ({ productId: id }));
+        }
+
         const products = await getAllProducts();
 
-        
-        
-        if (wishlist && products) {
-          setLoading(false);
+        if (dbWishlist && products) {
           const filteredProducts = products.filter((product) =>
-            wishlist.some(
-              (wishlistItem) => wishlistItem.productId === product.id
-            )
+            dbWishlist.some((wishlistItem) => wishlistItem.productId === product.id)
           );
 
-          
-
-          console.log(filteredProducts);
           setWishlistArray(filteredProducts);
         }
       } catch (error) {
         console.error("Error fetching wishlist:", error);
+      } finally {
         setLoading(false);
       }
     };
 
     fetchData();
-  }, []);
+  }, [isSignedIn]);
+
+  const syncWishlistToDatabase = async (wishlist) => {
+    console.log(wishlist)
+    // Assume this function sends the merged wishlist to the server to update the database
+    try {
+      await addProductToWishlist(wishlist); // Replace with your actual API call
+    } catch (error) {
+      console.error("Error syncing wishlist to database:", error);
+    }
+  };
+
 
   const removeFromWishlist = async (productId) => {
-    removeProductFromWishlist(productId);
-    toast.error("Removed from wishlist");
-    const updatedWishlist = wishlistArray.filter(
-      (item) => item.id !== productId
-    );
-    setWishlistArray(updatedWishlist);
+    if (isSignedIn) {
+      try {
+        await removeProductFromWishlist(productId);
+        toast.error("Removed from wishlist");
+  
+        let updatedWishlist = wishlistArray.filter((item) => item.id !== productId);
+        setWishlistArray(updatedWishlist);
+  
+        // Update localStorage
+        const localWishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+        const updatedLocalWishlist = localWishlist.filter((id) => id !== productId);
+        localStorage.setItem('wishlist', JSON.stringify(updatedLocalWishlist));
+      } catch (error) {
+        console.error("Error removing product from wishlist:", error);
+        toast.error("Error removing product from wishlist");
+      }
+    } else {
+      const localWishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+      const updatedLocalWishlist = localWishlist.filter((id) => id !== productId);
+      localStorage.setItem('wishlist', JSON.stringify(updatedLocalWishlist));
+
+      console.log(wishlistArray)
+  
+      let updatedWishlist = wishlistArray?.filter((item) => item.id !== productId);
+      console.log(updatedWishlist)
+        setWishlistArray(updatedWishlist);
+      toast.error("Removed from wishlist");
+    }
   };
   
-  if (!isSignedIn) {
-    return (
-      <div className="overflow-x-hidden">
-      <div className="w-[100vw] playfair h-[100vh] flex justify-center items-center">
-        <Header />
-        <p className="text-2xl font-medium">Please sign in to view your wishlist</p>
-      </div>
-        <Footer/>
+  const handleCartClick = async (product) => {
+    
+  
+    if (!isSignedIn) {
+      return router.push("/sign-in");
+    }
+  
+    try {
+      await addProductToCart(product.id, 1);
+      toast.success("Added to cart");
+      const updatedwishlistArray = wishlistArray.filter((item) => item.id !== product.id);
+      localStorage.setItem("wishlist", JSON.stringify(updatedwishlistArray.map((item) => item.id)));
+      await removeFromWishlist(product.id);
 
-      </div>
-    );
-  }
+      setWishlistArray(updatedwishlistArray);
+      // Update quantities state
+  
+      // Retrieve existing cart items from local storage
+      const cartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
+  
+      // Check if the product is already in the cart
+      const existingCartItemIndex = cartItems.findIndex(item => item.id === product.id);
+  
+      if (existingCartItemIndex !== -1) {
+        // If product exists, update its quantity
+        cartItems[existingCartItemIndex].quantity += 1;
+      } else {
+        // If product doesn't exist, add it to the cart
+        const newCartItem = { id: product.id, quantity: 1 };
+        cartItems.push(newCartItem);
+      }
+  
+      // Save the updated cart items to local storage
+      localStorage.setItem("cartItems", JSON.stringify(cartItems));
+    } catch (error) {
+      console.error("Error adding product to cart:", error);
+    }
+  };
+
   if (loading)
     return (
       <>{isClient && <div className="w-[100vw] h-[100vh] ">Loading...</div>}</>
@@ -111,7 +173,7 @@ const WishList = () => {
       </h1>
       {wishlistArray.length === 0 ? (
         <p className="text-center h-[100vh] ">
-          Your wishlist is empty.{" "}
+          Your wishlist is empty.{" "}<br/>
           <Link href="/products">Start adding some products!</Link>
         </p>
       ) : (
@@ -147,7 +209,7 @@ const WishList = () => {
                 <div className="flex flex-col items-center mt-[1rem]">
                   <button
                     className=" bg-white w-[75%] text-black border border-black p-2 rounded-[3px] font-merriweather font-bold mb-4"
-                    onClick={() => handleAddToCart(item)}
+                    onClick={() => handleCartClick(item)}
                   >
                     Add to Cart
                   </button>

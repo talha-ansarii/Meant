@@ -59,6 +59,7 @@ const { isSignedIn } = useUser();
   const handleRemoveFromCart = async (productId) => {
     try {
       const updatedCart = await removeFromCart(productId);
+      localStorage.setItem("cartItems", JSON.stringify(updatedCart));
       if (updatedCart) {
         setCartProducts((prevCartProducts) =>
           prevCartProducts.filter((product) => product.id !== productId)
