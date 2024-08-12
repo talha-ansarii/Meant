@@ -149,7 +149,7 @@ const Night = ({ products, setShow, show }) => {
           <Meteors number={20} />
         </div>
 
-        <div className="pt-[100px] w-full md:w-[50%] lg:w-[50%]  md:p-0 lg:p-0">
+        <div className="pt-[100px] w-full md:pt-[180px] lg:w-[50%] md:w-[50%]  md:p-0 lg:p-0">
           <Image
             src="/assets/images/night.png"
             width={600}
@@ -157,7 +157,7 @@ const Night = ({ products, setShow, show }) => {
             className="w-full relative  z-[200]"
           />
         </div>
-        <div className="flex flex-col gap-4">
+        <div className="flex w-full lg:w-[50%] md:w-[50%] flex-col gap-4">
           <din className="">
             <div className="flex md:pt-[200px] flex-col gap-y-6">
               <Image
@@ -173,10 +173,10 @@ const Night = ({ products, setShow, show }) => {
                 Available in four new lip adapting shades.
               </div>
             </div>
-            <div className="   mt-8 flex items-center gap-4">
+            <div className="ml-[20px] mt-8 flex items-center gap-4">
             <div
               onClick={(e) => handleWishlistClick(e, product1)}
-               className="relative mr-[20px]">
+               className="relative mr-[16px]">
               <LikeButton wishlistFilled={wishlistFilled} />
 
               </div>
@@ -184,7 +184,7 @@ const Night = ({ products, setShow, show }) => {
               <HoverBorderGradient
                 containerClassName="rounded-full"
                 as="div"
-                className="font-poppins font-[500] text-[10px] leading-[18px] w-[100px] h-[30px] md:w-[147px] lg:w-[147px] md:h-[45px] lg:h-[45px] md:text-[14px] flex justify-center items-center cursor-pointer lg:text-[14px] bg-black text-white rounded-[34px]"
+                className="font-poppins font-[500] text-[10px] leading-[18px] w-[100px] h-[30px] md:w-[130px] lg:w-[147px] md:h-[45px] lg:h-[45px] md:text-[14px] flex justify-center items-center cursor-pointer lg:text-[14px] bg-black text-white rounded-[34px]"
                 onClick={handleCartClick}
                 disabled={isInCart}
               >
@@ -193,7 +193,7 @@ const Night = ({ products, setShow, show }) => {
               <HoverBorderGradient
                 containerClassName="rounded-full"
                 as="div"
-                className="font-poppins font-[500] text-[10px] leading-[18px]  w-[100px] h-[30px] md:w-[147px] lg:w-[147px] md:h-[45px] lg:h-[45px] md:text-[14px] lg:text-[14px] flex justify-center items-center bg-black text-white rounded-[34px]"
+                className="font-poppins font-[500] text-[10px] leading-[18px]  w-[100px] h-[30px] md:w-[130px] lg:w-[147px] md:h-[45px] lg:h-[45px] md:text-[14px] lg:text-[14px] flex justify-center items-center bg-black text-white rounded-[34px]"
               >
                 <Link href={"/product/60"}>
                   <span>ORDER NOW</span>

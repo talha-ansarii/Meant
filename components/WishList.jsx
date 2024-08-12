@@ -168,14 +168,24 @@ const WishList = () => {
       <Toaster position="top-right" richColors />
 
       <Header />
-      <h1 className="text-[40px] font-bold font-playfair-display mb-6 text-center pt-[8.5rem]">
+      <h1 className="text-[40px] font-bold flex flex-col items-center justify-center font-playfair-display mb-6 text-center pt-[8.5rem]">
         WISHLIST
       </h1>
       {wishlistArray.length === 0 ? (
-        <p className="text-center h-[100vh] ">
-          Your wishlist is empty.{" "}<br/>
-          <Link href="/products">Start adding some products!</Link>
+        <div className="text-center text-[20px] h-[50vh] flex flex-col items-center justify-center  gap-4 p-4 ">
+        <p>
+        Your Wishlist is empty.
         </p>
+
+        
+          
+          <Link
+                href="/checkout"
+                className="mt-8 text-[18px] w-full font-playfair-display font-extrabold inline-block bg-white text-black md:w-[400px] py-2 px-8 rounded-[30px] text-center  lg:w-[500px]"
+              >
+                Start adding some products...
+              </Link>
+        </div>
       ) : (
         <div className="p-4 w-[82%] m-auto pt-[2rem] grid grid-cols-1 md:grid-cols-3 gap-8">
           {wishlistArray.map((item) => (

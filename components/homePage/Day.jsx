@@ -176,7 +176,7 @@ const Day = ({ products }) => {
               <br />
               Available in four new lip adapting shades.
             </div>
-            <div className="flex l mt-2 items-center   z-[300]  gap-4">
+            <div className="flex l mt-2 items-center ml-[20px]   z-[300]  gap-4">
               {/* <svg
                 className="w-8 h-8 cursor-pointer"
                 fill={wishlistFilled ? "#D76D8E" : "none"}
@@ -189,14 +189,14 @@ const Day = ({ products }) => {
               </svg> */}
               <div
               onClick={(e) => handleWishlistClick(e, product1)}
-               className="relative mr-[20px]">
+               className="relative mr-[16px]">
               <LikeButton wishlistFilled={wishlistFilled} />
 
               </div>
               <HoverBorderGradient
                 containerClassName=" rounded-[34px]"
                 as="button"
-                className=" bg-black text-white w-[100px] h-[30px] md:w-[147px] lg:w-[147px] md:h-[45px] lg:h-[45px] md:text-[14px] lg:text-[14px] flex items-center justify-center cursor-pointer font-poppins space-x-2 text-[10px] font-[500] leading-[18px]"
+                className=" bg-black text-white w-[100px] h-[30px] md:w-[130px] lg:w-[147px] md:h-[45px] lg:h-[45px] md:text-[14px] lg:text-[14px] flex items-center justify-center cursor-pointer font-poppins space-x-2 text-[10px] font-[500] leading-[18px]"
                 onClick={handleCartClick}
                 disabled={isInCart1}
               >
@@ -206,7 +206,7 @@ const Day = ({ products }) => {
               <HoverBorderGradient
                 containerClassName=" rounded-[34px]"
                 as="button"
-                className=" bg-black text-white w-[100px] h-[30px] md:w-[147px] lg:w-[147px] md:h-[45px] lg:h-[45px] flex items-center justify-center font-poppins space-x-2 text-[10px] md:text-[14px] lg:text-[14px] font-[500] leading-[18px]"
+                className=" bg-black text-white w-[100px] h-[30px] md:w-[130px] lg:w-[147px] md:h-[45px] lg:h-[45px] flex items-center justify-center font-poppins space-x-2 text-[10px] md:text-[14px] lg:text-[14px] font-[500] leading-[18px]"
               >
                 <Link href={"/product/58"}>
                   <span>ORDER NOW</span>
