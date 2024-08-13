@@ -58,7 +58,9 @@ export default function Home() {
     };
 
     fetchProducts();
+    console.log(products)
   }, []);
+
 
   const productName1 = "Day Dazzle Lipstick";
   const product1 = products.find((p) => p.name === productName1);
@@ -180,21 +182,21 @@ export default function Home() {
       <Toaster position="top-right" richColors />
         {isMobile && (
           <div className="absolute z-[200] top-0 left-0  w-full h-full">
-          {console.log("Mobile")}
-            <Mobile />
+          {/* {console.log("Mobile")} */}
+            {/* <Mobile /> */}
           </div>
         )}
         {isTablet && (
           
           <div className="absolute z-[200] top-0  left-0 w-full h-full">
           {console.log("Tablet")}
-            <Tab />
+            {/* <Tab /> */}
           </div>
         )}
         {isDesktop && (
           <div className="absolute z-[200] top-0  left-0 w-full h-full">
-          {console.log("Desktop")}
-            <Desktop />
+          {/* {console.log("Desktop")} */}
+            {/* <Desktop /> */}
           </div>
         )}
       <Suspense fallback={<div>Loading...</div>}>

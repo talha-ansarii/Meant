@@ -185,7 +185,7 @@ const Night = ({ products, setShow, show }) => {
             >
              
 
-              <NightModel />
+              {/* <NightModel /> */}
             </div>
           )}
         </div>
