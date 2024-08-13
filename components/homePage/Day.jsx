@@ -146,7 +146,7 @@
       <div className="">
         {/* <div className="w-full h-[110px] gradient1"></div> */}
         <div className="w-full overflow-hidden  ">
-        <img src="/assets/images/gradientt.jpg" alt="day" className="w-full overflow-x-hidden hidden md:block mt-[-20px] lg:block mb-[-150px] lg:mb-[-230px]  object-cover" />
+        <img src="/assets/images/gradientt.jpg" alt="day" className="w-full overflow-x-hidden hidden md:block mt-[-20px] lg:block mb-[-150px]  lg:mb-[-230px]  object-cover" />
 
         </div>
         <img src="/assets/images/gradientt.jpg" alt="day" className="w-full md:hidden  lg:hidden mb-[-20px]  object-cover" />

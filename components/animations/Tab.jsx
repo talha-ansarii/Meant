@@ -13,10 +13,20 @@ function Tab({ show, setShow }) {
   const makeUpBox = useRef();
   const front = useRef();
   const [completed, setCompleted] = useState(0);
-  const isSmallTab = useMediaQuery({ maxWidth: 1024 });
+  // const isSmallTab = useMediaQuery({ minHeight: 1000, maxHeigt: 1100 });
+//  const [winHeight, setWinHeight] = useState(0); 
+ const [isSmallTab, setIsSmallTab] = useState(false);
+  // const isTablet = useMediaQuery({ minWidth: 481, maxWidth: 1024 });
+  
 
   useEffect(() => {
     setIsClient(true);
+    
+    console.log(isSmallTab)
+    if(window.innerHeight > 1000 && window.innerHeight < 1100){
+      setIsSmallTab(true);
+    }
+    console.log(isSmallTab)
   }, [isClient]);
 
 
@@ -59,7 +69,7 @@ function Tab({ show, setShow }) {
         },
       },
     }).fromTo(".canvas",{
-      x:250 , y: -1150, 
+      x:isSmallTab ? 100 : 250 , y: isSmallTab ? -400 : -1050, 
     }, { x: -200, y: 1050, scale: 0.6 });
   }, [isClient, front, makeUpBox]);
 

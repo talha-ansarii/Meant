@@ -45,8 +45,14 @@ body {
   src: url('/fonts/imprint-mt-shadow.ttf');
 }
 .sandana {
-  font-family: 'providence-bold';
-  src: url('/fonts/sandana.ttf');
+  font-family: 'Sandana';
+  src: url('/fonts/sandana.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+.cehua {
+  font-family: 'cehua-bold';
+  src: url('/fonts/cehua.ttf');
 }
 
 .product-count {

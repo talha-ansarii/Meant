@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from "react";
 import FlipWords from "@/components/ui/flip-words";
 import Image from "next/image";
+import Typewriter from 'typewriter-effect';
+
 
 const HeroSection = () => {
   const limited = ["Limited"];
-  const collection = ["Collection"];
+  const collection = ["Edition"];
+  
   
   // State to control the visibility of the scroll prompt text
   const [showScrollText, setShowScrollText] = useState(true);
@@ -23,22 +26,18 @@ const HeroSection = () => {
 
   return (
     <div className="relative flex justify-center items-center h-[700px] md:h-[700px] lg:h-[300px] bg-black w-full">
-      <div className="absolute sandana italiana left-[50%] translate-x-[-50%] top-[80px] lg:top-[100px] lg:left-[50%] lg:translate-x-[-50%] text-xl lg:text-3xl">
-        <FlipWords
-          words={limited}
-          duration={3000}
-          className="inline-block text-white"
-        />
-        <FlipWords
-          words={collection}
-          delay={3000}
-          duration={3000}
-          className="inline-block text-white"
-        />
+      <div className="absolute sandana  left-[50%] translate-x-[-50%] top-[80px] lg:top-[100px] lg:left-[50%] lg:translate-x-[-50%] text-xl lg:text-3xl">
+      <Typewriter
+  options={{
+    strings: ['Limited', 'Edition'],
+    autoStart: true,
+    loop: true,
+  }}
+/>
       </div>
       {/* Scroll Text */}
       {showScrollText && (
-        <div className="absolute bottom-[-100px] text-6xl lg:bottom-[-300px] w-full flex justify-center">
+        <div className="absolute bottom-0 text-6xl lg:bottom-[-300px] w-full flex justify-center">
           <div className="text-gray-500 mb-4 text-center text-sm">
             Scroll down
           </div>

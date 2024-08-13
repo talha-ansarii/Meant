@@ -63,7 +63,7 @@ function Mobile() {
           }
         },
       },
-    }).to(".canvas", { x: 0, y: 900, scale: 0.7 });
+    }).to(".canvas", { x: 0, y: 800, scale: 0.7 });
   }, [isClient, front, makeUpBox]);
 
   if (!isClient) return null;

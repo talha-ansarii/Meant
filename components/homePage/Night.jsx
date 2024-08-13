@@ -18,6 +18,9 @@ import LikeButton from "../likeButton/LikeButton";
 import NightModelComponent from "./NightModelComponents";
 import { Canvas } from "@react-three/fiber";
 import { useMediaQuery } from "react-responsive";
+import NightModel from "../animations/NightModel";
+import TabNightModel from "../animations/TabNightModel";
+import MobileNightModel from "../animations/MobileNIghtModel";
 
 const Night = ({ products, setShow, show }) => {
   const [isInWishlist, setIsInWishlist] = useState(false);
@@ -149,52 +152,40 @@ const Night = ({ products, setShow, show }) => {
   // console.log(isMobile)
 
   return (
-    <div className="relative">
-      <div className=" h-[1100px] md:h-[600px] overflow-x-hidden relative lg:h-[800px] bg-black over flex flex-col pt-[0px] md:flex-row lg:flex-row gap-6 w-[90%] m-auto ">
+    <div className="relative z-[100]">
+      <div className=" h-[1100px] md:h-[600px] md:overflow-y-hidden overflow-x-hidden relative lg:h-[850px] bg-black over flex flex-col pt-[0px] md:flex-row lg:flex-row gap-6 w-[90%] m-auto ">
         <Toaster position="top-right" richColors />
 
         <div className="absolute">
           <Meteors number={20} />
         </div>
 
-        <div className=" w-full overflow-visible   md:pt-[180px] lg:w-[50%] md:w-[50%]  md:p-0 lg:p-0">
-          {/* <Image
-            src="/assets/images/night.png"
-            width={600}
-            height={600}
-            className="w-full relative  z-[200]"
-          /> */}
+        <div className=" w-full overflow-visible  md:pt-[180px] lg:w-[50%] md:w-[50%]  md:p-0 lg:p-0">
+          
           {isMobile && (
             <div
-              className=" w-[100%]  lg:pt-[150px]  md:pt-[150px] h-[850px] relative z-[300] "
+              className=" w-[100%]  relative z-[300] "
             >
-              <Canvas >
-                <Suspense fallback={null}>
-                  <NightModelComponent  />
-                </Suspense>
-              </Canvas>
+              
+              {/* <MobileNightModel/> */}
             </div>
           )}
           {isTablet && (
             <div
-              className=" w-[100%]  lg:pt-[150px]  md:mt-[-300px]  h-[700px] relative z-[300] "
+              className=" w-[100%]  lg:pt-[150px] md:overflow-y-hidden md:mt-[-100px] md:h-auto h-[700px] relative z-[300] "
             >
-              <Canvas >
-                <Suspense fallback={null}>
-                  <NightModelComponent  />
-                </Suspense>
-              </Canvas>
+              
+              {/* <TabNightModel/> */}
+
             </div>
           )}
           {isDesktop && (
             <div
               className=" w-[100%]  lg:mt-[-50px]  md:mt-[-300px]  h-[800px] relative z-[300] "
             >
-              <Canvas >
-                <Suspense fallback={null}>
-                  <NightModelComponent  />
-                </Suspense>
-              </Canvas>
+             
+
+              {/* <NightModel scale={1}/> */}
             </div>
           )}
         </div>
