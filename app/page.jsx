@@ -208,7 +208,7 @@ export default function Home() {
             <HeroSection />
 
             <div className="relative">
-            <div className="flex absolute z-[300] left-[20px] top-[950px] l mt-2 items-center ml-[20px]   gap-4 md:left-[400px] md:top-[800px] lg:left-[820px] lg:top-[1600px] ">
+            <div className="flex absolute z-[300] left-[20px] top-[850px] l mt-2 items-center ml-[20px]   gap-4 md:left-[400px] md:top-[800px] lg:left-[820px] lg:top-[1600px] ">
               
               <div
               onClick={(e) => handleWishlistClick(e, product1)}

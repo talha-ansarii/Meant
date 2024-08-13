@@ -151,7 +151,7 @@
         </div>
         <img src="/assets/images/gradientt.jpg" alt="day" className="w-full md:hidden  lg:hidden mb-[-20px]  object-cover" />
         <Toaster position="top-right" richColors />
-        <div className="w-full bg-white h-[600px] lg:h-[800px] md:h-[500px] relative overflow-hidden flex md:flex-row lg:flex-row flex-col  justify-center items-center ">
+        <div className="w-full bg-white h-[475px] lg:h-[800px] md:h-[500px] relative overflow-hidden flex md:flex-row lg:flex-row flex-col  justify-center items-center ">
           <div
             ref={canvasref}
             className="bg-white  overflow-hidden md:w-[90%] lg:w-[80%]  md:flex-row lg:flex-row flex-col m-auto flex"

@@ -27,13 +27,20 @@ const HeroSection = () => {
   return (
     <div className="relative flex justify-center items-center h-[700px] md:h-[700px] lg:h-[300px] bg-black w-full">
       <div className="absolute sandana  left-[50%] translate-x-[-50%] top-[80px] lg:top-[100px] lg:left-[50%] lg:translate-x-[-50%] text-xl lg:text-3xl">
-      <Typewriter
+    
+        <Typewriter
   options={{
-    strings: ['Limited', 'Edition'],
+    pauseFor: 2500,
+    strings: ['Limited Edition'],
     autoStart: true,
     loop: true,
   }}
 />
+
+
+
+
+    
       </div>
       {/* Scroll Text */}
       {showScrollText && (
