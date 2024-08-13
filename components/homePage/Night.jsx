@@ -151,7 +151,7 @@ const Night = ({ products, setShow, show }) => {
 
   return (
     <div className="relative z-[100]">
-      <div className=" md:h-[600px] md:overflow-y-hidden overflow-x-hidden relative lg:h-[850px] bg-black over flex flex-col pt-[0px] md:flex-row lg:flex-row gap-6 w-[90%] m-auto">
+      <div className=" md:h-[600px] md:overflow-y-hidden overflow-y-hidden overflow-x-hidden relative lg:h-[850px] bg-black over flex flex-col pt-[0px] md:flex-row lg:flex-row gap-6 w-[90%] m-auto">
         <Toaster position="top-right" richColors />
 
         <div className="absolute">
@@ -178,7 +178,7 @@ const Night = ({ products, setShow, show }) => {
             </div>
           )}
         </div>
-        <div className="flex w-full lg:w-[50%] md:w-[50%] flex-col gap-4">
+        <div className="flex w-full mt-[-80px] lg:w-[50%] md:w-[50%] flex-col gap-4">
           <div className="">
             <div className="flex md:pt-[200px] flex-col gap-y-6">
               <Image
@@ -188,7 +188,7 @@ const Night = ({ products, setShow, show }) => {
                 height={75}
               />
 
-              <div className="font-poppins font-[400] text-[10px] leading-[20px] md:text-[20px] md:leading-[30px] lg:text-[26px] lg:leading-[39px]">
+              <div className="font-poppins font-[400] mb-2 md:text-[20px] md:leading-[30px] lg:text-[26px] leading-[20px] text-white ">
                 Four stunning matte lipstick shades for your perfect day out!
                 <br />
                 Available in four new lip adapting shades.
@@ -226,19 +226,7 @@ const Night = ({ products, setShow, show }) => {
       </div>
 
       {/* CSS for mobile adjustments */}
-      <style jsx>{`
-        @media (max-width: 400px) {
-          .mobile-nightmodel {
-            margin: 0 auto; /* Center the MobileNightModel on very small screens */
-            max-width: 100%; /* Ensure it doesn't exceed container width */
-          }
-
-          .flex.w-full.lg\\:w-\\[50\\%\\].md\\:w-\\[50\\%\\].flex-col.gap-4 {
-            align-items: center; /* Center the flex content on small screens */
-            padding: 0 10px; /* Add some padding */
-          }
-        }
-      `}</style>
+     
     </div>
   );
 };
