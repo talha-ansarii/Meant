@@ -5,10 +5,14 @@ import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import ShippingForm from "@/components/ShippingForm";
 import { getAllProducts, getCartProducts } from "@/utils/cartUtils";
-import { RedirectToSignIn, SignedOut, SignedIn } from "@clerk/nextjs";
+import { RedirectToSignIn, SignedOut, SignedIn, useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import Script from "next/script";
 import React, { useEffect, useState } from "react";
+import sha256 from "crypto-js/sha256";
+import { redirect } from "next/navigation";
+import axios from "axios";
+import { v4 as uuidv4 } from 'uuid';
 
 const Page = () => {
   const [cartProducts, setCartProducts] = useState([]);
@@ -16,6 +20,8 @@ const Page = () => {
   const [orderId, setOrderId] = useState("");
   const key = process.env.NEXT_PUBLIC_RAZORPAY_KEY;
   const navigate = useRouter();
+
+  const { user } = useUser();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -188,6 +194,67 @@ const Page = () => {
     }
   };
 
+  const handlePhonePePayment = async (address) => {
+
+    const transactionid = "Tr-"+uuidv4().toString(36).slice(-6);
+
+    const payload = {
+        merchantId: process.env.NEXT_PUBLIC_MERCHANT_ID,
+        merchantTransactionId: transactionid,
+        merchantUserId: user.id,
+        amount: cartTotal * 100,
+        redirectUrl: `http://localhost:3000/api/status/${transactionid}`,
+        redirectMode: "POST",
+        callbackUrl: `http://localhost:3000/api/status/${transactionid}`,
+        mobileNumber: address.phone,
+        paymentInstrument: {
+          type: "PAY_PAGE",
+
+        },
+      };
+
+
+      const dataPayload = JSON.stringify(payload);
+      // console.log(dataPayload);
+
+      const dataBase64 = Buffer.from(dataPayload).toString("base64");
+      // console.log(dataBase64);
+
+
+  const fullURL =
+        dataBase64 + "/pg/v1/pay" + process.env.NEXT_PUBLIC_SALT_KEY;
+     const dataSha256 = sha256(fullURL);
+
+      const checksum = dataSha256 + "###" + process.env.NEXT_PUBLIC_SALT_INDEX;
+      // console.log("c====",checksum);
+
+
+
+    const UAT_PAY_API_URL =
+    "https://api-preprod.phonepe.com/apis/pg-sandbox/pg/v1/pay";
+
+
+    const response = await fetch(UAT_PAY_API_URL, {
+      method: 'POST',
+      headers: {
+        'accept': 'application/json',
+        'Content-Type': 'application/json',
+        'X-VERIFY': checksum,
+      },
+      body: JSON.stringify({
+        request: dataBase64,
+      }),
+    });
+    
+    const responseData = await response.json();
+    // console.log(responseData);
+
+    
+
+
+  const redirect=response.data.data.instrumentResponse.redirectInfo.url;
+  navigate.push(redirect)
+  }
 
 
   return (
