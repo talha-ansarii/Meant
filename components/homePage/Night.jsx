@@ -178,7 +178,7 @@ const Night = ({ products, setShow, show }) => {
             </div>
           )}
         </div>
-        <div className="flex w-full mt-[-80px] lg:w-[50%] md:w-[50%] flex-col gap-4">
+        <div className="flex w-full mt-[-80px] md:mt-0 lg:-0 lg:w-[50%] md:w-[50%] flex-col gap-4">
           <div className="">
             <div className="flex md:pt-[200px] flex-col gap-y-6">
               <Image
