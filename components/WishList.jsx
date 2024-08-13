@@ -14,7 +14,6 @@ import {
   getWishlistProducts,
   removeProductFromWishlist,
 } from "@/utils/wishlistUtils";
-import VideoLoader from "./VideoLoader";
 
 const WishList = () => {
   const router = useRouter();
@@ -25,43 +24,43 @@ const WishList = () => {
 
   useEffect(() => {
     setIsClient(true);
-   
   }, []);
-
-
-
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         let dbWishlist = [];
-        let localWishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+        let localWishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
 
         if (isSignedIn) {
           // Fetch wishlist products from the database
           dbWishlist = await getWishlistProducts();
           // Extract productIds from dbWishlist
-          const dbWishlistIds = dbWishlist.map(item => item.productId);
+          const dbWishlistIds = dbWishlist.map((item) => item.productId);
 
           // Merge and deduplicate the wishlists
-          const mergedWishlist = [...new Set([...localWishlist, ...dbWishlistIds])];
+          const mergedWishlist = [
+            ...new Set([...localWishlist, ...dbWishlistIds]),
+          ];
 
           // Sync the merged wishlist back to the database and localStorage
           await syncWishlistToDatabase(mergedWishlist);
-          localStorage.setItem('wishlist', JSON.stringify(mergedWishlist));
+          localStorage.setItem("wishlist", JSON.stringify(mergedWishlist));
 
           // Set the wishlist for filtering
-          dbWishlist = mergedWishlist.map(id => ({ productId: id }));
+          dbWishlist = mergedWishlist.map((id) => ({ productId: id }));
         } else {
           // Map localWishlist to match the structure of dbWishlist
-          dbWishlist = localWishlist.map(id => ({ productId: id }));
+          dbWishlist = localWishlist.map((id) => ({ productId: id }));
         }
 
         const products = await getAllProducts();
 
         if (dbWishlist && products) {
           const filteredProducts = products.filter((product) =>
-            dbWishlist.some((wishlistItem) => wishlistItem.productId === product.id)
+            dbWishlist.some(
+              (wishlistItem) => wishlistItem.productId === product.id
+            )
           );
 
           setWishlistArray(filteredProducts);
@@ -77,7 +76,7 @@ const WishList = () => {
   }, [isSignedIn]);
 
   const syncWishlistToDatabase = async (wishlist) => {
-    console.log(wishlist)
+    console.log(wishlist);
     // Assume this function sends the merged wishlist to the server to update the database
     try {
       await addProductToWishlist(wishlist); // Replace with your actual API call
@@ -86,61 +85,74 @@ const WishList = () => {
     }
   };
 
-
   const removeFromWishlist = async (productId) => {
     if (isSignedIn) {
       try {
         await removeProductFromWishlist(productId);
         toast.error("Removed from wishlist");
-  
-        let updatedWishlist = wishlistArray.filter((item) => item.id !== productId);
+
+        let updatedWishlist = wishlistArray.filter(
+          (item) => item.id !== productId
+        );
         setWishlistArray(updatedWishlist);
-  
+
         // Update localStorage
-        const localWishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
-        const updatedLocalWishlist = localWishlist.filter((id) => id !== productId);
-        localStorage.setItem('wishlist', JSON.stringify(updatedLocalWishlist));
+        const localWishlist =
+          JSON.parse(localStorage.getItem("wishlist")) || [];
+        const updatedLocalWishlist = localWishlist.filter(
+          (id) => id !== productId
+        );
+        localStorage.setItem("wishlist", JSON.stringify(updatedLocalWishlist));
       } catch (error) {
         console.error("Error removing product from wishlist:", error);
         toast.error("Error removing product from wishlist");
       }
     } else {
-      const localWishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
-      const updatedLocalWishlist = localWishlist.filter((id) => id !== productId);
-      localStorage.setItem('wishlist', JSON.stringify(updatedLocalWishlist));
+      const localWishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+      const updatedLocalWishlist = localWishlist.filter(
+        (id) => id !== productId
+      );
+      localStorage.setItem("wishlist", JSON.stringify(updatedLocalWishlist));
 
-      console.log(wishlistArray)
-  
-      let updatedWishlist = wishlistArray?.filter((item) => item.id !== productId);
-      console.log(updatedWishlist)
-        setWishlistArray(updatedWishlist);
+      console.log(wishlistArray);
+
+      let updatedWishlist = wishlistArray?.filter(
+        (item) => item.id !== productId
+      );
+      console.log(updatedWishlist);
+      setWishlistArray(updatedWishlist);
       toast.error("Removed from wishlist");
     }
   };
-  
+
   const handleCartClick = async (product) => {
-    
-  
     if (!isSignedIn) {
       return router.push("/sign-in");
     }
-  
+
     try {
       await addProductToCart(product.id, 1);
       toast.success("Added to cart");
-      const updatedwishlistArray = wishlistArray.filter((item) => item.id !== product.id);
-      localStorage.setItem("wishlist", JSON.stringify(updatedwishlistArray.map((item) => item.id)));
+      const updatedwishlistArray = wishlistArray.filter(
+        (item) => item.id !== product.id
+      );
+      localStorage.setItem(
+        "wishlist",
+        JSON.stringify(updatedwishlistArray.map((item) => item.id))
+      );
       await removeFromWishlist(product.id);
 
       setWishlistArray(updatedwishlistArray);
       // Update quantities state
-  
+
       // Retrieve existing cart items from local storage
       const cartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
-  
+
       // Check if the product is already in the cart
-      const existingCartItemIndex = cartItems.findIndex(item => item.id === product.id);
-  
+      const existingCartItemIndex = cartItems.findIndex(
+        (item) => item.id === product.id
+      );
+
       if (existingCartItemIndex !== -1) {
         // If product exists, update its quantity
         cartItems[existingCartItemIndex].quantity += 1;
@@ -149,7 +161,7 @@ const WishList = () => {
         const newCartItem = { id: product.id, quantity: 1 };
         cartItems.push(newCartItem);
       }
-  
+
       // Save the updated cart items to local storage
       localStorage.setItem("cartItems", JSON.stringify(cartItems));
     } catch (error) {
@@ -162,29 +174,32 @@ const WishList = () => {
       <>{isClient && <div className="w-[100vw] h-[100vh] ">Loading...</div>}</>
     );
 
-
   return (
     <div className="pb-4">
       <Toaster position="top-right" richColors />
 
       <Header />
-      <h1 className="text-[40px] font-bold flex flex-col items-center justify-center font-playfair-display mb-6 text-center pt-[8.5rem]">
+      <h1 className="text-[40px] font-bold flex flex-col items-center justify-center font-playfair-display text-center mb-6 pt-[8.5rem]">
         WISHLIST
       </h1>
       {wishlistArray.length === 0 ? (
-        <div className="text-center text-[20px] h-[50vh] flex flex-col items-center justify-center  gap-4 p-4 ">
-        <p>
-        Your Wishlist is empty.
-        </p>
+        <div className="text-center text-[20px] h-[50vh] flex flex-col items-center justify-center gap-4 p-4 mb-[200px] ">
+          <Image
+            src="/assets/images/emptywishlist.webp"
+            alt="Empty Wishlist"
+            width={250}
+            height={250}
+            className="object-contain"
+          />
+          <p>Add now, Shop later </p>
+          <p>Create your dream collection here! </p>
 
-        
-          
           <Link
-                href="/products"
-                className="mt-8 text-[18px] w-full font-playfair-display font-extrabold inline-block bg-white text-black md:w-[400px] py-2 px-8 rounded-[30px] text-center  lg:w-[500px]"
-              >
-                Start adding some products...
-              </Link>
+            href="/products"
+            className="mt-8 text-[18px] w-full font-playfair-display font-extrabold inline-block bg-white text-black md:w-[400px] py-2 px-8 rounded-[30px] text-center  lg:w-[200px]"
+          >
+            Start Shopping
+          </Link>
         </div>
       ) : (
         <div className="p-4 w-[82%] m-auto pt-[2rem] grid grid-cols-1 md:grid-cols-3 gap-8">

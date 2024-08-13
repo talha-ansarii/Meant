@@ -11,209 +11,226 @@ import {
   removeFromCart,
   updateCartQuantity,
 } from "@/utils/cartUtils";
-import VideoLoader from "./VideoLoader";
 import { useUser } from "@clerk/nextjs";
-import Loader from "./Loader";
 
-const Cart = ({isCartOpen}) => {
+const Cart = ({ isCartOpen }) => {
   const [cartProducts, setCartProducts] = useState([]);
   const [cartTotal, setCartTotal] = useState(0);
   const [loading, setLoading] = useState(true);
   const [isClient, setIsClient] = useState(false);
-const { isSignedIn } = useUser();
+  const { isSignedIn } = useUser();
+
   useEffect(() => {
     setIsClient(true);
-}, []);
+  }, []);
 
- 
-useEffect(() => {
-  // console.log("Fetching cart data...");
-  const fetchCartData = async () => {
-    try {
-      let dbCart = [];
-      let localCart = JSON.parse(localStorage.getItem('cartItems')) || [];
-      // console.log(localCart)
+  useEffect(() => {
+    // console.log("Fetching cart data...");
+    const fetchCartData = async () => {
+      try {
+        let dbCart = [];
+        let localCart = JSON.parse(localStorage.getItem("cartItems")) || [];
+        // console.log(localCart)
 
-      if (isSignedIn) {
-        // Fetch cart products from the database
-        dbCart = await getCartProducts();
-        // console.log(dbCart)
-        // Extract product and quantity data from dbCart
-        const dbCartItems = dbCart.map(item => ({ id: item.productId, quantity: item.quantity }));
-        console.log(dbCartItems)
-        // Merge and deduplicate the cart items, prioritizing quantities from the database
-        const mergedCart = [...localCart];
-        // console.log(mergedCart)
-        dbCartItems.forEach(dbItem => {
-          const existingItemIndex = mergedCart.findIndex(localItem => localItem.id === dbItem.id);
-          if (existingItemIndex !== -1) {
-            // If item exists in both, update quantity
-            mergedCart[existingItemIndex].quantity = Math.max(mergedCart[existingItemIndex].quantity, dbItem.quantity);
-          } else {
-            // If item doesn't exist in local cart, add it
-            mergedCart.push(dbItem);
-          }
-        });
+        if (isSignedIn) {
+          // Fetch cart products from the database
+          dbCart = await getCartProducts();
+          // console.log(dbCart)
+          // Extract product and quantity data from dbCart
+          const dbCartItems = dbCart.map((item) => ({
+            id: item.productId,
+            quantity: item.quantity,
+          }));
+          console.log(dbCartItems);
+          // Merge and deduplicate the cart items, prioritizing quantities from the database
+          const mergedCart = [...localCart];
+          // console.log(mergedCart)
+          dbCartItems.forEach((dbItem) => {
+            const existingItemIndex = mergedCart.findIndex(
+              (localItem) => localItem.id === dbItem.id
+            );
+            if (existingItemIndex !== -1) {
+              // If item exists in both, update quantity
+              mergedCart[existingItemIndex].quantity = Math.max(
+                mergedCart[existingItemIndex].quantity,
+                dbItem.quantity
+              );
+            } else {
+              // If item doesn't exist in local cart, add it
+              mergedCart.push(dbItem);
+            }
+          });
 
-        // Sync the merged cart back to the database and localStorage
-        await syncCartToDatabase(mergedCart);
-        localStorage.setItem('cartItems', JSON.stringify(mergedCart));
+          // Sync the merged cart back to the database and localStorage
+          await syncCartToDatabase(mergedCart);
+          localStorage.setItem("cartItems", JSON.stringify(mergedCart));
 
-        // Set the cart for filtering
-        dbCart = mergedCart.map(item => ({ productId: item.id, quantity: item.quantity }));
-      } else {
-        // Map localCart to match the structure of dbCart
-        dbCart = localCart.map(item => ({ productId: item.id, quantity: item.quantity }));
+          // Set the cart for filtering
+          dbCart = mergedCart.map((item) => ({
+            productId: item.id,
+            quantity: item.quantity,
+          }));
+        } else {
+          // Map localCart to match the structure of dbCart
+          dbCart = localCart.map((item) => ({
+            productId: item.id,
+            quantity: item.quantity,
+          }));
+        }
+
+        const products = await getAllProducts();
+
+        if (dbCart && products) {
+          const filteredProducts = products.filter((product) =>
+            dbCart.some((cartItem) => cartItem.productId === product.id)
+          );
+
+          let total = 0;
+          const productsWithQuantity = filteredProducts.map((product) => {
+            const cartItem = dbCart.find(
+              (item) => item.productId === product.id
+            );
+            total += product.price * cartItem.quantity;
+            return { ...product, quantity: cartItem.quantity };
+          });
+
+          setCartProducts(productsWithQuantity);
+          setCartTotal(total);
+        }
+      } catch (error) {
+        console.error("Error fetching cart:", error);
+      } finally {
+        setLoading(false);
       }
+    };
 
-      const products = await getAllProducts();
+    fetchCartData();
+    // const int = setInterval(() => { fetchCartData(); }
+    // , 2000);
 
-      if (dbCart && products) {
-        const filteredProducts = products.filter((product) =>
-          dbCart.some((cartItem) => cartItem.productId === product.id)
-        );
+    // return () => clearInterval(int);
+  }, [isSignedIn, isCartOpen]);
 
-        let total = 0;
-        const productsWithQuantity = filteredProducts.map((product) => {
-          const cartItem = dbCart.find((item) => item.productId === product.id);
-          total += product.price * cartItem.quantity;
-          return { ...product, quantity: cartItem.quantity };
-        });
-
-        setCartProducts(productsWithQuantity);
-        setCartTotal(total);
+  const syncCartToDatabase = async (cart) => {
+    // console.log(cart);
+    // Assume this function sends the merged cart to the server to update the database
+    try {
+      if (!cart.length === 0) {
+        await addProductToCart(cart); // Replace with your actual API call to update the cart on the server
       }
     } catch (error) {
-      console.error("Error fetching cart:", error);
-    } finally {
-      setLoading(false);
+      console.log("Error syncing cart to database:", error);
     }
   };
 
-  fetchCartData();
-  // const int = setInterval(() => { fetchCartData(); }
-  // , 2000);  
+  const handleRemoveFromCart = async (productId) => {
+    try {
+      let updatedCart;
 
-  // return () => clearInterval(int);
-}, [isSignedIn, isCartOpen]);
+      if (!isSignedIn) {
+        // User is not signed in, update the cart in local storage
+        const cartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
 
-const syncCartToDatabase = async (cart) => {
-  // console.log(cart);
-  // Assume this function sends the merged cart to the server to update the database
-  try {
-    if(!cart.length === 0) {
+        // Remove the product from the cart
+        updatedCart = cartItems.filter((item) => item.id !== productId);
 
-      await addProductToCart(cart); // Replace with your actual API call to update the cart on the server
-    }
-  } catch (error) {
-    console.log("Error syncing cart to database:", error);
-  }
-};
-
-
-
-
-
-const handleRemoveFromCart = async (productId) => {
-  try {
-    let updatedCart;
-
-    if (!isSignedIn) {
-      // User is not signed in, update the cart in local storage
-      const cartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
-      
-      // Remove the product from the cart
-      updatedCart = cartItems.filter((item) => item.id !== productId);
-
-      // Update local storage
-      localStorage.setItem("cartItems", JSON.stringify(updatedCart));
-    } else {
-      // User is signed in, update the cart in the database
-      updatedCart = await removeFromCart(productId);
-      console.log(updatedCart)
-      // Update local storage with the updated cart from the server
-      const localCart = updatedCart.map(item => ({ id: item.productId, quantity: item.quantity }));
-      console.log(localCart)
-      localStorage.setItem("cartItems", JSON.stringify(localCart));
-
-    }
-
-    if (updatedCart) {
-      // Update the state to reflect the changes in the UI
-      setCartProducts((prevCartProducts) =>
-        prevCartProducts.filter((product) => product.id !== productId)
-      );
-
-      const removedProduct = cartProducts.find(
-        (product) => product.id === productId
-      );
-
-      if (removedProduct) {
-        setCartTotal(
-          (prevTotal) =>
-            prevTotal - removedProduct.price * removedProduct.quantity
-        );
+        // Update local storage
+        localStorage.setItem("cartItems", JSON.stringify(updatedCart));
+      } else {
+        // User is signed in, update the cart in the database
+        updatedCart = await removeFromCart(productId);
+        console.log(updatedCart);
+        // Update local storage with the updated cart from the server
+        const localCart = updatedCart.map((item) => ({
+          id: item.productId,
+          quantity: item.quantity,
+        }));
+        console.log(localCart);
+        localStorage.setItem("cartItems", JSON.stringify(localCart));
       }
-    }
-  } catch (error) {
-    console.error("Error removing product from cart:", error);
-  }
-};
 
+      if (updatedCart) {
+        // Update the state to reflect the changes in the UI
+        setCartProducts((prevCartProducts) =>
+          prevCartProducts.filter((product) => product.id !== productId)
+        );
+
+        const removedProduct = cartProducts.find(
+          (product) => product.id === productId
+        );
+
+        if (removedProduct) {
+          setCartTotal(
+            (prevTotal) =>
+              prevTotal - removedProduct.price * removedProduct.quantity
+          );
+        }
+      }
+    } catch (error) {
+      console.error("Error removing product from cart:", error);
+    }
+  };
 
   const handleQuantityChange = async (productId, action) => {
     if (!isSignedIn) {
       // User is not signed in, update the quantity in local storage
       let cartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
-      console.log(cartItems)
-      const productIndex = cartItems.findIndex(item => item.id === productId);
+      console.log(cartItems);
+      const productIndex = cartItems.findIndex((item) => item.id === productId);
       // console.log(productIndex)
       if (productIndex !== -1) {
-        if (action === 'increase') {
+        if (action === "increase") {
           cartItems[productIndex].quantity += 1;
-        } else if (action === 'decrease' && cartItems[productIndex].quantity > 1) {
+        } else if (
+          action === "decrease" &&
+          cartItems[productIndex].quantity > 1
+        ) {
           cartItems[productIndex].quantity -= 1;
-        } else if (action === 'decrease' && cartItems[productIndex].quantity === 1) {
+        } else if (
+          action === "decrease" &&
+          cartItems[productIndex].quantity === 1
+        ) {
           // Remove the item from the cart if the quantity is 1 and action is decrement
           cartItems.splice(productIndex, 1);
         }
 
-        console.log(cartItems)
-  
+        console.log(cartItems);
+
         // Update the cart in local storage
         localStorage.setItem("cartItems", JSON.stringify(cartItems));
-  
+
         // Fetch product data to update the cart display
         const products = await getAllProducts();
         const filteredProducts = products.filter((product) =>
           cartItems.some((cartItem) => cartItem.id === product.id)
         );
-  
+
         let total = 0;
         const productsWithQuantity = filteredProducts.map((product) => {
-          const cartItem = cartItems.find(
-            (item) => item.id === product.id
-          );
+          const cartItem = cartItems.find((item) => item.id === product.id);
           total += product.price * cartItem.quantity;
           return { ...product, quantity: cartItem.quantity };
         });
-  
+
         setCartProducts(productsWithQuantity);
         setCartTotal(total);
       }
     } else {
       // User is signed in, update the quantity in the database
       const updatedCart = await updateCartQuantity(productId, action);
-      console.log(updatedCart)
+      console.log(updatedCart);
       if (updatedCart) {
-        const localCart = updatedCart.map(item => ({ productId: item.id, quantity: item.quantity }));
+        const localCart = updatedCart.map((item) => ({
+          productId: item.id,
+          quantity: item.quantity,
+        }));
         localStorage.setItem("cartItems", JSON.stringify(localCart));
         // Update the cart products and total
         const products = await getAllProducts();
         const filteredProducts = products.filter((product) =>
           updatedCart.some((cartItem) => cartItem.productId === product.id)
         );
-  
+
         let total = 0;
         const productsWithQuantity = filteredProducts.map((product) => {
           const cartItem = updatedCart.find(
@@ -222,22 +239,21 @@ const handleRemoveFromCart = async (productId) => {
           total += product.price * cartItem.quantity;
           return { ...product, quantity: cartItem.quantity };
         });
-  
+
         setCartProducts(productsWithQuantity);
         setCartTotal(total);
       }
     }
   };
-  
 
-
-
-
-
-  if (loading) return <>{isClient && <div className="w-[100vw] text-black h-[100vh] ">
-  Loading...
-  </div>}</>;
-
+  if (loading)
+    return (
+      <>
+        {isClient && (
+          <div className="w-[100vw] text-black h-[100vh] ">Loading...</div>
+        )}
+      </>
+    );
 
   return (
     <div className="w-full min-h-screen  bg-white text-black px-4 md:px-8">
@@ -248,7 +264,22 @@ const handleRemoveFromCart = async (productId) => {
           </span>
         </div>
         {cartProducts.length === 0 ? (
-          <div className="text-center text-lg">Your cart is empty.</div>
+          <div className="text-center text-lg mb-[100px] flex flex-col items-center justify-center gap-4">
+            <Image
+              src="/assets/images/emptycart.webp" // Replace with the path to your image
+              alt="Empty Cart"
+              width={250}
+              height={250}
+              className="object-contain"
+            />
+            <p>Your cart is empty.</p>
+            <Link
+              href="/products"
+              className="mt-8 text-[18px] w-full font-playfair-display font-extrabold inline-block bg-black text-white md:w-[400px] py-2 px-8 rounded-[30px] text-center  lg:w-[200px]"
+            >
+              Start Shopping
+            </Link>
+          </div>
         ) : (
           <div className="flex flex-col h-[calc(100vh-130px)] justify-between ">
             <ul className="space-y-6 ">
@@ -303,7 +334,7 @@ const handleRemoveFromCart = async (productId) => {
                         </button>
                       </div>
                       <p className="text-lg font-bold font-merriweather">
-                      ₹{item.price}
+                        ₹{item.price}
                       </p>
                     </div>
                   </div>
@@ -316,7 +347,7 @@ const handleRemoveFromCart = async (productId) => {
                   Estimated Total:
                 </h2>
                 <h2 className="lg:text-[30px] md:text-[30px] text-[25px] font-semibold font-playfair-display">
-                ₹{cartTotal.toFixed(2)}
+                  ₹{cartTotal.toFixed(2)}
                 </h2>
               </div>
               <p className="mt-2 text-[#827777] font-merriweather font-semibold text-xs ">
