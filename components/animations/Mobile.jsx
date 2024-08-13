@@ -41,7 +41,7 @@ function Mobile() {
     if (!isClient) return;
 
     let previousProgress = 0;
-    gsap.set(".canvas", { x: 0, y: -100, scale: 1,
+    gsap.set(".canvas", { x: 0, y: -200, scale: 1,
       width: "375px",height: "700px",
      });
 
