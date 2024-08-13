@@ -7,13 +7,19 @@ import { useMediaQuery } from "react-responsive";
 
 gsap.registerPlugin(ScrollTrigger);
 
-function Mobile() {
+function Desktop({ show, setShow }) {
   const [isClient, setIsClient] = useState(false);
   const makeUpBox = useRef();
   const front = useRef();
+  const [completed, setCompleted] = useState(0);
 
   useEffect(() => {
     setIsClient(true);
+  }, [isClient]);
+
+    useEffect(() => {
+        document.body.style.overflowX = "hidden";
+
   }, []);
 
   function onLoad(spline) {
@@ -21,24 +27,13 @@ function Mobile() {
     const obj1 = spline.findObjectByName("front");
     makeUpBox.current = obj;
     front.current = obj1;
-
-    // Add wobble effect
-    if (makeUpBox.current) {
-      gsap.to(makeUpBox.current.rotation, {
-        x: "+=0.1",
-      repeat: -1,
-      yoyo: true,
-      ease: "power1.inOut",
-      duration: 1,
-      });
-    }
   }
 
   useEffect(() => {
     if (!isClient) return;
 
     let previousProgress = 0;
-    gsap.set(".canvas", { x: 10, y: -100, scale: 1 });
+    gsap.set(".canvas", { x: 0, y: 0, scale: 2 });
 
     gsap.timeline({
       ease: "ease-in",
@@ -49,16 +44,17 @@ function Mobile() {
         scrub: 1.2,
         markers: false,
         onUpdate: (self) => {
+            console.log(self.progress);
           if (front.current) {
             const openRotation = self.progress * -100;
             front.current.rotation.x = openRotation * (Math.PI / 180);
-            if (self.progress < 0.1) {
+            if (self.progress < 0.35) {
               front.current.rotation.x = 90 * (Math.PI / 180);
             }
           }
         },
       },
-    }).to(".canvas", { x: 0, y: 1000, scale: 0.7 });
+    }).to(".canvas", { x: -70, y: 1180, scale: 0.7, onComplete: () => setCompleted(1) });
   }, [isClient, front, makeUpBox]);
 
   if (!isClient) return null;
@@ -79,4 +75,4 @@ function Mobile() {
   );
 }
 
-export default Mobile;
+export default Desktop;

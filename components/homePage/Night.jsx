@@ -26,6 +26,7 @@ const Night = ({ products, setShow, show }) => {
   const [wishlistFilled, setWishlistFilled] = useState(false);
   const router = useRouter();
   const isMobile = useMediaQuery({ maxWidth: 480 });
+  const isTablet = useMediaQuery({ minWidth: 481, maxWidth: 1024 });
 
   const canvasref = useRef(null);
   const ref = useRef(null);
@@ -148,7 +149,7 @@ const Night = ({ products, setShow, show }) => {
 
   return (
     <div className="relative">
-      <div className=" h-[1100px] md:h-[500px] overflow-x-hidden relative lg:h-[700px] bg-black over flex flex-col pt-[0px] md:flex-row lg:flex-row gap-6 w-[90%] m-auto ">
+      <div className=" h-[1100px] md:h-[600px] overflow-x-hidden relative lg:h-[700px] bg-black over flex flex-col pt-[0px] md:flex-row lg:flex-row gap-6 w-[90%] m-auto ">
         <Toaster position="top-right" richColors />
 
         <div className="absolute">
@@ -165,6 +166,17 @@ const Night = ({ products, setShow, show }) => {
           {isMobile && (
             <div
               className=" w-[100%]  lg:pt-[150px]  md:pt-[150px] h-[850px] relative z-[300] "
+            >
+              <Canvas >
+                <Suspense fallback={null}>
+                  <NightModelComponent  />
+                </Suspense>
+              </Canvas>
+            </div>
+          )}
+          {isTablet && (
+            <div
+              className=" w-[100%]  lg:pt-[150px]  md:mt-[-300px]  h-[700px] relative z-[300] "
             >
               <Canvas >
                 <Suspense fallback={null}>

@@ -10,6 +10,9 @@
 @tailwind components;
 @tailwind utilities;
 
+body{
+  overflow-x: hidden;
+}
 .italiana {
   font-family: "Italiana", sans-serif;
   font-weight: 400;

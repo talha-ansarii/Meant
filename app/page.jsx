@@ -21,6 +21,7 @@ import { FaArrowDown } from "react-icons/fa";
 import Mobile from "@/components/animations/Mobile";
 import { useMediaQuery } from "react-responsive";
 import Tab from "@/components/animations/Tab";
+import Desktop from "@/components/animations/Desktop";
 
 export default function Home() {
   const [products, setProducts] = useState([]);
@@ -32,6 +33,7 @@ export default function Home() {
   const [isInCart, setIsInCart] = useState(false);
   const isMobile = useMediaQuery({ maxWidth: 480 });
   const isTablet = useMediaQuery({ minWidth: 481, maxWidth: 1024 });
+  const isDesktop = useMediaQuery({ minWidth: 1025 });
 
   const router = useRouter();
 
@@ -145,19 +147,24 @@ export default function Home() {
  
 
   return (
-    <div className="relative">
+    <div className="relative  bg-black">
         {isMobile && (
-          <div className="absolute z-[200] top-0 left-0 w-full h-full">
+          <div className="absolute z-[200] top-0 left-0  w-full h-full">
             <Mobile />
           </div>
         )}
         {isTablet && (
-          <div className="absolute z-[200] top-0 left-0 w-full h-full">
+          <div className="absolute z-[200] top-0  left-0 w-full h-full">
             <Tab />
           </div>
         )}
+        {isDesktop && (
+          <div className="absolute z-[200] top-0  left-0 w-full h-full">
+            <Desktop />
+          </div>
+        )}
       <Suspense fallback={<div>Loading...</div>}>
-        <div className="w-full bg-black">
+        <div className="w-full relative z-[300] bg-black">
           <Header />
         </div>
         <div className="absolute w-full">

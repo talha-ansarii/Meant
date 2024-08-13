@@ -11,9 +11,15 @@ function Tab({ show, setShow }) {
   const [isClient, setIsClient] = useState(false);
   const makeUpBox = useRef();
   const front = useRef();
+  const [completed, setCompleted] = useState(0);
 
   useEffect(() => {
     setIsClient(true);
+  }, [isClient]);
+
+    useEffect(() => {
+        document.body.style.overflowX = "hidden";
+
   }, []);
 
   function onLoad(spline) {
@@ -27,7 +33,7 @@ function Tab({ show, setShow }) {
     if (!isClient) return;
 
     let previousProgress = 0;
-    gsap.set(".canvas", { x: "100%", y: "-100%", scale: 2 });
+    gsap.set(".canvas", { x: "80%", y: "-100%", scale: 2 });
 
     gsap.timeline({
       ease: "ease-in",
@@ -48,7 +54,7 @@ function Tab({ show, setShow }) {
           }
         },
       },
-    }).to(".canvas", { x: -70, y: 1000, scale: 0.7 });
+    }).to(".canvas", { x: -70, y: 1180, scale: 0.7, onComplete: () => setCompleted(1) });
   }, [isClient, front, makeUpBox]);
 
   if (!isClient) return null;
