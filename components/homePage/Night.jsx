@@ -164,7 +164,7 @@ const Night = ({ products, setShow, show }) => {
             height={600}
             className="w-full relative  z-[200]"
           /> */}
-          {/* {isMobile && (
+          {isMobile && (
             <div
               className=" w-[100%]  lg:pt-[150px]  md:pt-[150px] h-[850px] relative z-[300] "
             >
@@ -174,8 +174,8 @@ const Night = ({ products, setShow, show }) => {
                 </Suspense>
               </Canvas>
             </div>
-          )} */}
-          {/* {isTablet && (
+          )}
+          {isTablet && (
             <div
               className=" w-[100%]  lg:pt-[150px]  md:mt-[-300px]  h-[700px] relative z-[300] "
             >
@@ -185,8 +185,8 @@ const Night = ({ products, setShow, show }) => {
                 </Suspense>
               </Canvas>
             </div>
-          )} */}
-          {/* {isDesktop && (
+          )}
+          {isDesktop && (
             <div
               className=" w-[100%]  lg:mt-[-50px]  md:mt-[-300px]  h-[800px] relative z-[300] "
             >
@@ -196,7 +196,7 @@ const Night = ({ products, setShow, show }) => {
                 </Suspense>
               </Canvas>
             </div>
-          )} */}
+          )}
         </div>
         <div className="flex w-full lg:w-[50%] md:w-[50%] flex-col gap-4">
           <din className="">
