@@ -110,24 +110,15 @@ const ProductCard = ({
   };
   
   
-
   const handleCartClick = async (e) => {
     e.stopPropagation();
   
+    // Retrieve existing cart items from local storage
     if (!isSignedIn) {
-      return router.push("/sign-in");
-    }
-  
-    try {
-      await addProductToCart(product.id, quantity);
-      toast.success("Added to cart");
-  
-      // Update quantities state
-      setQuantities({ ...quantities, [product.id]: 1 });
-  
-      // Retrieve existing cart items from local storage
-      const cartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
-  
+      let cartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
+    
+    // If the user is not signed in, save the product directly to local storage
+    
       // Check if the product is already in the cart
       const existingCartItemIndex = cartItems.findIndex(item => item.id === product.id);
   
@@ -142,10 +133,42 @@ const ProductCard = ({
   
       // Save the updated cart items to local storage
       localStorage.setItem("cartItems", JSON.stringify(cartItems));
+  
+      // Optionally, show a message to the user
+      toast.success("Added to cart");
+  
+      return;
+    }
+    let cartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
+  
+    try {
+      await addProductToCart(product.id, quantity);
+      toast.success("Added to cart");
+  
+      // Update quantities state
+      setQuantities({ ...quantities, [product.id]: 1 });
+  
+      // If signed in, update the local storage as well
+      const existingCartItemIndex = cartItems?.findIndex(item => item.id === product.id);
+  
+      if (existingCartItemIndex !== -1) {
+        // If product exists, update its quantity
+        cartItems[existingCartItemIndex].quantity += quantity;
+      } else {
+        // If product doesn't exist, add it to the cart
+        const newCartItem = { id: product.id, quantity };
+        cartItems.push(newCartItem);
+      } 
+      // console.log(cartItems)
+  
+      // Save the updated cart items to local storage
+      localStorage.setItem("cartItems", JSON.stringify(cartItems));
+
     } catch (error) {
-      console.error("Error adding product to cart:", error);
+      console.log("Error adding product to cart:", error);
     }
   };
+  
   
 
   return (

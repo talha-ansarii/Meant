@@ -67,6 +67,9 @@ export async function getCartProducts() {
 }
 
 export async function updateCartQuantity(productId, action) {
+
+  console.log(productId)
+  console.log(action)
   try {
     const response = await fetch("/api/cart", {
       method: "PATCH",
@@ -83,7 +86,7 @@ export async function updateCartQuantity(productId, action) {
     const updatedCart = await response.json();
     return updatedCart;
   } catch (error) {
-    console.error("Error updating cart quantity:", error);
+    console.log("Error updating cart quantity:", error);
     return null;
   }
 }

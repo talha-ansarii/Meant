@@ -412,7 +412,7 @@ const Header = () => {
         )}
       </AnimatePresence>
       <div
-        className={`fixed top-[-30px] duration-500 hidden lg:block md:block right-0 w-full md:w-full bg-white text-black h-[100vh] transition-transform transform z-50
+        className={`fixed lg:w-1/3 top-[-30px] duration-500 hidden lg:block md:block right-0 w-full md:w-full bg-white text-black h-[100vh] transition-transform transform z-50
             ${isCartOpen ? "translate-x-0" : "translate-x-full"}
             `}
         initial="hidden"
@@ -431,7 +431,7 @@ const Header = () => {
             ✕
           </button>
         </div>
-        <Cart />
+        <Cart isCartOpen={isCartOpen} />
       </div>
     </div>
   );
