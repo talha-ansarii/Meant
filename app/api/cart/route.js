@@ -66,7 +66,7 @@ export async function PATCH(request) {
   await dbConnect();
   const { userId } = await auth();
   const { productId, action } = await request.json();
-
+  console.log(productId, action);
   // Fetch the user from the database using their userId
   const user = await User.findOne({ userId });
   if (!user) return new Response("User not found", { status: 404 });
@@ -75,6 +75,8 @@ export async function PATCH(request) {
   const productIndex = user.cart.findIndex(
     (item) => item.productId === productId
   );
+
+  console.log(productIndex);
 
   if (productIndex === -1) {
     return new Response("Product not found in cart", { status: 404 });

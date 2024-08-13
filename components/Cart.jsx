@@ -5,6 +5,7 @@ import Image from "next/image";
 import { FaTrash } from "react-icons/fa";
 import Link from "next/link";
 import {
+  addProductToCart,
   getAllProducts,
   getCartProducts,
   removeFromCart,
@@ -14,7 +15,7 @@ import VideoLoader from "./VideoLoader";
 import { useUser } from "@clerk/nextjs";
 import Loader from "./Loader";
 
-const Cart = () => {
+const Cart = ({isCartOpen}) => {
   const [cartProducts, setCartProducts] = useState([]);
   const [cartTotal, setCartTotal] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -25,94 +26,211 @@ const { isSignedIn } = useUser();
 }, []);
 
  
-  useEffect(() => {
-    const fetchData = async () => {
-      const cart = await getCartProducts();
+useEffect(() => {
+  // console.log("Fetching cart data...");
+  const fetchCartData = async () => {
+    try {
+      let dbCart = [];
+      let localCart = JSON.parse(localStorage.getItem('cartItems')) || [];
+      // console.log(localCart)
+
+      if (isSignedIn) {
+        // Fetch cart products from the database
+        dbCart = await getCartProducts();
+        // console.log(dbCart)
+        // Extract product and quantity data from dbCart
+        const dbCartItems = dbCart.map(item => ({ id: item.productId, quantity: item.quantity }));
+        console.log(dbCartItems)
+        // Merge and deduplicate the cart items, prioritizing quantities from the database
+        const mergedCart = [...localCart];
+        // console.log(mergedCart)
+        dbCartItems.forEach(dbItem => {
+          const existingItemIndex = mergedCart.findIndex(localItem => localItem.id === dbItem.id);
+          if (existingItemIndex !== -1) {
+            // If item exists in both, update quantity
+            mergedCart[existingItemIndex].quantity = Math.max(mergedCart[existingItemIndex].quantity, dbItem.quantity);
+          } else {
+            // If item doesn't exist in local cart, add it
+            mergedCart.push(dbItem);
+          }
+        });
+
+        // Sync the merged cart back to the database and localStorage
+        await syncCartToDatabase(mergedCart);
+        localStorage.setItem('cartItems', JSON.stringify(mergedCart));
+
+        // Set the cart for filtering
+        dbCart = mergedCart.map(item => ({ productId: item.id, quantity: item.quantity }));
+      } else {
+        // Map localCart to match the structure of dbCart
+        dbCart = localCart.map(item => ({ productId: item.id, quantity: item.quantity }));
+      }
+
       const products = await getAllProducts();
-      setLoading(false);
-      // console.log(cart)
-      // console.log(products)
-      if (cart && products) {
-        // Filter products that are in the cart
+
+      if (dbCart && products) {
         const filteredProducts = products.filter((product) =>
-          cart.some((cartItem) => cartItem.productId === product.id)
+          dbCart.some((cartItem) => cartItem.productId === product.id)
         );
 
         let total = 0;
         const productsWithQuantity = filteredProducts.map((product) => {
-          const cartItem = cart.find((item) => item.productId === product.id);
+          const cartItem = dbCart.find((item) => item.productId === product.id);
           total += product.price * cartItem.quantity;
-
-          return { ...product, quantity: cartItem?.quantity };
+          return { ...product, quantity: cartItem.quantity };
         });
 
         setCartProducts(productsWithQuantity);
         setCartTotal(total);
       }
-    };
-
-    fetchData();
-    const intervalId = setInterval(fetchData, 1000);
-
-    return () => clearInterval(intervalId);
-  }, []);
-
-  const handleRemoveFromCart = async (productId) => {
-    try {
-      const updatedCart = await removeFromCart(productId);
-      localStorage.setItem("cartItems", JSON.stringify(updatedCart));
-      if (updatedCart) {
-        setCartProducts((prevCartProducts) =>
-          prevCartProducts.filter((product) => product.id !== productId)
-        );
-        const removedProduct = cartProducts.find(
-          (product) => product.id === productId
-        );
-        if (removedProduct) {
-          setCartTotal(
-            (prevTotal) =>
-              prevTotal - removedProduct.price * removedProduct.quantity
-          );
-        }
-      }
     } catch (error) {
-      console.error("Error removing product from cart:", error);
+      console.error("Error fetching cart:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
-  const handleQuantityChange = async (productId, action) => {
-    const updatedCart = await updateCartQuantity(productId, action);
+  fetchCartData();
+  // const int = setInterval(() => { fetchCartData(); }
+  // , 2000);  
+
+  // return () => clearInterval(int);
+}, [isSignedIn, isCartOpen]);
+
+const syncCartToDatabase = async (cart) => {
+  // console.log(cart);
+  // Assume this function sends the merged cart to the server to update the database
+  try {
+    if(!cart.length === 0) {
+
+      await addProductToCart(cart); // Replace with your actual API call to update the cart on the server
+    }
+  } catch (error) {
+    console.log("Error syncing cart to database:", error);
+  }
+};
+
+
+
+
+
+const handleRemoveFromCart = async (productId) => {
+  try {
+    let updatedCart;
+
+    if (!isSignedIn) {
+      // User is not signed in, update the cart in local storage
+      const cartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
+      
+      // Remove the product from the cart
+      updatedCart = cartItems.filter((item) => item.id !== productId);
+
+      // Update local storage
+      localStorage.setItem("cartItems", JSON.stringify(updatedCart));
+    } else {
+      // User is signed in, update the cart in the database
+      updatedCart = await removeFromCart(productId);
+      console.log(updatedCart)
+      // Update local storage with the updated cart from the server
+      const localCart = updatedCart.map(item => ({ id: item.productId, quantity: item.quantity }));
+      console.log(localCart)
+      localStorage.setItem("cartItems", JSON.stringify(localCart));
+
+    }
+
     if (updatedCart) {
-      // Update the cart products and total
-      const products = await getAllProducts();
-      const filteredProducts = products.filter((product) =>
-        updatedCart.some((cartItem) => cartItem.productId === product.id)
+      // Update the state to reflect the changes in the UI
+      setCartProducts((prevCartProducts) =>
+        prevCartProducts.filter((product) => product.id !== productId)
       );
 
-      let total = 0;
-      const productsWithQuantity = filteredProducts.map((product) => {
-        const cartItem = updatedCart.find(
-          (item) => item.productId === product.id
-        );
-        total += product.price * cartItem.quantity;
-        return { ...product, quantity: cartItem.quantity };
-      });
+      const removedProduct = cartProducts.find(
+        (product) => product.id === productId
+      );
 
-      setCartProducts(productsWithQuantity);
-      setCartTotal(total);
+      if (removedProduct) {
+        setCartTotal(
+          (prevTotal) =>
+            prevTotal - removedProduct.price * removedProduct.quantity
+        );
+      }
+    }
+  } catch (error) {
+    console.error("Error removing product from cart:", error);
+  }
+};
+
+
+  const handleQuantityChange = async (productId, action) => {
+    if (!isSignedIn) {
+      // User is not signed in, update the quantity in local storage
+      let cartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
+      console.log(cartItems)
+      const productIndex = cartItems.findIndex(item => item.id === productId);
+      // console.log(productIndex)
+      if (productIndex !== -1) {
+        if (action === 'increase') {
+          cartItems[productIndex].quantity += 1;
+        } else if (action === 'decrease' && cartItems[productIndex].quantity > 1) {
+          cartItems[productIndex].quantity -= 1;
+        } else if (action === 'decrease' && cartItems[productIndex].quantity === 1) {
+          // Remove the item from the cart if the quantity is 1 and action is decrement
+          cartItems.splice(productIndex, 1);
+        }
+
+        console.log(cartItems)
+  
+        // Update the cart in local storage
+        localStorage.setItem("cartItems", JSON.stringify(cartItems));
+  
+        // Fetch product data to update the cart display
+        const products = await getAllProducts();
+        const filteredProducts = products.filter((product) =>
+          cartItems.some((cartItem) => cartItem.id === product.id)
+        );
+  
+        let total = 0;
+        const productsWithQuantity = filteredProducts.map((product) => {
+          const cartItem = cartItems.find(
+            (item) => item.id === product.id
+          );
+          total += product.price * cartItem.quantity;
+          return { ...product, quantity: cartItem.quantity };
+        });
+  
+        setCartProducts(productsWithQuantity);
+        setCartTotal(total);
+      }
+    } else {
+      // User is signed in, update the quantity in the database
+      const updatedCart = await updateCartQuantity(productId, action);
+      console.log(updatedCart)
+      if (updatedCart) {
+        const localCart = updatedCart.map(item => ({ productId: item.id, quantity: item.quantity }));
+        localStorage.setItem("cartItems", JSON.stringify(localCart));
+        // Update the cart products and total
+        const products = await getAllProducts();
+        const filteredProducts = products.filter((product) =>
+          updatedCart.some((cartItem) => cartItem.productId === product.id)
+        );
+  
+        let total = 0;
+        const productsWithQuantity = filteredProducts.map((product) => {
+          const cartItem = updatedCart.find(
+            (item) => item.productId === product.id
+          );
+          total += product.price * cartItem.quantity;
+          return { ...product, quantity: cartItem.quantity };
+        });
+  
+        setCartProducts(productsWithQuantity);
+        setCartTotal(total);
+      }
     }
   };
+  
 
-  if (!isSignedIn) {
-    return (
-      <div className="overflow-x-hidden">
-      <div className="w-[100%] playfair h-[100%] flex justify-center items-center">
-        <p className="text-xl font-medium">Please sign in to view your Cart</p>
-      </div>
 
-      </div>
-    );
-  }
 
 
 
@@ -167,7 +285,7 @@ const { isSignedIn } = useUser();
                           onClick={() =>
                             handleQuantityChange(item.id, "decrease")
                           }
-                          className="text-black py-1 px-3 rounded-l-lg"
+                          className="text-black py-1 px-3 cursor-pointer hover:bg-gray-300"
                           disabled={item.quantity <= 1}
                         >
                           -
@@ -179,7 +297,7 @@ const { isSignedIn } = useUser();
                           onClick={() =>
                             handleQuantityChange(item.id, "increase")
                           }
-                          className="text-black py-1 px-3 rounded-r-lg"
+                          className="text-black py-1 px-3 hover:bg-gray-300"
                         >
                           +
                         </button>
