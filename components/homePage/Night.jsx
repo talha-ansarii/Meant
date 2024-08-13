@@ -167,7 +167,7 @@ const Night = ({ products, setShow, show }) => {
               className=" w-[100%]  relative z-[300] "
             >
               
-              {/* <MobileNightModel/> */}
+              <MobileNightModel/>
             </div>
           )}
           {isTablet && (
@@ -175,7 +175,7 @@ const Night = ({ products, setShow, show }) => {
               className=" w-[100%]  lg:pt-[150px] md:overflow-y-hidden md:mt-[-100px] md:h-auto h-[700px] relative z-[300] "
             >
               
-              {/* <TabNightModel/> */}
+              <TabNightModel/>
 
             </div>
           )}
@@ -185,7 +185,7 @@ const Night = ({ products, setShow, show }) => {
             >
              
 
-              {/* <NightModel scale={1}/> */}
+              <NightModel />
             </div>
           )}
         </div>
