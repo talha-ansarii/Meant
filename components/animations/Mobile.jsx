@@ -22,6 +22,9 @@ function Mobile() {
     makeUpBox.current = obj;
     front.current = obj1;
 
+    console.log("makeUpBox", makeUpBox.current);
+    console.log("front", front.current);
+
     // Add wobble effect
     if (makeUpBox.current) {
       gsap.to(makeUpBox.current.rotation, {
@@ -38,7 +41,9 @@ function Mobile() {
     if (!isClient) return;
 
     let previousProgress = 0;
-    gsap.set(".canvas", { x: 10, y: -100, scale: 1 });
+    gsap.set(".canvas", { x: 0, y: -100, scale: 1,
+      width: "375px",height: "700px",
+     });
 
     gsap.timeline({
       ease: "ease-in",
@@ -50,7 +55,7 @@ function Mobile() {
         markers: false,
         onUpdate: (self) => {
           if (front.current) {
-            const openRotation = self.progress * -100;
+            const openRotation = self.progress * -50;
             front.current.rotation.x = openRotation * (Math.PI / 180);
             if (self.progress < 0.1) {
               front.current.rotation.x = 90 * (Math.PI / 180);
@@ -58,17 +63,17 @@ function Mobile() {
           }
         },
       },
-    }).to(".canvas", { x: 0, y: 1000, scale: 0.7 });
+    }).to(".canvas", { x: 0, y: 900, scale: 0.7 });
   }, [isClient, front, makeUpBox]);
 
   if (!isClient) return null;
 
   return (
     <div className="">
-      <div className="w-full justify-center items-center" style={{ height: "900px" }}>
+      <div className="w-full flex justify-center items-center" style={{ height: "900px" }}>
         {isClient && (
           <Spline
-            scene="https://prod.spline.design/pGWBcDIoqaKBrAHg/scene.splinecode"
+            scene="https://prod.spline.design/Ic5MH5N18crooTAz/scene.splinecode"
             onLoad={onLoad}
             className="canvas"
           />
