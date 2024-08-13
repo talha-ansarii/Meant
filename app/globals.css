@@ -44,6 +44,10 @@ body {
   font-family: 'providence-bold';
   src: url('/fonts/imprint-mt-shadow.ttf');
 }
+.sandana {
+  font-family: 'providence-bold';
+  src: url('/fonts/sandana.ttf');
+}
 
 .product-count {
   height: 18px;
