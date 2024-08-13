@@ -11,6 +11,7 @@ import {
   removeProductFromWishlist,
 } from "@/utils/wishlistUtils";
 import LikeButton from "./likeButton/LikeButton";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
 const ProductCard = ({
   product,
@@ -20,10 +21,9 @@ const ProductCard = ({
   quantities,
 }) => {
   const [wishlistFilled, setWishlistFilled] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const { isSignedIn } = useUser();
   const router = useRouter();
-
-
 
   useEffect(() => {
     // Fetch products from API
@@ -53,12 +53,15 @@ const ProductCard = ({
         }
       } else {
         // Fetch wishlist products from localStorage
-        const localWishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
-        wishListproducts = localWishlist.map(id => ({ productId: id }));
+        const localWishlist =
+          JSON.parse(localStorage.getItem("wishlist")) || [];
+        wishListproducts = localWishlist.map((id) => ({ productId: id }));
       }
 
       // Check if the product is in the wishlist
-      const contains = wishListproducts.some(prod => prod.productId === product.id);
+      const contains = wishListproducts.some(
+        (prod) => prod.productId === product.id
+      );
       setWishlistFilled(contains);
     };
 
@@ -67,11 +70,11 @@ const ProductCard = ({
 
   const handleWishlistClick = async (e) => {
     e.stopPropagation();
-    const wishlistKey = 'wishlist';
-    
+    const wishlistKey = "wishlist";
+
     // Initialize the wishlist from localStorage or an empty array
     let wishlist = JSON.parse(localStorage.getItem(wishlistKey)) || [];
-  
+
     if (!isSignedIn) {
       if (wishlistFilled) {
         wishlist = wishlist.filter((item) => item !== product.id);
@@ -92,7 +95,7 @@ const ProductCard = ({
           await addProductToWishlist(product.id);
           toast.success("Added to wishlist");
         }
-  
+
         // Update local storage
         if (!wishlist.includes(product.id)) {
           wishlist.push(product.id);
@@ -105,23 +108,24 @@ const ProductCard = ({
         toast.error("Error updating wishlist");
       }
     }
-  
+
     setWishlistFilled(!wishlistFilled);
   };
-  
-  
+
   const handleCartClick = async (e) => {
     e.stopPropagation();
-  
+
     // Retrieve existing cart items from local storage
     if (!isSignedIn) {
       let cartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
-    
-    // If the user is not signed in, save the product directly to local storage
-    
+
+      // If the user is not signed in, save the product directly to local storage
+
       // Check if the product is already in the cart
-      const existingCartItemIndex = cartItems.findIndex(item => item.id === product.id);
-  
+      const existingCartItemIndex = cartItems.findIndex(
+        (item) => item.id === product.id
+      );
+
       if (existingCartItemIndex !== -1) {
         // If product exists, update its quantity
         cartItems[existingCartItemIndex].quantity += quantity;
@@ -130,27 +134,29 @@ const ProductCard = ({
         const newCartItem = { id: product.id, quantity };
         cartItems.push(newCartItem);
       }
-  
+
       // Save the updated cart items to local storage
       localStorage.setItem("cartItems", JSON.stringify(cartItems));
-  
+
       // Optionally, show a message to the user
       toast.success("Added to cart");
-  
+
       return;
     }
     let cartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
-  
+
     try {
       await addProductToCart(product.id, quantity);
       toast.success("Added to cart");
-  
+
       // Update quantities state
       setQuantities({ ...quantities, [product.id]: 1 });
-  
+
       // If signed in, update the local storage as well
-      const existingCartItemIndex = cartItems?.findIndex(item => item.id === product.id);
-  
+      const existingCartItemIndex = cartItems?.findIndex(
+        (item) => item.id === product.id
+      );
+
       if (existingCartItemIndex !== -1) {
         // If product exists, update its quantity
         cartItems[existingCartItemIndex].quantity += quantity;
@@ -158,42 +164,62 @@ const ProductCard = ({
         // If product doesn't exist, add it to the cart
         const newCartItem = { id: product.id, quantity };
         cartItems.push(newCartItem);
-      } 
+      }
       // console.log(cartItems)
-  
+
       // Save the updated cart items to local storage
       localStorage.setItem("cartItems", JSON.stringify(cartItems));
-
     } catch (error) {
       console.log("Error adding product to cart:", error);
     }
   };
-  
-  
+
+  const handlePreviousImage = () => {
+    setCurrentImageIndex((prevIndex) =>
+      prevIndex === 0 ? product.images.length - 1 : prevIndex - 1
+    );
+  };
+
+  const handleNextImage = () => {
+    setCurrentImageIndex((prevIndex) =>
+      prevIndex === product.images.length - 1 ? 0 : prevIndex + 1
+    );
+  };
 
   return (
     <div className="relative border rounded-lg overflow-hidden shadow-lg bg-white">
       <Toaster position="top-right" richColors />
       <div className="relative h-[15rem]">
-        {/* Link to the single product page */}
-        <Link href={`/product/${product.id}`}>
-          <Image
-            src={product.images[0]?.src}
-            alt={product.name}
-            layout="fill"
-            className="object-cover"
-          />
-        </Link>
+      <div className="relative w-full h-full overflow-hidden">
+          <button
+            onClick={handlePreviousImage}
+            className="absolute left-2 top-1/2 transform -translate-y-1/2 z-10 text-[#b99696] shadow-md  p-1 rounded-full"
+          >
+            <FaChevronLeft size={20} />
+          </button>
+          <Link href={`/product/${product.id}`}>
+              <Image
+                src={product.images[currentImageIndex]?.src}
+                alt={product.name}
+                layout="fill"
+                className="object-cover"
+              />
+          </Link>
+          <button
+            onClick={handleNextImage}
+            className="absolute right-2 top-1/2 transform -translate-y-1/2 z-10 text-[#b99696] shadow-sm p-1 rounded-full"
+          >
+            <FaChevronRight size={20} />
+          </button>
+        </div>
         {/* Wishlist heart icon */}
         <div
           className="absolute top-6 right-2 cursor-pointer"
           onClick={handleWishlistClick}
         >
-          <div
-               className="relative mr-[20px]">
-              <LikeButton wishlistFilled={wishlistFilled} />
-
-              </div>
+          <div className="relative mr-[20px]">
+            <LikeButton wishlistFilled={wishlistFilled} />
+          </div>
         </div>
       </div>
       <div className="p-4">
@@ -210,7 +236,7 @@ const ProductCard = ({
         {/* Quantity and Add to Cart */}
         <div className="flex items-center justify-between mt-4">
           {/* Quantity controls */}
-          <div className="flex items-center justify-center w-[125px] h-[40px] border border-black bg-white rounded-md">
+          <div className="flex items-center justify-center md:w-[100px] w-[125px] h-[40px] prod-button">
             <button
               onClick={() => onQuantityChange(product.id, -1)}
               className="w-6 h-6 text-black font-poppins font-medium border-black rounded-l-md flex items-center justify-center"
@@ -230,7 +256,7 @@ const ProductCard = ({
           {/* Add to Cart button */}
           <button
             onClick={handleCartClick}
-            className="bg-white text-black w-[125px] h-[40px] border border-black px-4 py-1.5 rounded-md font-merriweather text-sm font-bold hover:bg-gray-300"
+            className=" prod-button text-sm md:w-[115px] w-[125px] h-[40px] px-4 py-1.5 font-merriweather"
           >
             Add to Cart
           </button>

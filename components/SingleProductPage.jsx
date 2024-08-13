@@ -144,24 +144,26 @@ const SingleProductPage = ({ productId }) => {
 
   const handleCartClick = async (e) => {
     e.stopPropagation();
-  
+
     if (!isSignedIn) {
       return router.push("/sign-in");
     }
-  
+
     try {
       await addProductToCart(product.id, quantity);
       toast.success("Added to cart");
-  
+
       // Update quantities state
       setQuantity(1);
-  
+
       // Retrieve existing cart items from local storage
       const cartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
-  
+
       // Check if the product is already in the cart
-      const existingCartItemIndex = cartItems.findIndex(item => item.id === product.id);
-  
+      const existingCartItemIndex = cartItems.findIndex(
+        (item) => item.id === product.id
+      );
+
       if (existingCartItemIndex !== -1) {
         // If product exists, update its quantity
         cartItems[existingCartItemIndex].quantity += quantity;
@@ -170,7 +172,7 @@ const SingleProductPage = ({ productId }) => {
         const newCartItem = { id: product.id, quantity };
         cartItems.push(newCartItem);
       }
-  
+
       // Save the updated cart items to local storage
       localStorage.setItem("cartItems", JSON.stringify(cartItems));
     } catch (error) {
@@ -180,13 +182,13 @@ const SingleProductPage = ({ productId }) => {
 
   const handleWishlistClick = async (e) => {
     e.stopPropagation();
-    const wishlistKey = 'wishlist';
+    const wishlistKey = "wishlist";
 
     const product_id = parseInt(productId);
-    
+
     // Initialize the wishlist from localStorage or an empty array
     let wishlist = JSON.parse(localStorage.getItem(wishlistKey)) || [];
-  
+
     if (!isSignedIn) {
       if (wishlistFilled) {
         wishlist = wishlist.filter((item) => item !== product_id);
@@ -207,7 +209,7 @@ const SingleProductPage = ({ productId }) => {
           await addProductToWishlist(product_id);
           toast.success("Added to wishlist");
         }
-  
+
         // Update local storage
         if (!wishlist.includes(product_id)) {
           wishlist.push(product_id);
@@ -220,7 +222,7 @@ const SingleProductPage = ({ productId }) => {
         toast.error("Error updating wishlist");
       }
     }
-  
+
     setWishlistFilled(!wishlistFilled);
   };
 
@@ -246,7 +248,6 @@ const SingleProductPage = ({ productId }) => {
   };
 
   useEffect(() => {
-
     const product_id = parseInt(productId);
     const fetchWishlistProducts = async () => {
       let wishListproducts = [];
@@ -260,12 +261,15 @@ const SingleProductPage = ({ productId }) => {
         }
       } else {
         // Fetch wishlist products from localStorage
-        const localWishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
-        wishListproducts = localWishlist.map(id => ({ productId: id }));
+        const localWishlist =
+          JSON.parse(localStorage.getItem("wishlist")) || [];
+        wishListproducts = localWishlist.map((id) => ({ productId: id }));
       }
 
       // Check if the product is in the wishlist
-      const contains = wishListproducts.some(prod => prod.productId === product_id);
+      const contains = wishListproducts.some(
+        (prod) => prod.productId === product_id
+      );
       setWishlistFilled(contains);
     };
 
@@ -286,13 +290,7 @@ const SingleProductPage = ({ productId }) => {
 
   if (loading)
     return (
-      <>
-        {isClient && (
-          <div className="w-[100vw] h-[100vh] ">
-           Loading...
-          </div>
-        )}
-      </>
+      <>{isClient && <div className="w-[100vw] h-[100vh] ">Loading...</div>}</>
     );
 
   return (
@@ -353,11 +351,8 @@ const SingleProductPage = ({ productId }) => {
               <h1 className="lg:font-size-heading font-bold text-[28px] font-playfair-display">
                 {product.name}
               </h1>
-              <div
-              onClick={handleWishlistClick}
-               className="relative mr-[20px]">
-              <LikeButton wishlistFilled={wishlistFilled} />
-
+              <div onClick={handleWishlistClick} className="relative mr-[20px]">
+                <LikeButton wishlistFilled={wishlistFilled} />
               </div>
             </div>
             <p className="lg:text-sm text-[10px] font-normal font-merriweather text-white mt-2">
@@ -407,19 +402,19 @@ const SingleProductPage = ({ productId }) => {
             </div>
 
             <div className="flex items-center mt-4">
-              <div className="flex items-center justify-center h-[40px] w-[150px] border border-white bg-black rounded-md mr-6">
+              <div className="flex items-center justify-center md:w-[100px] w-[125px] h-[40px] prod-button">
                 <button
                   onClick={() => handleQuantityChange(-1)}
-                  className="w-1/3 h-6 text-white font-poppins font-medium border-white rounded-l-md flex items-center justify-center"
+                  className="w-1/3 h-6 font-poppins font-medium border-white rounded-l-md flex items-center justify-center"
                 >
                   <p>-</p>
                 </button>
-                <span className="w-1/3 h-8 text-white font-poppins font-medium border-r border-l border-white flex items-center justify-center">
+                <span className="w-1/3 h-8 font-poppins font-medium  border-white flex items-center justify-center">
                   <p>{quantity}</p>
                 </span>
                 <button
                   onClick={() => handleQuantityChange(1)}
-                  className="w-1/3 h-8  text-white font-poppins font-medium rounded-r-md flex items-center justify-center"
+                  className="w-1/3 h-8 font-poppins font-medium rounded-r-md flex items-center justify-center"
                 >
                   <p>+</p>
                 </button>
@@ -427,9 +422,15 @@ const SingleProductPage = ({ productId }) => {
 
               <button
                 onClick={handleCartClick}
-                className="bg-white w-[150px] h-[40px] text-black border border-black px-6 py-2 rounded-md font-merriweather font-bold max-w-xs hover:bg-gray-300"
+                className=" prod-button ml-4 text-sm md:w-[115px] w-[125px] h-[40px] px-4 py-1.5 font-merriweather"
               >
                 Add to Cart
+              </button>
+              <button
+                // onClick={handleCartClick}
+                className=" prod-button  ml-4 text-sm md:w-[115px] w-[125px] h-[40px] px-4 py-1.5 font-merriweather"
+              >
+                Buy Now
               </button>
             </div>
 
@@ -441,10 +442,41 @@ const SingleProductPage = ({ productId }) => {
               textColor="text-white"
               fontWeight="font-bold"
             >
-              <p className="text-sm font-medium font-poppins text-gray-400">
-                {product.meta_data.find((meta) => meta.key === "description")
-                  ?.value || "No description available."}
-              </p>
+              <div className="text-sm font-medium font-poppins text-gray-400">
+                <p className="mb-1">
+                  <strong>Category:</strong>{" "}
+                  {product.meta_data.find((meta) => meta.key === "category")
+                    ?.value || "N/A"}
+                </p>
+                <p className="mb-1">
+                  <strong>Coverage:</strong>{" "}
+                  {product.meta_data.find((meta) => meta.key === "coverage")
+                    ?.value || "N/A"}
+                </p>
+                <p className="mb-1">
+                  <strong>Finish:</strong>{" "}
+                  {product.meta_data.find((meta) => meta.key === "finish")
+                    ?.value || "N/A"}
+                </p>
+                <p className="mb-1">
+                  <strong>Benefits:</strong>
+                </p>
+                <ul className="list-disc ml-8">
+                  {product.meta_data
+                    .find((meta) => meta.key === "benefits")
+                    ?.value.split("\n")
+                    .map((benefit, index) => (
+                      <li key={index} className="mb-1">
+                        {benefit}
+                      </li>
+                    )) || <li>No benefits available.</li>}
+                </ul>
+
+                <p>
+                  {product.meta_data.find((meta) => meta.key === "description")
+                    ?.value || "No description available."}
+                </p>
+              </div>
             </Accordion>
             <Accordion
               title="Ingredients"
