@@ -22,6 +22,10 @@ import Mobile from "@/components/animations/Mobile";
 import { useMediaQuery } from "react-responsive";
 import Tab from "@/components/animations/Tab";
 import Desktop from "@/components/animations/Desktop";
+import { HoverBorderGradient } from "@/components/ui/hover-border-gradient";
+import Link from "next/link";
+import LikeButton from "@/components/likeButton/LikeButton";
+import { Toaster, toast } from "sonner";
 
 export default function Home() {
   const [products, setProducts] = useState([]);
@@ -34,6 +38,9 @@ export default function Home() {
   const isMobile = useMediaQuery({ maxWidth: 480 });
   const isTablet = useMediaQuery({ minWidth: 481, maxWidth: 1024 });
   const isDesktop = useMediaQuery({ minWidth: 1025 });
+ 
+    const [wishlistFilled, setWishlistFilled] = useState(false);
+
 
   const router = useRouter();
 
@@ -52,102 +59,125 @@ export default function Home() {
 
     fetchProducts();
   }, []);
-  const productName = "Night Muse Lipstick";
-  const product = products.find((p) => p.name === productName);
+
   const productName1 = "Day Dazzle Lipstick";
   const product1 = products.find((p) => p.name === productName1);
 
-  const handleAddToCart = async () => {
+  const handleCartClick = async (e) => {
+    e.stopPropagation();
+  
     if (!isSignedIn) {
       return router.push("/sign-in");
     }
-    if (product) {
-      try {
-        const data = await addProductToCart(product.id, 1);
-        console.log("Product added to cart:", data);
-      } catch (error) {
-        console.error("Error adding product to cart:", error);
-        return;
+  
+    try {
+      await addProductToCart(product1.id, 1);
+      toast.success("Added to cart");
+  
+      
+  
+      // Retrieve existing cart items from local storage
+      const cartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
+  
+      // Check if the product is already in the cart
+      const existingCartItemIndex = cartItems.findIndex(item => item.id === product1.id);
+  
+      if (existingCartItemIndex !== -1) {
+        // If product exists, update its quantity
+        cartItems[existingCartItemIndex].quantity += 1;
+      } else {
+        // If product doesn't exist, add it to the cart
+        const newCartItem = { id: product1.id, quantity: 1 };
+        cartItems.push(newCartItem);
       }
-      setIsInCart(true);
+  
+      // Save the updated cart items to local storage
+      localStorage.setItem("cartItems", JSON.stringify(cartItems));
+    } catch (error) {
+      console.error("Error adding product to cart:", error);
     }
   };
 
-  useEffect(() => {
-    if (product) {
-      const fetchWishlistProducts = async () => {
-        const wishListproducts = await getWishlistProducts();
-        console.log(wishListproducts);
-        const contains = wishListproducts?.some((prod) => {
-          // console.log(prod.productId, product.id)
-          return prod.productId === product.id;
-        });
-        setIsInWishlist(contains);
-      };
-
-      fetchWishlistProducts();
-    }
-  }, [isInWishlist]);
-
-  const handleAddToCart1 = async () => {
+  const handleWishlistClick = async (e, product1) => {
+    e.stopPropagation();
+    const wishlistKey = 'wishlist';
+    
+    // Initialize the wishlist from localStorage or an empty array
+    let wishlist = JSON.parse(localStorage.getItem(wishlistKey)) || [];
+  
     if (!isSignedIn) {
-      return router.push("/sign-in");
-    }
-    if (product1) {
+      if (wishlistFilled) {
+        wishlist = wishlist.filter((item) => item !== product1.id);
+        toast.error("Removed from wishlist");
+      } else {
+        if (!wishlist.includes(product1.id)) {
+          wishlist.push(product1.id);
+        }
+        toast.success("Added to wishlist");
+      }
+      localStorage.setItem(wishlistKey, JSON.stringify(wishlist));
+    } else {
       try {
-        const data = await addProductToCart(product1.id, 1);
-        console.log("Product added to cart:", data);
+        if (wishlistFilled) {
+          await removeProductFromWishlist(product1.id);
+          toast.error("Removed from wishlist");
+        } else {
+          await addProductToWishlist(product1.id);
+          toast.success("Added to wishlist");
+        }
+  
+        // Update local storage
+        if (!wishlist.includes(product1.id)) {
+          wishlist.push(product1.id);
+        } else {
+          wishlist = wishlist.filter((item) => item !== product1.id);
+        }
+        localStorage.setItem(wishlistKey, JSON.stringify(wishlist));
       } catch (error) {
-        console.error("Error adding product to cart:", error);
-        return;
+        console.error("Error updating wishlist in the database", error);
+        toast.error("Error updating wishlist");
       }
-      setIsInCart1(true);
     }
-  };
-  const handleAddToWishlist1 = () => {
-    if (product1) {
-      if (isInWishlist1) {
-        removeProductFromWishlist(product1.id);
-      } else {
-        addProductToWishlist(product1.id);
-      }
-      setIsInWishlist1(!isInWishlist1);
-    }
-  };
-
-  const handleAddToWishlist = () => {
-    if (product) {
-      if (isInWishlist) {
-        removeProductFromWishlist(product.id);
-      } else {
-        addProductToWishlist(product.id);
-      }
-      setIsInWishlist(!isInWishlist);
-    }
+  
+    setWishlistFilled(!wishlistFilled);
   };
 
   useEffect(() => {
-    if (product1) {
+
+    if(product1){
       const fetchWishlistProducts = async () => {
-        const wishListproducts = await getWishlistProducts();
-        console.log(wishListproducts);
-        const contains = wishListproducts?.some((prod) => {
-          // console.log(prod.productId, product.id)
-          return prod.productId === product1.id;
-        });
-        setIsInWishlist1(contains);
+        let wishListproducts = [];
+  
+        if (isSignedIn) {
+          // Fetch wishlist products from the database
+          try {
+            wishListproducts = await getWishlistProducts();
+          } catch (error) {
+            console.error("Error fetching wishlist products", error);
+          }
+        } else {
+          // Fetch wishlist products from localStorage
+          const localWishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+          wishListproducts = localWishlist.map(id => ({ productId: id }));
+        }
+  
+        // Check if the product is in the wishlist
+        const contains = wishListproducts.some(prod => prod.productId === product1.id);
+        setWishlistFilled(contains);
       };
-
+  
       fetchWishlistProducts();
+
     }
-  }, [isInWishlist1]);
+  }, [product1, isSignedIn]);
+ 
 
 
-  // console.log(isMobile)
  
 
   return (
     <div className="relative  bg-black">
+      <Toaster position="top-right" richColors />
         {isMobile && (
           <div className="absolute z-[200] top-0 left-0  w-full h-full">
             <Mobile />
@@ -171,7 +201,42 @@ export default function Home() {
           <div className="pt-[100px] relative w-full pb-4">
             <HeroSection />
 
+            <div className="relative">
+            <div className="flex absolute z-[300] left-[20px] top-[950px] l mt-2 items-center ml-[20px]   gap-4 md:left-[400px] md:top-[800px] lg:left-[820px] lg:top-[1600px] ">
+              
+              <div
+              onClick={(e) => handleWishlistClick(e, product1)}
+              className="relative mr-[16px]">
+              <LikeButton
+               wishlistFilled={wishlistFilled}
+                />
+
+              </div>
+              <HoverBorderGradient
+                containerClassName=" rounded-[34px]"
+                as="button"
+                className=" bg-black text-white w-[100px] h-[30px] md:w-[130px] lg:w-[147px] md:h-[45px] lg:h-[45px] md:text-[14px] lg:text-[14px] flex items-center justify-center cursor-pointer font-poppins space-x-2 text-[10px] font-[500] leading-[18px]"
+                onClick={handleCartClick}
+                disabled={isInCart1}
+              >
+                <span>ADD TO CART</span>
+              </HoverBorderGradient>
+
+              <HoverBorderGradient
+                containerClassName=" rounded-[34px]"
+                as="button"
+                className=" bg-black text-white w-[100px] h-[30px] md:w-[130px] lg:w-[147px] md:h-[45px] lg:h-[45px] flex items-center justify-center font-poppins space-x-2 text-[10px] md:text-[14px] lg:text-[14px] font-[500] leading-[18px]"
+              >
+                <Link href={"/product/58"}>
+                  <span>ORDER NOW</span>
+                </Link>
+              </HoverBorderGradient>
+            </div>
+            </div>
+            <div className="z-[100] relative" >
+
             <Day products={products} />
+            </div>
             {/* <div className="w-full bg-black h-[900px]"></div> */}
 
             <Night show={show} setShow={setShow} products={products} />

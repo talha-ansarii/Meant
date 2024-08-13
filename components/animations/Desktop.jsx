@@ -33,7 +33,9 @@ function Desktop({ show, setShow }) {
     if (!isClient) return;
 
     let previousProgress = 0;
-    gsap.set(".canvas", { x: 0, y: 0, scale: 2 });
+    gsap.set(".canvas", { x: "85%", y: 0, scale: 1.2,
+        width: "500px", height: "500px"
+     });
 
     gsap.timeline({
       ease: "ease-in",
@@ -41,27 +43,27 @@ function Desktop({ show, setShow }) {
         trigger: "#part1",
         start: "top 100%",
         end: "bottom bottom",
-        scrub: 1.2,
+        scrub: 1.1,
         markers: false,
         onUpdate: (self) => {
             console.log(self.progress);
           if (front.current) {
             const openRotation = self.progress * -100;
             front.current.rotation.x = openRotation * (Math.PI / 180);
-            if (self.progress < 0.35) {
+            if (self.progress === 0) {
               front.current.rotation.x = 90 * (Math.PI / 180);
             }
           }
         },
       },
-    }).to(".canvas", { x: -70, y: 1180, scale: 0.7, onComplete: () => setCompleted(1) });
+    }).to(".canvas", { x: 200, y: 1600, scale: 1,duration: 5 , onComplete: () => setCompleted(1) });
   }, [isClient, front, makeUpBox]);
 
   if (!isClient) return null;
 
   return (
     <div className="">
-      <div className="w-full justify-center items-center" style={{ height: "900px" }}>
+      <div className=" justify-center overflow-hidden items-center" style={{ height: "1000px" }}>
         {isClient && (
           <Spline
             scene="https://prod.spline.design/pGWBcDIoqaKBrAHg/scene.splinecode"
@@ -70,7 +72,7 @@ function Desktop({ show, setShow }) {
           />
         )}
       </div>
-      <div id="part1" className="" style={{ height: "900px" }}></div>
+      <div id="part1" className="" style={{ height: "1100px" }}></div>
     </div>
   );
 }

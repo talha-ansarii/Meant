@@ -17,9 +17,8 @@ function Tab({ show, setShow }) {
     setIsClient(true);
   }, [isClient]);
 
-    useEffect(() => {
-        document.body.style.overflowX = "hidden";
-
+  useEffect(() => {
+    document.body.style.overflowX = "hidden";
   }, []);
 
   function onLoad(spline) {
@@ -33,44 +32,65 @@ function Tab({ show, setShow }) {
     if (!isClient) return;
 
     let previousProgress = 0;
-    gsap.set(".canvas", { x: "80%", y: "-100%", scale: 2 });
+    gsap.set(".canvas", {
+      x: "80%",
+      y: "-100%",
+      scale: 2,
+      width: "900px",
+      height: "900px",
+    });
 
-    gsap.timeline({
-      ease: "ease-in",
-      scrollTrigger: {
-        trigger: "#part1",
-        start: "top 100%",
-        end: "bottom bottom",
-        scrub: 1.2,
-        markers: false,
-        onUpdate: (self) => {
+    gsap
+      .timeline({
+        ease: "ease-in",
+        scrollTrigger: {
+          trigger: "#part1",
+          start: "top 100%",
+          end: "bottom bottom",
+          scrub: 1.2,
+          markers: false,
+          onUpdate: (self) => {
             console.log(self.progress);
-          if (front.current) {
-            const openRotation = self.progress * -100;
-            front.current.rotation.x = openRotation * (Math.PI / 180);
-            if (self.progress < 0.35) {
-              front.current.rotation.x = 90 * (Math.PI / 180);
+            if (front.current) {
+              const openRotation = self.progress * -100;
+              front.current.rotation.x = openRotation * (Math.PI / 180);
+              if (self.progress < 0.35) {
+                front.current.rotation.x = 90 * (Math.PI / 180);
+              }
             }
-          }
+          },
         },
-      },
-    }).to(".canvas", { x: -70, y: 1180, scale: 0.7, onComplete: () => setCompleted(1) });
+      })
+      .to(".canvas", {
+        x: -70,
+        y: 1180,
+        scale: 0.7,
+        onComplete: () => setCompleted(1),
+      });
   }, [isClient, front, makeUpBox]);
 
   if (!isClient) return null;
 
   return (
     <div className="">
-      <div className="w-full justify-center items-center" style={{ height: "900px" }}>
+      <div
+        id="part0"
+        className="w-full justify-center items-center"
+        style={{ height: "900px", overflow: "visible" }}
+      >
         {isClient && (
           <Spline
             scene="https://prod.spline.design/pGWBcDIoqaKBrAHg/scene.splinecode"
             onLoad={onLoad}
-            className="canvas"
+            className="canvas relative z-[200]"
           />
         )}
       </div>
-      <div id="part1" className="" style={{ height: "900px" }}></div>
+      <div
+        id="part1"
+        className="relative z-[100]"
+        style={{ height: "900px" }}
+      ></div>
     </div>
   );
 }
