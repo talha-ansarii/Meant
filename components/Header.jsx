@@ -7,11 +7,9 @@ import React, { useEffect, useState } from "react";
 import { FaRegHeart, FaShoppingCart, FaUser } from "react-icons/fa";
 import Cart from "./Cart";
 import { SignedIn, SignedOut, UserButton, useUser } from "@clerk/nextjs";
-import { getCartProducts } from "@/utils/cartUtils";
 import { getWishlistProducts } from "@/utils/wishlistUtils";
-import { Loader } from "lucide-react";
 import "./header.css";
-import Script from "next/script";
+
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isLogin, setIsLogin] = useState(true);
@@ -25,6 +23,7 @@ const Header = () => {
   const [wishlistLength, setWishlistLength] = useState(0);
   // const [isOpened, setIsOpened] = useState(false);
   const { isSignedIn } = useUser();
+
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
@@ -74,7 +73,6 @@ const Header = () => {
     };
 
     fetchData();
-
   }, [isSignedIn]);
 
   useEffect(() => {
@@ -83,7 +81,7 @@ const Header = () => {
       let localWishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
       setCartLength(localCart.length);
       setWishlistLength(localWishlist.length);
-    }
+    };
 
     const inter = setInterval(() => {
       setwishLength();
@@ -91,8 +89,7 @@ const Header = () => {
 
     return () => {
       clearInterval(inter);
-    }
-
+    };
   }, [wishlistLength]);
 
   const syncWishlistToDatabase = async (wishlist) => {
@@ -174,13 +171,11 @@ const Header = () => {
           : " translate-y-0 "
       }`}
     >
-
-
       <div className="lg:w-[892px] md:w-[741px] hidden z-50  px-[20px] m-auto h-[43px] rounded-[116px]  border md:flex lg:flex items-center justify-between bg-black  ">
         <div>
           <Link href={"/"}>
             <Image
-              src="/assets/images/logo.webp"
+              src="/assets/images/headerlogo.webp"
               width={62}
               height={21}
               alt="logo"
@@ -254,24 +249,25 @@ const Header = () => {
           <div className="flex w-full ">
             <div className="flex justify-between w-full  ">
               <div>
-                
                 <div
-      id="nav-icon2"
-      className={`relative mt-[5px] w-[30px] h-[15px] ${isOpen ? 'open' : ''}`}
-      onClick={() => setIsOpen(!isOpen)}
-    >
-      <span className="block absolute h-1.5 w-1/3 bg-white opacity-100 transition-transform duration-300 ease-in-out"></span>
-      <span className="block absolute h-1.5 w-1/3 bg-white opacity-100 transition-transform duration-300 ease-in-out"></span>
-      <span className="block absolute h-1.5 w-1/3 bg-white opacity-100 transition-transform duration-300 ease-in-out"></span>
-      <span className="block absolute h-1.5 w-1/3 bg-white opacity-100 transition-transform duration-300 ease-in-out"></span>
-      <span className="block absolute h-1.5 w-1/3 bg-white opacity-100 transition-transform duration-300 ease-in-out"></span>
-      <span className="block absolute h-1.5 w-1/3 bg-white opacity-100 transition-transform duration-300 ease-in-out"></span>
-    </div>
+                  id="nav-icon2"
+                  className={`relative mt-[5px] w-[30px] h-[15px] ${
+                    isOpen ? "open" : ""
+                  }`}
+                  onClick={() => setIsOpen(!isOpen)}
+                >
+                  <span className="block absolute h-1.5 w-1/3 bg-white opacity-100 transition-transform duration-300 ease-in-out"></span>
+                  <span className="block absolute h-1.5 w-1/3 bg-white opacity-100 transition-transform duration-300 ease-in-out"></span>
+                  <span className="block absolute h-1.5 w-1/3 bg-white opacity-100 transition-transform duration-300 ease-in-out"></span>
+                  <span className="block absolute h-1.5 w-1/3 bg-white opacity-100 transition-transform duration-300 ease-in-out"></span>
+                  <span className="block absolute h-1.5 w-1/3 bg-white opacity-100 transition-transform duration-300 ease-in-out"></span>
+                  <span className="block absolute h-1.5 w-1/3 bg-white opacity-100 transition-transform duration-300 ease-in-out"></span>
+                </div>
               </div>
               <div className="">
                 <Link href={"/"}>
                   <Image
-                    src="/assets/images/logo.webp"
+                    src="/assets/images/headerlogo.webp"
                     alt="logo"
                     width={90}
                     height={30}
@@ -283,10 +279,10 @@ const Header = () => {
                 <Link href="/wishlist">
                   <FaRegHeart className="w-[30px] cursor-pointer h-[23px] text-[#D76D8E]" />
                   {wishlistLength > 0 && (
-              <span className="absolute top-[-2px] left-[18px] bg-white text-black rounded-full text-[9px] w-3 h-3  flex items-center justify-center">
-                {wishlistLength}
-              </span>
-            )}
+                    <span className="absolute top-[-2px] left-[18px] bg-white text-black rounded-full text-[9px] w-3 h-3  flex items-center justify-center">
+                      {wishlistLength}
+                    </span>
+                  )}
                 </Link>
                 <div
                   className="relative flex  items-center"
@@ -294,10 +290,10 @@ const Header = () => {
                 >
                   <FaShoppingCart className="w-[25px] cursor-pointer h-[23px] text-white" />
                   {cartLength > 0 && (
-              <span className="absolute bottom-[0.8rem] left-[1rem] bg-black text-white rounded-full text-[9px] w-4 h-4  flex items-center justify-center">
-               {cartLength}
-              </span>
-            )}
+                    <span className="absolute bottom-[0.8rem] left-[1rem] bg-black text-white rounded-full text-[9px] w-4 h-4  flex items-center justify-center">
+                      {cartLength}
+                    </span>
+                  )}
                 </div>
                 <FaUser
                   onClick={() => setProfileOpen(!profileOpen)}
