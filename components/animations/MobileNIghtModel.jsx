@@ -38,50 +38,11 @@ function MobileNightModel() {
 
     }
     if(front.current){
-        // gsap.to(front.current,{
-        //     rotation: { x: -50 * (Math.PI / 180) },  
-        // })
+
         front.current.rotation.x = -70 * (Math.PI / 180);
     }
   }
 
-  useEffect(() => {
-    if (!isClient) return;
-
-    if(front.current){
-        // gsap.to(front.current,{
-        //     rotation: { x: -50 * (Math.PI / 180) },  
-        // })
-        // front.current.rotation.x = 90 * (Math.PI / 180);
-    }
-
-    // gsap.set(".canvas", { x: 0, y: -200, scale: 1,
-    //   width: "375px",height: "700px",
-    //  });
-
-    //  gsap.to(front.current,{
-    //     rotation: { x: 50 * (Math.PI / 180) },
-    //  })
-    // gsap.timeline({
-    //   ease: "ease-in",
-    //   scrollTrigger: {
-    //     trigger: "#part1",
-    //     start: "top 100%",
-    //     end: "bottom bottom",
-    //     scrub: 1.2,
-    //     markers: false,
-    //     onUpdate: (self) => {
-    //       if (front.current) {
-    //         const openRotation = self.progress * -50;
-    //         front.current.rotation.x = openRotation * (Math.PI / 180);
-    //         if (self.progress < 0.1) {
-    //           front.current.rotation.x = 90 * (Math.PI / 180);
-    //         }
-    //       }
-    //     },
-//       },
-//     }).to(".canvas", { x: 0, y: 800, scale: 0.7 });
-  }, [isClient, front, makeUpBox]);
 
   if (!isClient) return null;
 
@@ -90,10 +51,10 @@ function MobileNightModel() {
         {isClient && (
           <Spline
              scene="https://prod.spline.design/Zcfwrzzkdlho5FXV/scene.splinecode" 
-        width={400}
+        width={300}
         height={567}
             onLoad={onLoad}
-            className="canvas"
+           
           />
         )}
       </div>
