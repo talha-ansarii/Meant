@@ -183,16 +183,16 @@ export default function Home() {
             <Mobile />
           </div>
         )}
-        {/* {isTablet && (
+        {isTablet && (
           <div className="absolute z-[200] top-0  left-0 w-full h-full">
             <Tab />
           </div>
-        )} */}
-        {/* {isDesktop && (
+        )}
+        {isDesktop && (
           <div className="absolute z-[200] top-0  left-0 w-full h-full">
             <Desktop />
           </div>
-        )} */}
+        )}
       <Suspense fallback={<div>Loading...</div>}>
         <div className="w-full relative z-[300] bg-black">
           <Header />
