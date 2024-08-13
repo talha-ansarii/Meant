@@ -92,7 +92,7 @@ function Mobile() {
             width={490}
             height={697}
             onLoad={onLoad}
-            className="canvas"
+         
           />
         )}
       </div>

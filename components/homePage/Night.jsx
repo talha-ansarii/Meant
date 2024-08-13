@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import React, { Suspense, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Toaster, toast } from "sonner";
 import { Meteors } from "../ui/meteors";
 import { HoverBorderGradient } from "../ui/hover-border-gradient";
@@ -16,7 +16,6 @@ import {
 import Link from "next/link";
 import LikeButton from "../likeButton/LikeButton";
 import NightModelComponent from "./NightModelComponents";
-import { Canvas } from "@react-three/fiber";
 import { useMediaQuery } from "react-responsive";
 import NightModel from "../animations/NightModel";
 import TabNightModel from "../animations/TabNightModel";
@@ -38,25 +37,25 @@ const Night = ({ products, setShow, show }) => {
   const productName = "Night Muse Lipstick";
   const product = products.find((p) => p.name === productName);
 
-   const handleCartClick = async (e) => {
+  const handleCartClick = async (e) => {
     e.stopPropagation();
-  
+
     if (!isSignedIn) {
       return router.push("/sign-in");
     }
-  
+
     try {
       await addProductToCart(product.id, 1);
       toast.success("Added to cart");
-  
-      
-  
+
       // Retrieve existing cart items from local storage
       const cartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
-  
+
       // Check if the product is already in the cart
-      const existingCartItemIndex = cartItems.findIndex(item => item.id === product.id);
-  
+      const existingCartItemIndex = cartItems.findIndex(
+        (item) => item.id === product.id
+      );
+
       if (existingCartItemIndex !== -1) {
         // If product exists, update its quantity
         cartItems[existingCartItemIndex].quantity += 1;
@@ -65,19 +64,19 @@ const Night = ({ products, setShow, show }) => {
         const newCartItem = { id: product.id, quantity: 1 };
         cartItems.push(newCartItem);
       }
-  
+
       // Save the updated cart items to local storage
       localStorage.setItem("cartItems", JSON.stringify(cartItems));
     } catch (error) {
       console.error("Error adding product to cart:", error);
     }
   };
-  useEffect(() => {
 
-    if(product){
+  useEffect(() => {
+    if (product) {
       const fetchWishlistProducts = async () => {
         let wishListproducts = [];
-  
+
         if (isSignedIn) {
           // Fetch wishlist products from the database
           try {
@@ -87,31 +86,32 @@ const Night = ({ products, setShow, show }) => {
           }
         } else {
           // Fetch wishlist products from localStorage
-          const localWishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
-          wishListproducts = localWishlist.map(id => ({ productId: id }));
+          const localWishlist =
+            JSON.parse(localStorage.getItem("wishlist")) || [];
+          wishListproducts = localWishlist.map((id) => ({
+            productId: id,
+          }));
         }
-  
+
         // Check if the product is in the wishlist
-        const contains = wishListproducts.some(prod => prod.productId === product.id);
+        const contains = wishListproducts.some(
+          (prod) => prod.productId === product.id
+        );
         setWishlistFilled(contains);
       };
-  
-      fetchWishlistProducts();
 
+      fetchWishlistProducts();
     }
   }, [product, isSignedIn]);
 
-  const handleWishlistClick = async (e,product) => {
-
-
+  const handleWishlistClick = async (e, product) => {
     e.stopPropagation();
 
-    
-    const wishlistKey = 'wishlist';
-    
+    const wishlistKey = "wishlist";
+
     // Initialize the wishlist from localStorage or an empty array
     let wishlist = JSON.parse(localStorage.getItem(wishlistKey)) || [];
-  
+
     if (!isSignedIn) {
       if (wishlistFilled) {
         wishlist = wishlist.filter((item) => item !== product.id);
@@ -132,7 +132,7 @@ const Night = ({ products, setShow, show }) => {
           await addProductToWishlist(product.id);
           toast.success("Added to wishlist");
         }
-  
+
         // Update local storage
         if (!wishlist.includes(product.id)) {
           wishlist.push(product.id);
@@ -145,52 +145,41 @@ const Night = ({ products, setShow, show }) => {
         toast.error("Error updating wishlist");
       }
     }
-  
+
     setWishlistFilled(!wishlistFilled);
   };
 
-  // console.log(isMobile)
-
   return (
     <div className="relative z-[100]">
-      <div className=" h-[1100px] md:h-[600px] md:overflow-y-hidden overflow-x-hidden relative lg:h-[850px] bg-black over flex flex-col pt-[0px] md:flex-row lg:flex-row gap-6 w-[90%] m-auto ">
+      <div className=" md:h-[600px] md:overflow-y-hidden overflow-x-hidden relative lg:h-[850px] bg-black over flex flex-col pt-[0px] md:flex-row lg:flex-row gap-6 w-[90%] m-auto">
         <Toaster position="top-right" richColors />
 
         <div className="absolute">
           <Meteors number={20} />
         </div>
 
-        <div className=" w-full overflow-visible  md:pt-[180px] lg:w-[50%] md:w-[50%]  md:p-0 lg:p-0">
-          
-          {isMobile && (
-            <div
-              className=" w-[100%]  relative z-[300] "
-            >
-              
-              <MobileNightModel/>
+        <div className="w-full overflow-visible md:pt-[180px] lg:w-[50%] md:w-[50%] md:p-0 lg:p-0">
+          {isMobile &&
+
+           (
+            
+            <div className="w-[100%] relative z-[300] mobile-nightmodel">
+              <MobileNightModel />
             </div>
           )}
           {isTablet && (
-            <div
-              className=" w-[100%]  lg:pt-[150px] md:overflow-y-hidden md:mt-[-100px] md:h-auto h-[700px] relative z-[300] "
-            >
-              
-              <TabNightModel/>
-
+            <div className="w-[100%] lg:pt-[150px] md:overflow-y-hidden md:mt-[-100px] md:h-auto h-[700px] relative z-[300]">
+              <TabNightModel />
             </div>
           )}
           {isDesktop && (
-            <div
-              className=" w-[100%]  lg:mt-[-50px]  md:mt-[-300px]  h-[800px] relative z-[300] "
-            >
-             
-
+            <div className="w-[100%] lg:mt-[-50px] md:mt-[-300px] h-[800px] relative z-[300]">
               <NightModel />
             </div>
           )}
         </div>
         <div className="flex w-full lg:w-[50%] md:w-[50%] flex-col gap-4">
-          <din className="">
+          <div className="">
             <div className="flex md:pt-[200px] flex-col gap-y-6">
               <Image
                 src="/HomePage/Night/Night Muse Lipstick.svg"
@@ -206,11 +195,11 @@ const Night = ({ products, setShow, show }) => {
               </div>
             </div>
             <div className="ml-[20px] mt-8 flex items-center gap-4">
-            <div
-              onClick={(e) => handleWishlistClick(e, product)}
-               className="relative mr-[16px]">
-              <LikeButton wishlistFilled={wishlistFilled} />
-
+              <div
+                onClick={(e) => handleWishlistClick(e, product)}
+                className="relative mr-[16px]"
+              >
+                <LikeButton wishlistFilled={wishlistFilled} />
               </div>
 
               <HoverBorderGradient
@@ -225,101 +214,33 @@ const Night = ({ products, setShow, show }) => {
               <HoverBorderGradient
                 containerClassName="rounded-full"
                 as="div"
-                className="font-poppins font-[500] text-[10px] leading-[18px]  w-[100px] h-[30px] md:w-[130px] lg:w-[147px] md:h-[45px] lg:h-[45px] md:text-[14px] lg:text-[14px] flex justify-center items-center bg-black text-white rounded-[34px]"
+                className="font-poppins font-[500] text-[10px] leading-[18px] w-[100px] h-[30px] md:w-[130px] lg:w-[147px] md:h-[45px] lg:h-[45px] md:text-[14px] lg:text-[14px] flex justify-center items-center bg-black text-white rounded-[34px]"
               >
                 <Link href={"/product/60"}>
                   <span>ORDER NOW</span>
                 </Link>
               </HoverBorderGradient>
             </div>
-          </din>
+          </div>
         </div>
       </div>
+
+      {/* CSS for mobile adjustments */}
+      <style jsx>{`
+        @media (max-width: 400px) {
+          .mobile-nightmodel {
+            margin: 0 auto; /* Center the MobileNightModel on very small screens */
+            max-width: 100%; /* Ensure it doesn't exceed container width */
+          }
+
+          .flex.w-full.lg\\:w-\\[50\\%\\].md\\:w-\\[50\\%\\].flex-col.gap-4 {
+            align-items: center; /* Center the flex content on small screens */
+            padding: 0 10px; /* Add some padding */
+          }
+        }
+      `}</style>
     </div>
   );
 };
 
 export default Night;
-
-{
-  /* <div className="bg-black md:mt-[0px] lg:mt-[0px] md:w-[90%] w-[80%] h-[900px] md:flex-row lg:flex-row gap-4 flex-col overflow-hidden m-auto flex  ">
-<Meteors number={20} />
-
-<div className="pt-[100px] md:p-0 lg:p-0">
-<Image 
-src="/assets/images/night.png"
-width={600}
-height={600}
-className="z-[1000] border relative  object-cover w-[400px] h-[400px] md:w-[50%] lg:w-[50%] md:h-[100vh] lg:h-[100vh] "
-/>
-
-</div>
-
-
-<div className="w-[90%]  mt-4 md:flex lg:flex md:w-[50%] lg:w-[50%] text-white z-20 flex flex-col lg:gap-10 gap-4 lg:px-16 md:px-16  md:pt-[200px] lg:pt-[200px]">
- 
- 
-  <din className="">
-    <Image
-      src="/HomePage/Night/Night Muse Lipstick.svg"
-      alt="hero"
-      width={556}
-      height={75}
-    />
-  </din>
-  
-  
-  <div className="font-poppins font-[400] text-[10px] leading-[20px] md:text-[20px] md:leading-[30px] lg:text-[26px] lg:leading-[39px]">
-    Four stunning matte lipstick shades for your perfect day out!
-    <br />
-    Available in four new lip adapting shades.
-  
-  
-  
-  </div>
-
-
-
-  <div className="  md:hidden lg:hidden top-[2500px] z-[300] flex items-center gap-4">
-    <svg
-      className="w-8 h-8 cursor-pointer"
-      fill={isInWishlist ? "#D76D8E" : "none"}
-      stroke="#D76D8E"
-      viewBox="0 0 24 24"
-      xmlns="http://www.w3.org/2000/svg"
-      onClick={handleAddToWishlist}
-    >
-      <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-    </svg>
-
-    <HoverBorderGradient
-      containerClassName="rounded-full"
-      as="div"
-      className="font-poppins font-[500] text-[10px] leading-[18px]  w-[100px] h-[30px] bg-black text-white rounded-[34px]"
-      onClick={handleAddToCart}
-      disabled={isInCart}
-    >
-    
-      <span>ADD TO CART</span>
-    </HoverBorderGradient>
-    <HoverBorderGradient
-      containerClassName="rounded-full"
-      as="div"
-      className="font-poppins font-[500] text-[10px] leading-[18px]  w-[100px] h-[30px] bg-black text-white rounded-[34px]"
-    >
-    <Link href={"/product/60"}>
-      <span>ORDER NOW</span>
-      
-      </Link>
-    </HoverBorderGradient>
-  </div>
- 
-</div>
-
-
-<Meteors number={20} />
-
-
-
-</div> */
-}

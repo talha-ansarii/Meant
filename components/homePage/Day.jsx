@@ -166,7 +166,7 @@
                 className=""
               /> */}
             </div>
-            <div className="w-[90%] mx-auto  md:w-[50%] lg:w-[50%] z-20 flex flex-col lg:gap-10 lg:px-16   md:pt-[80px] lg:pt-[170px]">
+            <div className="w-[90%] mx-auto mt-[-50px] md:w-[50%] lg:w-[50%] z-20 flex flex-col lg:gap-10 lg:px-16   md:pt-[80px] lg:pt-[170px]">
               <div className="">
                 <Image
                   src="/HomePage/day/Day Dazzle Lipstick.svg"
