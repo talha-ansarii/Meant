@@ -256,7 +256,7 @@ const ProductCard = ({
           {/* Add to Cart button */}
           <button
             onClick={handleCartClick}
-            className=" prod-button text-sm md:w-[115px] w-[125px] h-[40px] px-4 py-1.5 font-merriweather"
+            className=" prod-button text-xs md:text-sm lg:text-sm md:w-[115px] w-[125px] h-[40px] px-4 py-1.5 font-merriweather"
           >
             Add to Cart
           </button>

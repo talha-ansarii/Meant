@@ -453,10 +453,10 @@ const SingleProductPage = ({ productId }) => {
                   <p>+</p>
                 </button>
               </div>
-
+                
               <button
                 onClick={handleCartClick}
-                className=" prod-button ml-4 text-sm md:w-[115px] w-[125px] h-[40px] px-4 py-1.5 font-merriweather"
+                className=" prod-button ml-4 text-xs md:text-sm lg:text-sm md:w-[115px] w-[125px] h-[40px] px-4 py-1.5 font-merriweather"
               >
                 Add to Cart
               </button>
