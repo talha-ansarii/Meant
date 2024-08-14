@@ -6,6 +6,7 @@ import { getAllOrders } from "@/utils/OrdersUtils";
 import { useUser } from "@clerk/nextjs";
 import Link from "next/link";
 import Image from "next/image";
+import LoadingComponent from "./LoadingComponent";
 
 export default function PastOrders() {
   const [orders, setOrders] = useState([]);
@@ -54,7 +55,13 @@ export default function PastOrders() {
 
   if (loading)
     return (
-      <>{isClient && <div className="w-[100vw] h-[100vh] ">Loading...</div>}</>
+      <>
+        {isClient && (
+          <div className="w-[100vw] h-[100vh]  text-black ">
+            <LoadingComponent />
+          </div>
+        )}
+      </>
     );
 
   //  console.log(userOrders);

@@ -13,6 +13,7 @@ import sha256 from "crypto-js/sha256";
 import { redirect } from "next/navigation";
 import axios from "axios";
 import { v4 as uuidv4 } from 'uuid';
+import LoadingComponent from "@/components/LoadingComponent";
 
 const Page = () => {
   const [cartProducts, setCartProducts] = useState([]);
@@ -288,6 +289,9 @@ const Page = () => {
 
   const redirect=response.data.data.instrumentResponse.redirectInfo.url;
   navigate.push(redirect)
+  }
+  if(loading){
+    return <div><LoadingComponent/></div>
   }
 
 

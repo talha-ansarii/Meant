@@ -18,10 +18,11 @@ import {
   getWishlistProducts,
   removeProductFromWishlist,
 } from "@/utils/wishlistUtils";
-import VideoLoader from "./VideoLoader";
+import VideoLoader from "./LoadingComponent";
 import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import LikeButton from "./likeButton/LikeButton";
+import LoadingComponent from "./LoadingComponent";
 
 const shades = ["#A32C42", "#663024", "#AD5B55", "#995A60"];
 
@@ -312,19 +313,19 @@ const SingleProductPage = ({ productId }) => {
 
   const averageRating = calculateAverageRating();
 
-
   const handleBuyNow = async () => {
     try {
       router.push(`/checkout?productId=${product.id}&quantity=${quantity}`);
     } catch (error) {
       console.error("Error adding product to cart:", error);
     }
-  }
-
+  };
 
   if (loading)
     return (
-      <>{isClient && <div className="w-[100vw] h-[100vh] ">Loading...</div>}</>
+      <>{isClient && <div className="w-[100vw] h-[100vh] ">
+        <LoadingComponent/>
+      </div>}</>
     );
 
   return (
@@ -453,7 +454,7 @@ const SingleProductPage = ({ productId }) => {
                   <p>+</p>
                 </button>
               </div>
-                
+
               <button
                 onClick={handleCartClick}
                 className=" prod-button ml-4 text-xs md:text-sm lg:text-sm md:w-[115px] w-[125px] h-[40px] px-4 py-1.5 font-merriweather"

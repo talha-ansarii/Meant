@@ -190,7 +190,7 @@ const Night = ({ products, setShow, show }) => {
            (
             
             <div className="w-[100%] relative z-[300] mobile-nightmodel">
-              <MobileNightModel />
+              {/* <MobileNightModel /> */}
             </div>
           )}
           {isTablet && (

@@ -247,11 +247,11 @@ const Header = () => {
       <div>
         <div className="md:hidden bg-black relative lg:hidden flex w-[100%] px-[5%] m-auto justify-between items-center">
           <div className="flex w-full ">
-            <div className="flex gap-x-[8px] justify-between w-full  ">
-              <div>
+            <div className="flex gap-x-[8px]  justify-between w-full  ">
+              <div className="flex gap-x-2">
                 <div
                   id="nav-icon2"
-                  className={`relative mt-[5px] w-[30px] h-[15px] ${
+                  className={`relative  w-[30px] h-[15px] ${
                     isOpen ? "open" : ""
                   }`}
                   onClick={() => setIsOpen(!isOpen)}
@@ -265,16 +265,16 @@ const Header = () => {
                 </div>
                 <Link href={"/"}>
                   <Image
-                    src="/assets/images/headerlogo.webp"
+                    src="/assets/images/headerlogo.jpg"
                     alt="logo"
                     width={90}
                     height={30}
-                    className="w-[90px] h-[30px]"
+                    className="w-[90px] pt-[-15px] "
                   />
                 </Link>
               </div>
               
-              <div className="flex relative items-center gap-[8px]">
+              <div className="flex relative items-center  gap-[8px]">
                 <Link href="/wishlist">
                   <FaRegHeart className="w-[30px] cursor-pointer h-[23px] text-[#D76D8E]" />
                   {wishlistLength > 0 && (

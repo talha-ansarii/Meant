@@ -191,27 +191,40 @@ const ProductCard = ({
       <Toaster position="top-right" richColors />
       <div className="relative h-[15rem]">
       <div className="relative w-full h-full overflow-hidden">
-          <button
-            onClick={handlePreviousImage}
-            className="absolute left-2 top-1/2 transform -translate-y-1/2 z-10 text-[#b99696] shadow-md  p-1 rounded-full"
-          >
-            <FaChevronLeft size={20} />
-          </button>
-          <Link href={`/product/${product.id}`}>
-              <Image
-                src={product.images[currentImageIndex]?.src}
-                alt={product.name}
-                layout="fill"
-                className="object-cover"
-              />
-          </Link>
-          <button
-            onClick={handleNextImage}
-            className="absolute right-2 top-1/2 transform -translate-y-1/2 z-10 text-[#b99696] shadow-sm p-1 rounded-full"
-          >
-            <FaChevronRight size={20} />
-          </button>
-        </div>
+  <button
+    onClick={handlePreviousImage}
+    className="absolute left-2 top-1/2 transform -translate-y-1/2 z-10 text-[#b99696] shadow-md p-1 rounded-full"
+  >
+    <FaChevronLeft size={20} />
+  </button>
+  <Link href={`/product/${product.id}`}>
+    <Image
+      src={product.images[currentImageIndex]?.src}
+      alt={product.name}
+      layout="fill"
+      className="object-cover"
+    />
+  </Link>
+  <button
+    onClick={handleNextImage}
+    className="absolute right-2 top-1/2 transform -translate-y-1/2 z-10 text-[#b99696] shadow-sm p-1 rounded-full"
+  >
+    <FaChevronRight size={20} />
+  </button>
+
+  {/* Image index indicators */}
+  <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
+    {product.images.map((_, index) => (
+      <div
+        key={index}
+        className={`w-2 h-2 rounded-full ${
+          index === currentImageIndex ? 'bg-black' : 'bg-[#e0e0e0]'
+        }`}
+      />
+    ))}
+  </div>
+</div>
+
         {/* Wishlist heart icon */}
         <div
           className="absolute top-6 right-2 cursor-pointer"

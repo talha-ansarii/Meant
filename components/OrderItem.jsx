@@ -2,7 +2,8 @@ import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
 import React, { Suspense, useEffect, useState } from "react";
-import VideoLoader from "./VideoLoader";
+import VideoLoader from "./LoadingComponent";
+import LoadingComponent from "./LoadingComponent";
 
 const OrderItem = ({ order }) => {
   const [productDetails, setProductDetails] = useState([]);
@@ -28,7 +29,7 @@ const OrderItem = ({ order }) => {
         });
 
         const productDetail = await Promise.all(fetches);
-        
+
         // Update state with fetched product details
         setProductDetails(productDetail);
       } catch (error) {
@@ -40,11 +41,16 @@ const OrderItem = ({ order }) => {
     fetchProductDetails();
   }, [order]);
 
-  
-
-  if (loading) return <>{isClient && <div className=" text-black">
-    loading...
-     </div>}</>;
+  if (loading)
+    return (
+      <>
+        {isClient && (
+          <div className="w-full text-black ">
+            <LoadingComponent text={"black"}/>
+          </div>
+        )}
+      </>
+    );
 
   return (
     <div>
@@ -63,15 +69,16 @@ const OrderItem = ({ order }) => {
           <div className="flex gap-2">
             {productDetails?.map((product, index) => (
               <Link href={`product/${product?.id}`} key={index}>
-                <Suspense fallback={<div className="text-black">Loading..</div>}>
-                <img
-                  src={product?.images[0]?.src}
-                  alt="order"
-                  width={78}
-                  height={78}
-                  className="lg:w-[78px] lg:h-[78px] md:w-[78px] md:h-[78px] w-[82px] h-[82px] rounded-[10px]"
-                />
-
+                <Suspense
+                  fallback={<div className="text-black">Loading..</div>}
+                >
+                  <img
+                    src={product?.images[0]?.src}
+                    alt="order"
+                    width={78}
+                    height={78}
+                    className="lg:w-[78px] lg:h-[78px] md:w-[78px] md:h-[78px] w-[82px] h-[82px] rounded-[10px]"
+                  />
                 </Suspense>
               </Link>
             ))}
