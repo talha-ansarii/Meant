@@ -28,7 +28,9 @@ const Page = () => {
 
   useEffect(() => {
 
-    if(searchParams){
+     console.log(searchParams)
+
+    if(searchParams.size>0){
       const productId = searchParams.get('productId');
       const quantity = searchParams.get('quantity');
 
@@ -47,7 +49,6 @@ const Page = () => {
           setCartTotal(total);
 
         } catch (error) {
-          setError(error.message);
           setLoading(false);
         }
       }
@@ -58,22 +59,24 @@ const Page = () => {
     }
     else{
       const fetchData = async () => {
+        setLoading(true);
         const cart = await getCartProducts();
         const products = await getAllProducts();
         if (cart && products) {
           const filteredProducts = products.filter((product) =>
             cart.some((cartItem) => cartItem.productId === product.id)
-          );
-  
-          let total = 0;
-          const productsWithQuantity = filteredProducts.map((product) => {
-            const cartItem = cart.find((item) => item.productId === product.id);
-            total += product.price * cartItem.quantity;
-  
-            return { ...product, quantity: cartItem?.quantity };
-          });
-  
-          setCartProducts(productsWithQuantity);
+        );
+        
+        let total = 0;
+        const productsWithQuantity = filteredProducts.map((product) => {
+          const cartItem = cart.find((item) => item.productId === product.id);
+          total += product.price * cartItem.quantity;
+          
+          return { ...product, quantity: cartItem?.quantity };
+        });
+        
+        setLoading(false);
+        setCartProducts(productsWithQuantity);
           setCartTotal(total);
         }
       };
@@ -291,7 +294,7 @@ const Page = () => {
   navigate.push(redirect)
   }
   if(loading){
-    return <div><LoadingComponent/></div>
+    return <div className="w-[100vw] h-[100vh] flex justify-center items-center" ><LoadingComponent/></div>
   }
 
 
@@ -317,6 +320,7 @@ const Page = () => {
               setCartProducts={setCartProducts}
               cartTotal={cartTotal}
               setCartTotal={setCartTotal}
+              loading={loading}
             />
           </div>
         </div>

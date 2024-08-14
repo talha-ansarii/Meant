@@ -1,9 +1,17 @@
 "use client";
 
 import Image from "next/image";
+import LoadingComponent from "./LoadingComponent";
 
-const Checkout = ({ cartProducts, cartTotal }) => {
+const Checkout = ({ cartProducts, cartTotal, loading }) => {
+
+  if (loading) {
+    return <div className="w-full h-full flex justify-center items-center">
+      <LoadingComponent text={"black"}/>
+    </div>;
+  }
   return (
+
     <div className="flex flex-col  lg:pt-[100px] md:pt-[100px] items-center justify-between md:min-h-full lg:min-h-full bg-[#CDC8C8]/[40%] p-4">
       <div className="w-full p-6">
         <div className=" overflow-auto no-scrollbar">
