@@ -259,7 +259,7 @@ const Cart = ({ isCartOpen }) => {
     );
 
   return (
-    <div className="w-full bg-white text-black px-4 md:px-8">
+    <div className="w-full h-full bg-white text-black px-4 md:px-8">
       <div className=" overflow-auto ">
         <div className="flex justify-between items-center pb-4">
           <span className="text-[16px] font-poppins font-semibold text-[#827777]">
@@ -285,7 +285,7 @@ const Cart = ({ isCartOpen }) => {
           </div>
         ) : (
           <div className="flex flex-col h-[calc(100vh-130px)] justify-between ">
-            <ul className="space-y-6 ">
+            <ul className="space-y-6  ">
               {cartProducts.map((item) => (
                 <li
                   key={item.id}
@@ -343,6 +343,12 @@ const Cart = ({ isCartOpen }) => {
                   </div>
                 </li>
               ))}
+              <Link
+                href="/checkout"
+                className="mt-8 text-[18px] w-full font-playfair-display font-extrabold inline-block bg-black text-white py-2 px-8 rounded-[30px] text-center  md:w-full"
+              >
+                Checkout
+              </Link>
             </ul>
             <div className="border-t border-[#CDC8C8] mt-8 pt-4">
               <div className="flex justify-between items-center">
@@ -356,12 +362,7 @@ const Cart = ({ isCartOpen }) => {
               <p className="mt-2 text-[#827777] font-merriweather font-semibold text-xs ">
                 {"("}Shipping & Discounts calculated at checkout{")"}
               </p>
-              <Link
-                href="/checkout"
-                className="mt-8 text-[18px] w-full font-playfair-display font-extrabold inline-block bg-black text-white py-2 px-8 rounded-[30px] text-center  md:w-full"
-              >
-                Checkout
-              </Link>
+              
             </div>
           </div>
         )}
