@@ -219,7 +219,7 @@ export default function Home() {
         {isMobile && (
           <div className="absolute z-[200] top-0 left-0  w-full h-full">
           {/* {console.log("Mobile")} */}
-            {/* <Mobile /> */}
+            <Mobile /> 
           </div>
         )}
         {isTablet && (
@@ -232,7 +232,7 @@ export default function Home() {
         {isDesktop && (
           <div className="absolute z-[200] top-0  left-0 w-full h-full">
           {/* {console.log("Desktop")} */}
-            {/* <Desktop /> */}
+            <Desktop /> 
           </div>
         )}
       <Suspense fallback={<LoadingComponent/>}>
