@@ -312,6 +312,16 @@ const SingleProductPage = ({ productId }) => {
 
   const averageRating = calculateAverageRating();
 
+
+  const handleBuyNow = async () => {
+    try {
+      router.push(`/checkout?productId=${product.id}&quantity=${quantity}`);
+    } catch (error) {
+      console.error("Error adding product to cart:", error);
+    }
+  }
+
+
   if (loading)
     return (
       <>{isClient && <div className="w-[100vw] h-[100vh] ">Loading...</div>}</>
@@ -451,7 +461,7 @@ const SingleProductPage = ({ productId }) => {
                 Add to Cart
               </button>
               <button
-                // onClick={handleCartClick}
+                onClick={handleBuyNow}
                 className=" prod-button  ml-4 text-sm md:w-[115px] w-[125px] h-[40px] px-4 py-1.5 font-merriweather"
               >
                 Buy Now
