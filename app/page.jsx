@@ -38,6 +38,7 @@ export default function Home() {
   const isMobile = useMediaQuery({ maxWidth: 480 });
   const isTablet = useMediaQuery({ minWidth: 481, maxWidth: 1024 });
   const isDesktop = useMediaQuery({ minWidth: 1025 });
+  const [product1, setProduct1] = useState(null);
  
     const [wishlistFilled, setWishlistFilled] = useState(false);
 
@@ -50,7 +51,12 @@ export default function Home() {
         const response = await fetch("/api/get-products");
         const data = await response.json();
         setProducts(data);
+        console.log(data)
+        const prdId = 58;
+        const pdt = data.find((p) => p.id === prdId);
 
+        console.log(pdt)
+        setProduct1(pdt);
         // console.log("Fetched products:", data);
       } catch (error) {
         console.error("Error fetching products:", error);
@@ -58,32 +64,57 @@ export default function Home() {
     };
 
     fetchProducts();
-    console.log(products)
+
+    
+    
   }, []);
 
 
-  const productName1 = "Day Dazzle Lipstick";
-  const product1 = products.find((p) => p.name === productName1);
 
   const handleCartClick = async (e) => {
     e.stopPropagation();
-  
+
+    // Retrieve existing cart items from local storage
     if (!isSignedIn) {
-      return router.push("/sign-in");
+      let cartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
+
+      // If the user is not signed in, save the product directly to local storage
+
+      // Check if the product is already in the cart
+      const existingCartItemIndex = cartItems.findIndex(
+        (item) => item.id === product1.id
+      );
+
+      if (existingCartItemIndex !== -1) {
+        // If product exists, update its quantity
+        cartItems[existingCartItemIndex].quantity += 1;
+      } else {
+        // If product doesn't exist, add it to the cart
+        const newCartItem = { id: product1.id ,quantity: 1 };
+        cartItems.push(newCartItem);
+      }
+
+      // Save the updated cart items to local storage
+      localStorage.setItem("cartItems", JSON.stringify(cartItems));
+
+      // Optionally, show a message to the user
+      toast.success("Added to cart");
+
+      return;
     }
-  
+    let cartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
+
     try {
       await addProductToCart(product1.id, 1);
       toast.success("Added to cart");
-  
-      
-  
-      // Retrieve existing cart items from local storage
-      const cartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
-  
-      // Check if the product is already in the cart
-      const existingCartItemIndex = cartItems.findIndex(item => item.id === product1.id);
-  
+
+     
+
+      // If signed in, update the local storage as well
+      const existingCartItemIndex = cartItems?.findIndex(
+        (item) => item.id === product1.id
+      );
+
       if (existingCartItemIndex !== -1) {
         // If product exists, update its quantity
         cartItems[existingCartItemIndex].quantity += 1;
@@ -92,16 +123,20 @@ export default function Home() {
         const newCartItem = { id: product1.id, quantity: 1 };
         cartItems.push(newCartItem);
       }
-  
+      // console.log(cartItems)
+
       // Save the updated cart items to local storage
       localStorage.setItem("cartItems", JSON.stringify(cartItems));
     } catch (error) {
-      console.error("Error adding product to cart:", error);
+      console.log("Error adding product to cart:", error);
     }
   };
 
   const handleWishlistClick = async (e, product1) => {
+
     e.stopPropagation();
+
+    // console.log("clickd")
     const wishlistKey = 'wishlist';
     
     // Initialize the wishlist from localStorage or an empty array
@@ -196,11 +231,11 @@ export default function Home() {
         {isDesktop && (
           <div className="absolute z-[200] top-0  left-0 w-full h-full">
           {/* {console.log("Desktop")} */}
-            <Desktop />
+            {/* <Desktop /> */}
           </div>
         )}
       <Suspense fallback={<div>Loading...</div>}>
-        <div className="w-full relative z-[300] bg-black">
+        <div className="w-full relative z-[400] bg-black">
           <Header />
         </div>
         <div className="absolute w-full">

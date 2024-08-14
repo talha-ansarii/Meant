@@ -34,22 +34,17 @@ const Night = ({ products, setShow, show }) => {
   const canvasref = useRef(null);
   const ref = useRef(null);
 
-  const productName = "Night Muse Lipstick";
-  const product = products.find((p) => p.name === productName);
+  const productName = 60;
+  const product = products.find((p) => p.id === productName);
 
   const handleCartClick = async (e) => {
     e.stopPropagation();
 
+    // Retrieve existing cart items from local storage
     if (!isSignedIn) {
-      return router.push("/sign-in");
-    }
+      let cartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
 
-    try {
-      await addProductToCart(product.id, 1);
-      toast.success("Added to cart");
-
-      // Retrieve existing cart items from local storage
-      const cartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
+      // If the user is not signed in, save the product directly to local storage
 
       // Check if the product is already in the cart
       const existingCartItemIndex = cartItems.findIndex(
@@ -61,14 +56,45 @@ const Night = ({ products, setShow, show }) => {
         cartItems[existingCartItemIndex].quantity += 1;
       } else {
         // If product doesn't exist, add it to the cart
-        const newCartItem = { id: product.id, quantity: 1 };
+        const newCartItem = { id: product.id,quantity: 1 };
         cartItems.push(newCartItem);
       }
 
       // Save the updated cart items to local storage
       localStorage.setItem("cartItems", JSON.stringify(cartItems));
+
+      // Optionally, show a message to the user
+      toast.success("Added to cart");
+
+      return;
+    }
+    let cartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
+
+    try {
+      await addProductToCart(product.id, 1);
+      toast.success("Added to cart");
+
+     
+
+      // If signed in, update the local storage as well
+      const existingCartItemIndex = cartItems?.findIndex(
+        (item) => item.id === product.id
+      );
+
+      if (existingCartItemIndex !== -1) {
+        // If product exists, update its quantity
+        cartItems[existingCartItemIndex].quantity += 1;
+      } else {
+        // If product doesn't exist, add it to the cart
+        const newCartItem = { id: product.id, quantity: 1 };
+        cartItems.push(newCartItem);
+      }
+      // console.log(cartItems)
+
+      // Save the updated cart items to local storage
+      localStorage.setItem("cartItems", JSON.stringify(cartItems));
     } catch (error) {
-      console.error("Error adding product to cart:", error);
+      console.log("Error adding product to cart:", error);
     }
   };
 
