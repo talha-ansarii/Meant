@@ -200,7 +200,7 @@ const Night = ({ products, setShow, show }) => {
           )}
           {isDesktop && (
             <div className="w-[100%] lg:mt-[-50px] md:mt-[-300px] h-[800px] relative z-[300]">
-              {/* <NightModel /> */}
+              <NightModel />
             </div>
           )}
         </div>
