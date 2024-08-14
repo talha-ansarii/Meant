@@ -44,24 +44,25 @@ const EmojiSequence = ({ emojis }) => {
 
 
 
-
 // Main loading component
-const LoadingComponentt = () => {
+const LoadingComponent = ({text}) => {
   const [isTypingComplete, setIsTypingComplete] = useState(false);
-
+  
+  // console.log(text)
   return (
     <div
-    className="flex w-full h-full text-[20px] md:text-[24px] lg:text-[30px] justify-center items-center"
+    className="flex w-full h-full text-[20px] md:text-[24px] lg:text-[26px] justify-center items-center"
       style={{
         
         fontFamily: "monospace",
         textAlign: "center",
-        marginTop: "20%",
+        
       }}
     >
 
-    <div className="flex gap-2">
+    <div className={`flex gap-2 ${text === 'black' ?  ' text-black ' : ' text-white '}`} >
       <Typewriter
+      
   onInit={(typewriter) => {
     typewriter.typeString('Unleashing MEANT Magic....')
       .callFunction(() => {
@@ -80,4 +81,4 @@ const LoadingComponentt = () => {
   );
 };
 
-export default LoadingComponentt;
+export default LoadingComponent;

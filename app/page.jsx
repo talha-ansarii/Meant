@@ -26,6 +26,7 @@ import { HoverBorderGradient } from "@/components/ui/hover-border-gradient";
 import Link from "next/link";
 import LikeButton from "@/components/likeButton/LikeButton";
 import { Toaster, toast } from "sonner";
+import LoadingComponent from "../components/LoadingComponent";
 
 export default function Home() {
   const [products, setProducts] = useState([]);
@@ -218,7 +219,7 @@ export default function Home() {
         {isMobile && (
           <div className="absolute z-[200] top-0 left-0  w-full h-full">
           {/* {console.log("Mobile")} */}
-            <Mobile />
+            {/* <Mobile /> */}
           </div>
         )}
         {isTablet && (
@@ -234,7 +235,7 @@ export default function Home() {
             {/* <Desktop /> */}
           </div>
         )}
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<LoadingComponent/>}>
         <div className="w-full relative z-[400] bg-black">
           <Header />
         </div>

@@ -14,6 +14,7 @@ import {
   getWishlistProducts,
   removeProductFromWishlist,
 } from "@/utils/wishlistUtils";
+import LoadingComponent from "./LoadingComponent";
 
 const WishList = () => {
   const router = useRouter();
@@ -201,7 +202,9 @@ const WishList = () => {
 
   if (loading)
     return (
-      <>{isClient && <div className="w-[100vw] h-[100vh] ">Loading...</div>}</>
+      <>{isClient && <div className="w-[100vw] h-[100vh] ">
+        <LoadingComponent/>
+      </div>}</>
     );
 
   return (

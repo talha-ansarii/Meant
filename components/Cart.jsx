@@ -12,6 +12,7 @@ import {
   updateCartQuantity,
 } from "@/utils/cartUtils";
 import { useUser } from "@clerk/nextjs";
+import LoadingComponent from "./LoadingComponent";
 
 const Cart = ({ isCartOpen }) => {
   const [cartProducts, setCartProducts] = useState([]);
@@ -250,7 +251,9 @@ const Cart = ({ isCartOpen }) => {
     return (
       <>
         {isClient && (
-          <div className="w-[100vw] text-black h-[100vh] ">Loading...</div>
+          <div className="w-full mt-[270px] text-black ">
+            <LoadingComponent text={"black"}/>
+          </div>
         )}
       </>
     );
