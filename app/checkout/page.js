@@ -6,7 +6,7 @@ import Header from "@/components/Header";
 import ShippingForm from "@/components/ShippingForm";
 import { getAllProducts, getCartProducts } from "@/utils/cartUtils";
 import { RedirectToSignIn, SignedOut, SignedIn, useUser } from "@clerk/nextjs";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Script from "next/script";
 import React, { useEffect, useState } from "react";
 import sha256 from "crypto-js/sha256";
@@ -20,33 +20,67 @@ const Page = () => {
   const [orderId, setOrderId] = useState("");
   const key = process.env.NEXT_PUBLIC_RAZORPAY_KEY;
   const navigate = useRouter();
+  const searchParams = useSearchParams();
+  const [loading, setLoading] = useState(false);
 
   const { user } = useUser();
 
   useEffect(() => {
-    const fetchData = async () => {
-      const cart = await getCartProducts();
-      const products = await getAllProducts();
-      if (cart && products) {
-        const filteredProducts = products.filter((product) =>
-          cart.some((cartItem) => cartItem.productId === product.id)
-        );
 
-        let total = 0;
-        const productsWithQuantity = filteredProducts.map((product) => {
-          const cartItem = cart.find((item) => item.productId === product.id);
-          total += product.price * cartItem.quantity;
+    if(searchParams){
+      const productId = searchParams.get('productId');
+      const quantity = searchParams.get('quantity');
 
-          return { ...product, quantity: cartItem?.quantity };
-        });
+      async function fetchProduct() {
+        try {
+          setLoading(true);
+          const response = await fetch(`/api/get-product/${productId}`);
+          if (!response.ok) {
+            throw new Error("Failed to fetch product");
+          }
+          const data = await response.json();
+          setLoading(false);
+          const product = { ...data, quantity: Number(quantity) };
+         const total = product.price * quantity;
+          setCartProducts([product]);
+          setCartTotal(total);
 
-        setCartProducts(productsWithQuantity);
-        setCartTotal(total);
+        } catch (error) {
+          setError(error.message);
+          setLoading(false);
+        }
       }
-    };
 
-    fetchData();
-  }, []);
+  
+      fetchProduct();
+
+    }
+    else{
+      const fetchData = async () => {
+        const cart = await getCartProducts();
+        const products = await getAllProducts();
+        if (cart && products) {
+          const filteredProducts = products.filter((product) =>
+            cart.some((cartItem) => cartItem.productId === product.id)
+          );
+  
+          let total = 0;
+          const productsWithQuantity = filteredProducts.map((product) => {
+            const cartItem = cart.find((item) => item.productId === product.id);
+            total += product.price * cartItem.quantity;
+  
+            return { ...product, quantity: cartItem?.quantity };
+          });
+  
+          setCartProducts(productsWithQuantity);
+          setCartTotal(total);
+        }
+      };
+  
+      fetchData();
+    }
+   
+  }, [searchParams]);
 
   const createOrder = async (address) => {
     try {

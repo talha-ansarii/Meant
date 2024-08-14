@@ -109,7 +109,7 @@ const Header = () => {
       const direction = scrollY > lastScrollY ? "down" : "up";
       if (
         direction !== scrollDirection &&
-        (scrollY - lastScrollY > 10 || scrollY - lastScrollY < -10)
+        (scrollY - lastScrollY > 20 || scrollY - lastScrollY < -20)
       ) {
         setScrollDirection(direction);
       }
@@ -165,7 +165,7 @@ const Header = () => {
 
   return (
     <div
-      className={`w-full m-auto top-[20px] md:top-[30px] lg:top-[30px] duration-200 left-[50%] translate-x-[-50%] px-[20px] absolute lg:fixed md:fixed z-[100] transition-transform ${
+      className={`w-full m-auto top-[20px] md:top-[30px] lg:top-[30px] duration-200 left-[50%] translate-x-[-50%] px-[20px] absolute lg:fixed md:fixed z-[200] transition-transform ${
         scrollDirection === "down"
           ? " translate-y-0 lg:-translate-y-[80px] md:-translate-y-[80px] "
           : " translate-y-0 "
@@ -384,7 +384,7 @@ const Header = () => {
       <AnimatePresence>
         {isCartOpen && (
           <motion.div
-            className={`fixed top-[-120px] playfair bg-white mt-[86px] lg:hidden md:hidden  h-[100vh]  inset-0 w-[calc(100vw+10px)] z-[200] font-[700] text-[20px]  text-black 
+            className={`fixed  top-[-110px] playfair bg-white mt-[86px] lg:hidden md:hidden  h-[100vh]  inset-0 w-[calc(100vw+10px)] z-[200] font-[700] text-[20px]  text-black 
           
             `}
             initial="hidden"
@@ -408,7 +408,7 @@ const Header = () => {
         )}
       </AnimatePresence>
       <div
-        className={`fixed lg:w-1/3 top-[-30px] duration-500 hidden lg:block md:block right-0 w-full md:w-full bg-white text-black h-[100vh] transition-transform transform z-50
+        className={`fixed z-[400] lg:w-1/3 top-[-30px] duration-500 hidden lg:block md:block right-0 w-full md:w-full bg-white text-black h-[100vh] transition-transform transform 
             ${isCartOpen ? "translate-x-0" : "translate-x-full"}
             `}
         initial="hidden"

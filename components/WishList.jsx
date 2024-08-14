@@ -126,27 +126,13 @@ const WishList = () => {
   };
 
   const handleCartClick = async (product) => {
+   
+
+    // Retrieve existing cart items from local storage
     if (!isSignedIn) {
-      return router.push("/sign-in");
-    }
+      let cartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
 
-    try {
-      await addProductToCart(product.id, 1);
-      toast.success("Added to cart");
-      const updatedwishlistArray = wishlistArray.filter(
-        (item) => item.id !== product.id
-      );
-      localStorage.setItem(
-        "wishlist",
-        JSON.stringify(updatedwishlistArray.map((item) => item.id))
-      );
-      await removeFromWishlist(product.id);
-
-      setWishlistArray(updatedwishlistArray);
-      // Update quantities state
-
-      // Retrieve existing cart items from local storage
-      const cartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
+      // If the user is not signed in, save the product directly to local storage
 
       // Check if the product is already in the cart
       const existingCartItemIndex = cartItems.findIndex(
@@ -164,10 +150,54 @@ const WishList = () => {
 
       // Save the updated cart items to local storage
       localStorage.setItem("cartItems", JSON.stringify(cartItems));
+      await removeFromWishlist(product.id);
+      let updatedwishlistArray = wishlistArray.filter(
+        (item) => item.id !== product.id
+      );
+      setWishlistArray(updatedwishlistArray);
+
+      // Optionally, show a message to the user
+      toast.success("Added to cart");
+
+      return;
+    }
+    let cartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
+
+    try {
+      await addProductToCart(product.id, 1);
+      toast.success("Added to cart");
+
+    
+
+      // If signed in, update the local storage as well
+      const existingCartItemIndex = cartItems?.findIndex(
+        (item) => item.id === product.id
+      );
+
+      if (existingCartItemIndex !== -1) {
+        // If product exists, update its quantity
+        cartItems[existingCartItemIndex].quantity += 1;
+      } else {
+        // If product doesn't exist, add it to the cart
+        const newCartItem = { id: product.id, quantity:1 };
+        cartItems.push(newCartItem);
+      }
+      // console.log(cartItems)
+      await removeFromWishlist(product.id);
+      let updatedwishlistArray = wishlistArray.filter(
+        (item) => item.id !== product.id
+      );
+      setWishlistArray(updatedwishlistArray);
+      // Save the updated cart items to local storage
+      localStorage.setItem("cartItems", JSON.stringify(cartItems));
     } catch (error) {
-      console.error("Error adding product to cart:", error);
+      console.log("Error adding product to cart:", error);
     }
   };
+
+ 
+
+  
 
   if (loading)
     return (
