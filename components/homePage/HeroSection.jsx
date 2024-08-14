@@ -44,7 +44,7 @@ const HeroSection = () => {
       </div>
       {/* Scroll Text */}
       {showScrollText && (
-        <div className="absolute bottom-[200px] text-6xl lg:bottom-[-300px] w-full flex justify-center">
+        <div className="absolute bottom-[184px] text-6xl lg:bottom-[-300px] w-full flex justify-center">
           <div className="text-gray-500 mb-4 text-center text-sm">
             Scroll down
           </div>

@@ -256,8 +256,8 @@ const Cart = ({ isCartOpen }) => {
     );
 
   return (
-    <div className="w-full   bg-white text-black px-4 md:px-8">
-      <div className=" overflow-auto no-scrollbar">
+    <div className="w-full bg-white text-black px-4 md:px-8">
+      <div className=" overflow-auto ">
         <div className="flex justify-between items-center pb-4">
           <span className="text-[16px] font-poppins font-semibold text-[#827777]">
             {cartProducts.length} items

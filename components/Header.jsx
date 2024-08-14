@@ -247,7 +247,7 @@ const Header = () => {
       <div>
         <div className="md:hidden bg-black relative lg:hidden flex w-[100%] px-[5%] m-auto justify-between items-center">
           <div className="flex w-full ">
-            <div className="flex justify-between w-full  ">
+            <div className="flex gap-x-[8px] justify-between w-full  ">
               <div>
                 <div
                   id="nav-icon2"
@@ -263,8 +263,6 @@ const Header = () => {
                   <span className="block absolute h-1.5 w-1/3 bg-white opacity-100 transition-transform duration-300 ease-in-out"></span>
                   <span className="block absolute h-1.5 w-1/3 bg-white opacity-100 transition-transform duration-300 ease-in-out"></span>
                 </div>
-              </div>
-              <div className="">
                 <Link href={"/"}>
                   <Image
                     src="/assets/images/headerlogo.webp"
@@ -275,7 +273,8 @@ const Header = () => {
                   />
                 </Link>
               </div>
-              <div className="flex relative items-center gap-[6px]">
+              
+              <div className="flex relative items-center gap-[8px]">
                 <Link href="/wishlist">
                   <FaRegHeart className="w-[30px] cursor-pointer h-[23px] text-[#D76D8E]" />
                   {wishlistLength > 0 && (
